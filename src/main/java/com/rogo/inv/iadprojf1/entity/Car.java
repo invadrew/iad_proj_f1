@@ -2,12 +2,13 @@ package com.rogo.inv.iadprojf1.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.rogo.inv.iadprojf1.entity.pitstop.PilotChange;
+import com.rogo.inv.iadprojf1.entity.pitstop.PitStopRepair;
+import com.rogo.inv.iadprojf1.entity.pitstop.PitStopService;
+import com.rogo.inv.iadprojf1.entity.race.RaceResult;
 import com.rogo.inv.iadprojf1.entity.storage.*;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -72,20 +73,20 @@ public class Car {
     @JsonBackReference
     private List<TeamMember> racers = new ArrayList<>();
 
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "component_changes")
-//    private List<ComponentChange> componentChanges = new ArrayList<>();
-//
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pit_stop_service")
-//    private List<PitStopService> pitStopServices = new ArrayList<>();
-//
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pit_stop_service")
-//    private List<PilotChange> pilotChanges = new ArrayList<>();
-//
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "race_result")
-//    private List<RaceResult> raceResults = new ArrayList<>();
-//
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pit_stop_repair")
-//    private List<PitStopRepair> pitStopRepairs = new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "car")
+    private List<ComponentChange> componentChanges = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "car")
+    private List<PitStopService> pitStopServices = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "car")
+    private List<PilotChange> pilotChanges = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "car")
+    private List<RaceResult> raceResults = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "car")
+    private List<PitStopRepair> pitStopRepairs = new ArrayList<>();
 
     /* ================================
      constructors

@@ -38,9 +38,6 @@ public class TeamMember implements Serializable {
     @JsonBackReference
     private Team team;
 
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pilot_change")
-//    private List<PilotChange> worldCupResults = new ArrayList<>();
-//
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "piloting",

@@ -68,5 +68,4 @@ public class Race {
         this.maxParticipants = maxParticipants;
         this.track = track;
     }
-
 }

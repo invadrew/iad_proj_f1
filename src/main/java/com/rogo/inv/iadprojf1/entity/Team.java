@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.rogo.inv.iadprojf1.DBUtility;
 import com.rogo.inv.iadprojf1.entity.cup.ConstrCupResult;
+import com.rogo.inv.iadprojf1.entity.pitstop.PitStopPlace;
 import com.rogo.inv.iadprojf1.entity.storage.CarcaseStorage;
 import com.rogo.inv.iadprojf1.entity.storage.ChassisStorage;
 import com.rogo.inv.iadprojf1.entity.storage.ElectronicsStorage;
@@ -83,18 +84,19 @@ public class Team {
             cascade = CascadeType.ALL,
             mappedBy = "team")
     private List<ConstrCupResult> constrCupResults = new ArrayList<>();
-//
-//
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pit_stop_places")
-//    private List<PitStopPlace> pitStopPlaces = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            mappedBy = "team")
+    private List<PitStopPlace> pitStopPlaces = new ArrayList<>();
 
     /* ================================
      constructors
     ================================ */
-//    public Team(@NotNull String name, @NotNull @Min(0) long budget, @NotNull AcceptStatus status, String comments) {
-//        this.name = name;
-//        this.budget = budget;
-//        this.status = status;
-//        this.comments = comments;
-//    }
+    public Team(@NotNull String name, @NotNull @Min(0) long budget, @NotNull AcceptStatus status, String comments) {
+        this.name = name;
+        this.budget = budget;
+        this.status = status;
+        this.comments = comments;
+    }
 }

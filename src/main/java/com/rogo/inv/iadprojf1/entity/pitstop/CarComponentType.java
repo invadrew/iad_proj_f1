@@ -1,6 +1,6 @@
 package com.rogo.inv.iadprojf1.entity.pitstop;
 
-public enum ComponentTypes {
+public enum CarComponentType {
     CARCASE,
     ENGINE,
     CHASSIS,

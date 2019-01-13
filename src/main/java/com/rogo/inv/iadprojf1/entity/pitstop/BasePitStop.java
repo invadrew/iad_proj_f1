@@ -1,34 +1,33 @@
 package com.rogo.inv.iadprojf1.entity.pitstop;
 
-import com.google.common.base.Objects;
-import com.google.gson.Gson;
 import com.rogo.inv.iadprojf1.entity.Car;
 import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.race.Race;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @MappedSuperclass
-@NoArgsConstructor
+@Data @NoArgsConstructor
 public abstract class BasePitStop {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    int id;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId
+    @JoinColumn(name = "race_id")
     Race race;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId
+    @JoinColumn(name = "place_id")
     PitStopPlace place;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId
+    @JoinColumn(name = "car_id")
     Car car;
 
     @NotNull
@@ -43,19 +42,5 @@ public abstract class BasePitStop {
         this.place = place;
         this.car = car;
         this.status = status;
-    }
-
-    /* ================================
-     overridden Object methods
-    ================================ */
-    @Override
-    public String toString() {
-        return new Gson().toJson(this);
-    }
-
-    // generated with Guava
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id, race, place, car);
     }
 }

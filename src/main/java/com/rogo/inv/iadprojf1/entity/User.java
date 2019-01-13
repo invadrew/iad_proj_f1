@@ -2,10 +2,13 @@ package com.rogo.inv.iadprojf1.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.rogo.inv.iadprojf1.DBUtility;
+import com.rogo.inv.iadprojf1.entity.message.Chat;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -34,6 +37,14 @@ public class User {
     private AcceptStatus status;
 
     private String comments;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_chat",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "chat_id")
+    )
+    private Set<Chat> chats = new HashSet<>();
 
     /* ================================
      constructors
