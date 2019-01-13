@@ -7,6 +7,7 @@ public class DBUtility {
     public static final int LOGIN_LEN = 24;
     public static final int PASSWORD_LEN = 32;
     public static final int NAME_LEN = 48;
+    public static final int MODEL_LEN = 32;
     public static final int COMMENT_LEN = 255;
-    public static final int PATH_LEN = 24;
+    public static final int PATH_LEN = 255;
 }

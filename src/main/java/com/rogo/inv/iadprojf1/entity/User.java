@@ -26,7 +26,7 @@ public class User {
     private Spec spec;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @MapsId
+    @JoinColumn(name = "photo_id")
     private Photo photo;
 
     @NotNull
@@ -48,8 +48,8 @@ public class User {
     }
 
     /* ================================
-         enums
-        ================================ */
+     enums
+    ================================ */
     public enum Spec {
         RACER,
         MANAGER,

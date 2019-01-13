@@ -1,13 +1,13 @@
 buildscript {
-	ext {
-		springBootVersion = '2.1.1.RELEASE'
-	}
-	repositories {
-		mavenCentral()
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-	}
+    ext {
+        springBootVersion = '2.1.1.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
 }
 
 apply plugin: 'java'
@@ -19,35 +19,32 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
 repositories {
-	jcenter()
-	mavenCentral()
+    jcenter()
+    mavenCentral()
 }
 
 dependencies {
-	// Gson
-	compile 'com.google.code.gson:gson:2.8.2'
-	// Guava
-	compile 'com.google.guava:guava:27.0.1-jre'
-	// Lombok
-	compile 'org.projectlombok:lombok:1.18.4'
-	// Hibernate-validator
-	compile 'org.hibernate:hibernate-validator:6.1.0.Alpha2'
-	// PostgreSQL JDBC driver
-	compile 'org.postgresql:postgresql:42.2.5'
-	// Embedded TomCat JSP servlet engine
-	//compile 'org.apache.tomcat.embed:tomcat-embed-jasper:9.0.14'
-	// javax JSP
-	compile 'javax.servlet:jstl:1.2'
-	compile 'javax.xml.bind:jaxb-api:2.3.0'
-	compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.4.0.Final'
-	compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.0.Final'
+    // Gson
+    compile 'com.google.code.gson:gson:2.8.2'
+    // Guava
+    compile 'com.google.guava:guava:27.0.1-jre'
+    // Lombok
+    compile 'org.projectlombok:lombok:1.18.4'
+    // Hibernate-validator
+    compile 'org.hibernate:hibernate-validator:6.1.0.Alpha2'
+    // PostgreSQL JDBC driver
+    compile 'org.postgresql:postgresql:42.2.5'
+    // Embedded TomCat JSP servlet engine
+    //compile 'org.apache.tomcat.embed:tomcat-embed-jasper:9.0.14'
+    // javax JSP
+    compile 'javax.servlet:jstl:1.2'
+    //compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.7'
 
 
-
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	//implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	runtimeOnly 'org.postgresql:postgresql'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    //implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    runtimeOnly 'org.postgresql:postgresql'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
 }
