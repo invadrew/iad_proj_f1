@@ -1,6 +1,7 @@
 package com.rogo.inv.iadprojf1.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.rogo.inv.iadprojf1.DBUtility;
 import lombok.*;
 
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "users")
 @Data @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
