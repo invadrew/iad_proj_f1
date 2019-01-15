@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface WorldCupResultRepository extends JpaRepository<WorldCupResult, Integer> {
 
     @Query(value = "select ch from WorldCupResult ch where ch.racer = ?1 and ch.season = ?2")
-    WorldCupResult findById(@Param("racer") int team, @Param("season") int season);
+    WorldCupResult findById(@Param("racer") int racer, @Param("season") int season);
 }
