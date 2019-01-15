@@ -11,5 +11,5 @@ public interface SeasonService {
 
     void delete(Season entity);
 
-    Season findById(int id);
+    Season findByYear(int id);
 }

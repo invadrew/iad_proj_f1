@@ -11,5 +11,5 @@ public interface TeamMemberService {
 
     void delete(TeamMember entity);
 
-    TeamMember findById(int id);
+    TeamMember findByUserId(int id);
 }

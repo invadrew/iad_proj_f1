@@ -11,5 +11,5 @@ public interface SponsorService {
 
     void delete(Sponsor entity);
 
-    Sponsor findById(int id);
+    Sponsor findByUserId(int id);
 }

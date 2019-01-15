@@ -1,4 +1,4 @@
-package com.rogo.inv.iadprojf1.service.interfaces;
+package com.rogo.inv.iadprojf1.service;
 
 import com.rogo.inv.iadprojf1.entity.Sponsoring;
 
