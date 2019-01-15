@@ -6,4 +6,10 @@ import java.util.List;
 
 public interface SeasonService {
     List<Season> findAll();
+
+    Season save(Season entity);
+
+    void delete(Season entity);
+
+    Season findById(int id);
 }

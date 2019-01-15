@@ -6,4 +6,10 @@ import java.util.List;
 
 public interface SponsorService {
     List<Sponsor> findAll();
+
+    Sponsor save(Sponsor entity);
+
+    void delete(Sponsor entity);
+
+    Sponsor findById(int id);
 }
