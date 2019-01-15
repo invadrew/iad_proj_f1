@@ -12,4 +12,6 @@ public interface WorldCupResultService {
     void delete(WorldCupResult entity);
 
     WorldCupResult findById(int racer, int season);
+
+    Iterable<WorldCupResult> getResTable(int season);
 }

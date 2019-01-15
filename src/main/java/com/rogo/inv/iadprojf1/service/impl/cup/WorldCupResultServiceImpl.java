@@ -5,6 +5,7 @@ import com.rogo.inv.iadprojf1.service.WorldCupResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service("worldCupService")
@@ -30,5 +31,10 @@ public class WorldCupResultServiceImpl implements WorldCupResultService {
     @Override
     public WorldCupResult findById(int racer, int season) {
         return repository.findById(racer, season);
+    }
+
+    @Override @Transactional
+    public Iterable<WorldCupResult> getResTable(int season) {
+        return repository.getResTable(season);
     }
 }

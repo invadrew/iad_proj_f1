@@ -11,4 +11,8 @@ public interface WorldCupResultRepository extends JpaRepository<WorldCupResult, 
 
     @Query(value = "select ch from WorldCupResult ch where ch.racer = ?1 and ch.season = ?2")
     WorldCupResult findById(@Param("racer") int racer, @Param("season") int season);
+
+    @Query(value = "select w from world_cup_result w"
+    )
+    Iterable<WorldCupResult> getResTable(@Param("season") int season);
 }

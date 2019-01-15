@@ -27,8 +27,5 @@ public class TeamMemberServiceImpl implements TeamMemberService {
         repository.delete(entity);
     }
 
-    @Override
-    public TeamMember findByUserId(int id) {
-        return repository.findByUserId(id);
-    }
+    public TeamMember findByUserId(int id) {return repository.findByUserId(id);}
 }

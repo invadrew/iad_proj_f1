@@ -18,9 +18,16 @@ import java.util.List;
 @Data @NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class TeamMember implements Serializable {
-    @Id @NotNull
+   /* @Id @NotNull
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
+    private User user;*/
+   @Id
+   private int userId;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JsonBackReference
     private User user;
 
     @NotNull @Column(length = DBUtility.NAME_LEN)
@@ -50,7 +57,8 @@ public class TeamMember implements Serializable {
     /* ================================
      constructors
     ================================ */
-    public TeamMember(@NotNull User user, @NotNull String name, @NotNull String surname, @NotNull boolean canBuy, @NotNull Team team) {
+    public TeamMember(int userId, @NotNull User user, @NotNull String name, @NotNull String surname, @NotNull boolean canBuy, @NotNull Team team) {
+        this.userId = userId;
         this.user = user;
         this.name = name;
         this.surname = surname;
