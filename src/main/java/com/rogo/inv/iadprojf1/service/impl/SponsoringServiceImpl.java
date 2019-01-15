@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("userService")
+@Service("sponsoringService")
 public class SponsoringServiceImpl implements SponsoringService {
     @Autowired
     SponsoringRepository repository;

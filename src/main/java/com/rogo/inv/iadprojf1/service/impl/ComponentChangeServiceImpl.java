@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("userService")
+@Service("componentChangeService")
 public class ComponentChangeServiceImpl implements ComponentChangeService {
     @Autowired
     ComponentChangeRepository repository;

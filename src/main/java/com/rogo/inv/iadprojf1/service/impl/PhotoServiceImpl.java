@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("userService")
+@Service("photoService")
 public class PhotoServiceImpl implements PhotoService {
     @Autowired
     PhotoRepository repository;

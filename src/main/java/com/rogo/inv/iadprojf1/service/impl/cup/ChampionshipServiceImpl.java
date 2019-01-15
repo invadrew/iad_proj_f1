@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("userService")
+@Service("championshipService")
 public class ChampionshipServiceImpl implements ChampionshipService {
     @Autowired
     ChampionshipRepository repository;

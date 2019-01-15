@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("userService")
+@Service("worldCupService")
 public class WorldCupResultServiceImpl implements WorldCupResultService {
     @Autowired
     WorldCupResultRepository repository;

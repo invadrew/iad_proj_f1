@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("userService")
+@Service("pilotingService")
 public class PilotingServiceImpl implements PilotingService {
     @Autowired
     PilotingRepository repository;

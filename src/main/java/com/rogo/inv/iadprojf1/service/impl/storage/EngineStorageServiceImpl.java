@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("userService")
+@Service("engineService")
 public class EngineStorageServiceImpl implements EngineStorageService {
     @Autowired
     EngineStorageRepository repository;

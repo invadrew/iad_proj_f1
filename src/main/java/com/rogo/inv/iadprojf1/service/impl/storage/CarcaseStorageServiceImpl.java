@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("userService")
+@Service("carcaseService")
 public class CarcaseStorageServiceImpl implements CarcaseStorageService {
     @Autowired
     CarcaseStorageRepository repository;

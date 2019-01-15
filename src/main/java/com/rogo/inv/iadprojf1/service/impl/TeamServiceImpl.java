@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("userService")
+@Service("teamService")
 public class TeamServiceImpl implements TeamService {
     @Autowired
     TeamRepository repository;

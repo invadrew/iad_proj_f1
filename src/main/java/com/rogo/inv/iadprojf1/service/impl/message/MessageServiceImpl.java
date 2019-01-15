@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("userService")
+@Service("messageService")
 public class MessageServiceImpl implements MessageService {
     @Autowired
     MessageRepository repository;

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("userService")
+@Service("seasonService")
 public class SeasonServiceImpl implements SeasonService {
     @Autowired
     SeasonRepository repository;

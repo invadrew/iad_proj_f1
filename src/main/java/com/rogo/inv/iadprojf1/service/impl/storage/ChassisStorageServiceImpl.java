@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("userService")
+@Service("chassisService")
 public class ChassisStorageServiceImpl implements ChassisStorageService {
     @Autowired
     ChassisStorageRepository repository;

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("userService")
+@Service("pitstopPlaceService")
 public class PitStopPlaceServiceImpl implements PitStopPlaceService {
     @Autowired
     PitStopPlaceRepository repository;

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("userService")
+@Service("electronicsService")
 public class ElectronicsStorageServiceImpl implements ElectronicsStorageService {
     @Autowired
     ElectronicsStorageRepository repository;

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("userService")
+@Service("constrCupService")
 public class ConstrCupResultServiceImpl implements ConstrCupResultService {
     @Autowired
     ConstrCupResultRepository repository;
