@@ -12,4 +12,6 @@ public interface RaceRegistrationService {
     void delete(RaceRegistration entity);
 
     RaceRegistration findById(int team, int race);
+
+    List<Object[]> getRegistrationTable(int race);
 }

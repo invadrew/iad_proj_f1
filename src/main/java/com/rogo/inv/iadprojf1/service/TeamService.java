@@ -13,4 +13,8 @@ public interface TeamService {
     void delete(Team entity);
 
     Team findById(int id);
+
+    Team findByName(String name);
+
+    List<Object[]> getTeamTable(int team);
 }

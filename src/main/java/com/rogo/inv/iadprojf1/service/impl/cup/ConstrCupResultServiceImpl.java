@@ -5,6 +5,7 @@ import com.rogo.inv.iadprojf1.service.ConstrCupResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service("constrCupService")
@@ -31,4 +32,7 @@ public class ConstrCupResultServiceImpl implements ConstrCupResultService {
     public ConstrCupResult findById(int team, int season) {
         return repository.findById(team, season);
     }
+
+    @Override @Transactional
+    public List<Object[]> getConstrCupResultTable(int season) { return repository.getConstrCupResultTable(season);}
 }

@@ -5,6 +5,7 @@ import com.rogo.inv.iadprojf1.service.RaceResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service("raceResultService")
@@ -31,4 +32,7 @@ public class RaceResultServiceImpl implements RaceResultService {
     public RaceResult findById(int car, int race) {
         return repository.findById(car, race);
     }
+
+    @Override @Transactional
+    public List<Object[]> getResultTable(int season, String champ) { return repository.getResultTable(season, champ);}
 }

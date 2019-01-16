@@ -12,4 +12,6 @@ public interface ConstrCupResultService {
     void delete(ConstrCupResult entity);
 
     ConstrCupResult findById(int team, int season);
+
+    List<Object[]> getConstrCupResultTable(int season);
 }

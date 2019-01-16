@@ -4,6 +4,7 @@ import com.rogo.inv.iadprojf1.entity.Season;
 import com.rogo.inv.iadprojf1.entity.Sponsor;
 import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.User;
+import com.rogo.inv.iadprojf1.entity.cup.Championship;
 import com.rogo.inv.iadprojf1.entity.cup.WorldCupResult;
 import com.rogo.inv.iadprojf1.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +20,22 @@ public class APIController {
     private UserService userService;
 
     @Autowired
-    private SponsorService sponsorService;
+    private RaceRegistrationService raceRegistrationService;
 
 
     @Autowired
-    private SeasonService seasonService;
+    private ConstrCupResultService constrCupResultService;
 
     @Autowired
-    private WorldCupResultService worldCupResultService;
+    private RaceResultService raceResultService;
+
 
     @RequestMapping(value = "/querytest")
     public List<Object[]> viewTest() {
-         return worldCupResultService.getResTable(2018);
+        // return worldCupResultService.getResTable(2018);
+       // return constrCupResultService.getConstrCupResultTable(2018);
+        //return raceResultService.getResultTable(2017,"Gran-Pri Russia");
+        return raceRegistrationService.getRegistrationTable(1);
     }
 
     /*@RequestMapping(value = "/users")

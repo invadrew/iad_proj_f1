@@ -12,4 +12,6 @@ public interface ChampionshipService {
     void delete(Championship entity);
 
     Championship findById(int id);
+
+    List<Championship> getAllChamps(int season);
 }

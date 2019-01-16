@@ -12,4 +12,6 @@ public interface UserService {
     void delete(User entity);
 
     User findById(int id);
+
+    User findByLogin(String login);
 }

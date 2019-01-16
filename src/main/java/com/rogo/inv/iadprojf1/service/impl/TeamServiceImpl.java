@@ -5,6 +5,7 @@ import com.rogo.inv.iadprojf1.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service("teamService")
@@ -31,4 +32,10 @@ public class TeamServiceImpl implements TeamService {
     public Team findById(int id) {
         return repository.findById(id);
     }
+
+    @Override
+    public Team findByName(String name) { return repository.findByName(name); }
+
+    @Override @Transactional
+    public List<Object[]> getTeamTable(int team) { return repository.getTeamTable(team); }
 }

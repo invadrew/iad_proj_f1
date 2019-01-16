@@ -5,6 +5,7 @@ import com.rogo.inv.iadprojf1.service.ChampionshipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service("championshipService")
@@ -31,4 +32,7 @@ public class ChampionshipServiceImpl implements ChampionshipService {
     public Championship findById(int id) {
         return repository.findById(id);
     }
+
+    @Override @Transactional
+    public List<Championship> getAllChamps(int season) {return repository.getAllChamps(season);}
 }

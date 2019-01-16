@@ -5,6 +5,7 @@ import com.rogo.inv.iadprojf1.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service("chatService")
@@ -31,4 +32,7 @@ public class ChatServiceImpl implements ChatService {
     public Chat findById(int id) {
         return repository.findById(id);
     }
+
+    @Override @Transactional
+    public List<Chat> findAllUserChats(int id) {return repository.findAllUserChats(id); }
 }

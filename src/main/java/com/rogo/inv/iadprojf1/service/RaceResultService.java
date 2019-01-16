@@ -12,4 +12,6 @@ public interface RaceResultService {
     void delete(RaceResult entity);
 
     RaceResult findById(int car, int race);
+
+    List<Object[]> getResultTable(int season, String champ);
 }

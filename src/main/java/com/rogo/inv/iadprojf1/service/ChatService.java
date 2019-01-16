@@ -12,4 +12,6 @@ public interface ChatService {
     void delete(Chat entity);
 
     Chat findById(int id);
+
+    List<Chat> findAllUserChats(int id);
 }

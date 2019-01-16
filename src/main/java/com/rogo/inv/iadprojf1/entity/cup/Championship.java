@@ -42,5 +42,7 @@ public class Championship {
         this.country = country;
         this.stageNum = stageNum;
     }
+
+    public Championship() {}
 }
 
