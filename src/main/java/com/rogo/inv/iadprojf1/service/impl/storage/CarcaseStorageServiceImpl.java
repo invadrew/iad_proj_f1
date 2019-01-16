@@ -1,5 +1,7 @@
 package com.rogo.inv.iadprojf1.service.impl.storage;
+import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.storage.CarcaseStorage;
+import com.rogo.inv.iadprojf1.entity.storage.ElectronicsStorage;
 import com.rogo.inv.iadprojf1.repository.storageRepository.CarcaseStorageRepository;
 import com.rogo.inv.iadprojf1.service.CarcaseStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,4 +33,7 @@ public class CarcaseStorageServiceImpl implements CarcaseStorageService {
     public CarcaseStorage findById(int id) {
         return repository.findById(id);
     }
+
+    @Override
+    public List<CarcaseStorage> findAllByTeam(Team team) { return repository.findAllByTeam(team);}
 }

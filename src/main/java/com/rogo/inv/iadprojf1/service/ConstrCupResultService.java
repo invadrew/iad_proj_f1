@@ -14,4 +14,10 @@ public interface ConstrCupResultService {
     ConstrCupResult findById(int team, int season);
 
     List<Object[]> getConstrCupResultTable(int season);
+
+    List<Object[]> getRates();
+
+    List<Object[]> getProfileAchievs(int team);
+
+    int getPlaceSeason(int season, int team);
 }

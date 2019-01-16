@@ -1,5 +1,7 @@
 package com.rogo.inv.iadprojf1.service.impl.storage;
+import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.storage.ChassisStorage;
+import com.rogo.inv.iadprojf1.entity.storage.ElectronicsStorage;
 import com.rogo.inv.iadprojf1.repository.storageRepository.ChassisStorageRepository;
 import com.rogo.inv.iadprojf1.service.ChassisStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,4 +33,7 @@ public class ChassisStorageServiceImpl implements ChassisStorageService {
     public ChassisStorage findById(int id) {
         return repository.findById(id);
     }
+
+    @Override
+    public List<ChassisStorage> findAllByTeam(Team team) { return repository.findAllByTeam(team);}
 }

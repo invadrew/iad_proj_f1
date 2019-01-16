@@ -1,4 +1,5 @@
 package com.rogo.inv.iadprojf1.service.impl.pitstop;
+import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.pitstop.PitStopPlace;
 import com.rogo.inv.iadprojf1.repository.pitstopRepository.PitStopPlaceRepository;
 import com.rogo.inv.iadprojf1.service.PitStopPlaceService;
@@ -31,4 +32,7 @@ public class PitStopPlaceServiceImpl implements PitStopPlaceService {
     public PitStopPlace findById(int id) {
         return repository.findById(id);
     }
+
+    @Override
+    public List<PitStopPlace> findAllByTeam(Team team) { return repository.findAllByTeam(team);}
 }

@@ -3,6 +3,7 @@ import com.rogo.inv.iadprojf1.entity.cup.ConstrCupResult;
 import com.rogo.inv.iadprojf1.repository.cupRepository.ConstrCupResultRepository;
 import com.rogo.inv.iadprojf1.service.ConstrCupResultService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -35,4 +36,13 @@ public class ConstrCupResultServiceImpl implements ConstrCupResultService {
 
     @Override @Transactional
     public List<Object[]> getConstrCupResultTable(int season) { return repository.getConstrCupResultTable(season);}
+
+    @Override @Transactional
+    public List<Object[]> getRates() { return repository.getRates();}
+
+    @Override @Transactional
+    public List<Object[]> getProfileAchievs(int team) { return repository.getProfileAchievs(team); };
+
+    @Override @Transactional
+    public  int getPlaceSeason(int season, int team) { return repository.getPlaceSeason(season, team);}
 }

@@ -1,4 +1,6 @@
 package com.rogo.inv.iadprojf1.service.impl.storage;
+import com.rogo.inv.iadprojf1.entity.Team;
+import com.rogo.inv.iadprojf1.entity.storage.ElectronicsStorage;
 import com.rogo.inv.iadprojf1.entity.storage.EngineStorage;
 import com.rogo.inv.iadprojf1.repository.storageRepository.EngineStorageRepository;
 import com.rogo.inv.iadprojf1.service.EngineStorageService;
@@ -31,4 +33,7 @@ public class EngineStorageServiceImpl implements EngineStorageService {
     public EngineStorage findById(int id) {
         return repository.findById(id);
     }
+
+    @Override
+    public List<EngineStorage> findAllByTeam(Team team) { return repository.findAllByTeam(team);}
 }

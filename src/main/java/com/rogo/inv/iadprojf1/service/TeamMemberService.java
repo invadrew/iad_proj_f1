@@ -18,4 +18,22 @@ public interface TeamMemberService {
     List<TeamMember> getAllspecificType(int team, User.Spec spec);
 
     List<TeamMember> findAllByTeam (Team team);
+
+    int pointsCount(int user, int season);
+
+    int racingsCount(int user, int season);
+
+    int allRaceCount(int user);
+
+    int cupsWon (int user);
+
+    int champCount (int user);
+
+    int avergePlaceAtAll (int user);
+
+    int avergePlaceAtSeason (int user, int season);
+
+    int bestPlace (int user, int season);
+
+    List<Object[]> getBestTrackTime(int user);
 }

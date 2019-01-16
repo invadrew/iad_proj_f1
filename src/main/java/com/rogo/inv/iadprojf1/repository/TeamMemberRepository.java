@@ -20,4 +20,68 @@ public interface TeamMemberRepository extends JpaRepository<TeamMember, Integer>
 
    List<TeamMember> findAllByTeam (Team team);
 
+   @Query(value = "SELECT SUM(res.points) FROM race_results res\n" +
+           "  INNER JOIN piloting p ON (res.piloting_id = p.id)\n" +
+           "  INNER JOIN team_members m ON (p.racer_id = m.user_id)\n" +
+           "  INNER JOIN races r ON (res.race_id = r.id)\n" +
+           "  INNER JOIN championships c ON (r.champ_id = c.id)\n" +
+           "  WHERE ((m.user_id = ?1) AND (c.season_id = ?2));", nativeQuery = true)
+   int pointsCount(int user, int season);
+
+    @Query(value = "SELECT COUNT(*) FROM race_results res\n" +
+            "  INNER JOIN piloting p ON (res.piloting_id = p.id)\n" +
+            "  INNER JOIN team_members m ON (p.racer_id = m.user_id)\n" +
+            "  INNER JOIN races r ON (res.race_id = r.id)\n" +
+            "  INNER JOIN championships c ON (r.champ_id = c.id)\n" +
+            "  WHERE ((m.user_id = ?1) AND (c.season_id = ?2)); ", nativeQuery = true)
+   int racingsCount(int user, int season);
+
+    @Query(value = "ELECT COUNT(*) FROM race_results res\n" +
+            "  INNER JOIN piloting p ON (res.piloting_id = p.id)\n" +
+            "  INNER JOIN team_members m ON (p.racer_id = m.user_id)\n" +
+            "  INNER JOIN races r ON (res.race_id = r.id)\n" +
+            "  WHERE (m.user_id = ?1); ", nativeQuery = true)
+   int allRaceCount(int user);
+
+    @Query(value = "SELECT COUNT(*) FROM world_cup_result wcr\n" +
+            "  INNER JOIN users u ON (wcr.racer_id = u.id)\n" +
+            "  WHERE ((u.id = ?1) AND (wcr.place = 1)); ", nativeQuery = true)
+   int cupsWon (int user);
+
+    @Query(value = "SELECT COUNT(*) FROM championships\n" +
+            "  INNER JOIN races r ON (championships.id = r.champ_id)\n" +
+            "  INNER JOIN race_results res ON (r.id = res.race_id)\n" +
+            "  INNER JOIN piloting p ON (res.piloting_id = p.id)\n" +
+            "  INNER JOIN team_members m ON (p.racer_id = m.user_id)\n" +
+            "   WHERE (m.user_id = ?1);", nativeQuery = true)
+   int champCount (int user);
+
+    @Query(value = "SELECT AVG(res.place) FROM race_results res\n" +
+            "  INNER JOIN piloting p ON (res.piloting_id = p.id)\n" +
+            "  INNER JOIN team_members m ON (p.racer_id = m.user_id)\n" +
+            "  WHERE (m.user_id = ?1);", nativeQuery = true)
+   int avergePlaceAtAll (int user);
+
+    @Query(value = " SELECT AVG(res.place) FROM race_results res\n" +
+            "  INNER JOIN piloting p ON (res.piloting_id = p.id)\n" +
+            "  INNER JOIN team_members m ON (p.racer_id = m.user_id)\n" +
+            "  INNER JOIN races r ON (res.race_id = r.id)\n" +
+            "  INNER JOIN championships c ON (r.champ_id = c.id)\n" +
+            "  WHERE ((m.user_id = ?1) AND (c.season_id = ?2)); ", nativeQuery = true)
+   int avergePlaceAtSeason (int user, int season);
+
+    @Query(value = "SELECT MIN(res.place) FROM race_results res\n" +
+            "  INNER JOIN piloting p ON (res.piloting_id = p.id)\n" +
+            "  INNER JOIN team_members m ON (p.racer_id = m.user_id)\n" +
+            "  INNER JOIN races r ON (res.race_id = r.id)\n" +
+            "  INNER JOIN championships c ON (r.champ_id = c.id)\n" +
+            "  WHERE ((m.user_id = ?1) AND (c.season_id = ?2)); ", nativeQuery = true)
+   int bestPlace (int user, int season);
+
+    @Query(value = "SELECT MIN(res.race_time), r.track FROM race_results res\n" +
+            "   INNER JOIN races r ON (res.race_id = r.id)\n" +
+            "   INNER JOIN piloting p ON (res.piloting_id = p.id)\n" +
+            "   INNER JOIN team_members m ON (p.racer_id = m.user_id)\n" +
+            "   WHERE (m.user_id = ?1) GROUP BY r.track; ", nativeQuery = true)
+   List<Object[]> getBestTrackTime(int user);
 }

@@ -1,4 +1,5 @@
 package com.rogo.inv.iadprojf1.service.impl.cup;
+import com.rogo.inv.iadprojf1.entity.Season;
 import com.rogo.inv.iadprojf1.entity.cup.Championship;
 import com.rogo.inv.iadprojf1.repository.cupRepository.ChampionshipRepository;
 import com.rogo.inv.iadprojf1.service.ChampionshipService;
@@ -34,5 +35,6 @@ public class ChampionshipServiceImpl implements ChampionshipService {
     }
 
     @Override @Transactional
-    public List<Championship> getAllChamps(int season) {return repository.getAllChamps(season);}
+    public List<Championship> getAllBySeason(Season season) {return repository.getAllBySeason(season);};
+    //public List<Championship> getAllChamps(int season) {return repository.getAllChamps(season);}
 }
