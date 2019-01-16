@@ -13,5 +13,7 @@ public interface WorldCupResultService {
 
     WorldCupResult findById(int racer, int season);
 
-    Iterable<WorldCupResult> getResTable(int season);
+    List<Object[]> getResTable(int season);
+
+
 }

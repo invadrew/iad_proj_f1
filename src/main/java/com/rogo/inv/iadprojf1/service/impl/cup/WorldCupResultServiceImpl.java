@@ -34,7 +34,7 @@ public class WorldCupResultServiceImpl implements WorldCupResultService {
     }
 
     @Override @Transactional
-    public Iterable<WorldCupResult> getResTable(int season) {
+    public List<Object[]> getResTable(int season) {
         return repository.getResTable(season);
     }
 }
