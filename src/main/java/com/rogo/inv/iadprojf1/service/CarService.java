@@ -20,13 +20,13 @@ public interface CarService {
 
     List<Car> findAllByTeam(Team team);
 
-    CarcaseStorage findCarcaseStorageById(int id);
+    // CarcaseStorage findCarcaseStorageById(int id);
 
-    ChassisStorage findChassisStorageById(int id);
+   // ChassisStorage findChassisStorageById(int id);
 
-    EngineStorage findEngineStorageById(int id);
+ //   EngineStorage findEngineStorageById(int id);
 
-    ElectronicsStorage findElectronicsStorageById(int id);
+    //ElectronicsStorage findElectronicsStorageById(int id);
 
     List<Object[]> getConditionTable(int car);
 }

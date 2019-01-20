@@ -18,13 +18,13 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
 
     List<Car> findAllByTeam(Team team);
 
-    CarcaseStorage findCarcaseStorageById(int id);
+//    CarcaseStorage findCarcaseStorageById(int id);
 
-    ChassisStorage findChassisStorageById(int id);
+   // ChassisStorage findChassisStorageById(int id);
 
-    EngineStorage findEngineStorageById(int id);
+  //  EngineStorage findEngineStorageById(int id);
 
-    ElectronicsStorage findElectronicsStorageById(int id);
+    //ElectronicsStorage findElectronicsStorageById(int id);
 
     @Query(value = "SELECT c.id, cs.condition, en.condition, es.condition, ch.condition FROM cars c\n" +
             "  INNER JOIN carcase_storage cs ON (c.current_carcase_id = cs.id)\n" +

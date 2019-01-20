@@ -8,10 +8,26 @@ import com.rogo.inv.iadprojf1.entity.cup.Championship;
 import com.rogo.inv.iadprojf1.entity.cup.WorldCupResult;
 import com.rogo.inv.iadprojf1.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+
+@RestController
+@RequestMapping(value = "/")
+public class APIController {
+
+@GetMapping
+    public String home() {
+    return "index.html";
+}
+
+}
+
+
+/*
 
 @RestController
 @RequestMapping(value = "/api")
@@ -38,18 +54,4 @@ public class APIController {
         return raceRegistrationService.getRegistrationTable(1);
     }
 
-    /*@RequestMapping(value = "/users")
-    public Iterable<User> viewUsersList() {
-        return userService.findAll();
-    }
-
-    @RequestMapping(value = "/sponsors")
-    public Iterable<Sponsor> viewSponsorsList() {
-        return sponsorService.findAll();
-    }
-
-    @RequestMapping(value = "/seasons")
-    public Iterable<Season> viewSeasonsList() {
-        return seasonService.findAll();
-    } */
-}
+ */

@@ -42,17 +42,17 @@ public class CarServiceImpl implements CarService {
     @Override
     public List<Car> findAllByTeam(Team team) { return repository.findAllByTeam(team); }
 
-    @Override
-    public CarcaseStorage findCarcaseStorageById(int id) {return repository.findCarcaseStorageById(id);}
+ //   @Override
+  //  public CarcaseStorage findCarcaseStorageById(int id) {return repository.findCarcaseStorageById(id);}
 
-    @Override
-    public ChassisStorage findChassisStorageById(int id) { return repository.findChassisStorageById(id);}
+ //   @Override
+  //  public ChassisStorage findChassisStorageById(int id) { return repository.findChassisStorageById(id);}
 
-    @Override
-    public EngineStorage findEngineStorageById(int id) { return repository.findEngineStorageById(id);}
+   // @Override
+   // public EngineStorage findEngineStorageById(int id) { return repository.findEngineStorageById(id);}
 
-    @Override
-    public ElectronicsStorage findElectronicsStorageById(int id) { return repository.findElectronicsStorageById(id);}
+    //@Override
+    //public ElectronicsStorage findElectronicsStorageById(int id) { return repository.findElectronicsStorageById(id);}
 
     @Override
     public List<Object[]> getConditionTable(int car) { return repository.getConditionTable(car);}
