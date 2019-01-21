@@ -1,0 +1,56 @@
+
+html, body, .grid-container { height: 100%; margin: 0; }
+
+.grid-container * {
+    border: 1px solid black;
+    position: relative;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr 1fr 1fr;
+    grid-template-rows: 0.7fr 0.9fr 1.4fr;
+    grid-template-areas: "MainPageHeader MainPageHeader MainPageHeader MainPageHeader" "LoginForm GreetingsBlock GreetingsBlock MainPageResultsList"
+    "CurrentChampTable LatestNewsBlock LatestNewsBlock MainPageResultsList";
+}
+
+.MainPageHeader {
+    grid-area: MainPageHeader;
+    background-size: 100%;
+    display: flex;
+    position: relative;
+}
+
+.HeaderContainer {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    position: absolute;
+    margin: 0 auto;
+    background: black;
+}
+
+.HeaderContainer img {
+    width: 50%;
+    height: 100%;
+}
+
+.LoginForm {
+    grid-area: LoginForm;
+}
+
+.GreetingsBlock {
+    grid-area: GreetingsBlock;
+}
+
+.MainPageResultsList {
+    grid-area: MainPageResultsList;
+}
+
+.CurrentChampTable {
+    grid-area: CurrentChampTable;
+}
+
+.LatestNewsBlock {
+    grid-area: LatestNewsBlock;
+}

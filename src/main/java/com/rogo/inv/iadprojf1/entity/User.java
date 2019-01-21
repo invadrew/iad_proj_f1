@@ -58,7 +58,6 @@ public class User {
         this.status = status;
         this.comments = comments;
     }
-
     /* ================================
      enums
     ================================ */
