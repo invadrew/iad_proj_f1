@@ -22,7 +22,6 @@ public class AuthController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String printGoodbye(ModelMap model) {
-
        // model.addAttribute();
         return "MainPage";
     }
