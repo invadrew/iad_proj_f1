@@ -2,16 +2,27 @@
 html, body, .grid-container { height: 100%; margin: 0; }
 
 .grid-container * {
-    border: 1px solid black;
     position: relative;
 }
 
 .grid-container {
     display: grid;
+    font: 18pt "Courier New", Courier, monospace;
     grid-template-columns: 1.1fr 0.9fr 1fr 1fr;
     grid-template-rows: 0.7fr 0.9fr 1.4fr;
     grid-template-areas: "MainPageHeader MainPageHeader MainPageHeader MainPageHeader" "LoginForm GreetingsBlock GreetingsBlock MainPageResultsList"
     "CurrentChampTable LatestNewsBlock LatestNewsBlock MainPageResultsList";
+}
+
+.inside_block_wrapper {
+    background: black;
+    position: relative;
+    margin: 2%;
+    padding: 3%;
+    color: white;
+    border-radius: 10pt;
+    overflow: auto;
+    text-align: center;
 }
 
 .MainPageHeader {
@@ -19,6 +30,9 @@ html, body, .grid-container { height: 100%; margin: 0; }
     background-size: 100%;
     display: flex;
     position: relative;
+}
+
+.MainPageResTable {
 }
 
 .HeaderContainer {
@@ -37,20 +51,41 @@ html, body, .grid-container { height: 100%; margin: 0; }
 
 .LoginForm {
     grid-area: LoginForm;
+    background: red;
 }
 
 .GreetingsBlock {
     grid-area: GreetingsBlock;
+    background: red;
+    display: flex;
+    position: relative;
+
 }
 
 .MainPageResultsList {
     grid-area: MainPageResultsList;
+    background: red;
+    display: flex;
+    position: relative;
+
+}
+
+#getIn {
+    background: white;
+    font: 16pt "Courier New", Courier, monospace;
+    width: 50%;
 }
 
 .CurrentChampTable {
     grid-area: CurrentChampTable;
+    background: red;
+    display: flex;
+    position: relative;
 }
 
 .LatestNewsBlock {
     grid-area: LatestNewsBlock;
+    background: red;
+    display: flex;
+    position: relative;
 }
