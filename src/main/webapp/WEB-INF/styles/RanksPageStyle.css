@@ -119,6 +119,28 @@ li a:hover {
     font-size: 15pt;
 }
 
+@media only screen  and (max-device-width: 790px) {
+.UserPhoto-container {
+    width: 8% !important;
+}
+    .Header-LogoContainer img {
+        width: 80% !important;
+    }
+}
+
+@media only screen  and (max-device-width: 528px) {
+    .Header-LogoContainer img {
+        width: 90% !important;
+        height: 80%;
+    }
+}
+
+@media only screen  and (max-device-width: 480px) {
+    .UserPhoto-container img {
+        width: 115%;
+        height: 50% !important;
+    }
+}
 /* */
 
 .RanksMainArea {
