@@ -1,0 +1,114 @@
+html, body, .grid-container { height: 100%; margin: 0; }
+
+.grid-container * {
+    position: relative;
+}
+
+.grid-container {
+    display: grid;
+    font: 20pt "Courier New", Courier, monospace;
+    grid-template-columns: 0.2fr 1.8fr 1.8fr 0.2fr;
+    grid-template-rows: 0.3fr 0.2fr 2.5fr;
+    grid-template-areas: "Header Header Header Header" "HeaderMenu HeaderMenu HeaderMenu HeaderMenu" "RanksMainArea RanksMainArea RanksMainArea RanksMainArea";
+}
+
+/* */
+
+.Header {
+    grid-area: Header;
+    background: black;
+    background-size: 100%;
+    display: flex;
+    position: relative;
+}
+
+.Header-LogoContainer {
+    width: 50%;
+    height: 100%;
+    text-align: left;
+    position: relative;
+    margin-left: 5%;
+    background: black;
+}
+
+.Header-LogoContainer img {
+    width: 50%;
+    height: 50%;
+}
+
+.Header-UserInfo-container {
+    color: white;
+    position: relative;
+    margin-top: 4%;
+    width: 30%;
+}
+
+.UserPhoto-container {
+    border-radius: 25px;
+    position: relative;
+    margin-right: 3%;
+    color: white;
+    margin-top: 2%;
+    width: 6%;
+    height: 100%;
+}
+
+.UserPhoto-container img {
+    width: 100%;
+    height: 100%;
+}
+
+.HeaderMenu {
+    background-color: maroon;
+    grid-area: HeaderMenu;
+    display: flex;
+    flex-direction: row;
+}
+
+ul {
+    width: 75%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: maroon;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover {
+    background-color: black;
+}
+
+.active {
+    background-color: red;
+}
+
+.searcher {
+   width: 30%;
+    margin: 0;
+    text-align: center;
+}
+
+#search {
+    width: 65%;
+    margin: 3.5%;
+    height: 35%;
+    border-radius: 10px;
+}
+
+/* */
+.RanksMainArea {
+    grid-area: RanksMainArea;
+}
+
