@@ -120,8 +120,55 @@ li a:hover {
 }
 
 @media only screen  and (max-device-width: 507px) {
+    .Header {
+        font-size: 25pt !important;
+    }
+    .HeaderMenu {
+        font-size: 25pt !important;
+    }
     .UserPhoto-container img {
         width: 115%;
         height: 50% !important;
     }
+}
+
+/* */
+
+.inside_block_wrapper {
+    color: white;
+    margin-top: 1.5%;
+    position: relative;
+    overflow: auto;
+    width: 86%;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-bottom: 2%;
+    margin-left: 2%;
+    border-radius: 10px;
+    margin-right: 2%;
+    background-color: #b52b2b;
+}
+
+.infotab {
+    background-color: black;
+    border-radius: 10px;
+    margin-bottom: 1%;
+    padding-left: 1%;
+    padding-top: 1px;
+    margin-top: 3%;
+    padding-bottom: 5px;
+}
+
+.infotable {
+    position: relative;
+    width: 90%;
+    text-align: center;
+    padding-bottom: 3%;
+    margin-bottom: 3%;
+    border: white;
+}
+
+.res-selector {
+    font-size: 20pt;
+    border-radius: 10px;
 }
