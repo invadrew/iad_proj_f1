@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../styles/RanksPageStyle.css">
+    <link rel="stylesheet" href="../styles/HeaderStyle.css">
+    <title>Архив гонок</title>
+</head>
+<body>
+<div class="grid-container">
+    <!-- TODO: try to make ui component for header zone-->
+    <div class="Header">
+        <div class="Header-LogoContainer">
+            <img src="../../../resources/pictures/Formula_1_logo.jpg">
+        </div>
+        <div class="Header-UserInfo-container">
+            Никита Рогаленко
+        </div>
+        <div class="UserPhoto-container">
+            <img src="../../../resources/pictures/favicon.ico">
+        </div>
+    </div>
+    <div class="HeaderMenu">
+        <ul>
+            <li><a href="MainPage.html">Профиль</a></li>
+            <li><a href="MainPage.html">Команда</a></li>
+            <li><a href="MainPage.html">Гараж</a></li>
+            <li><a href="MainPage.html">Заезды</a></li>
+            <li><a href="RanksPage.html">Рейтинг</a></li>
+            <li><a href="MainPage.html">Сообщения</a></li>
+        </ul>
+        <div class="searcher">
+            <form>
+                <input type="text" placeholder="Поиск по сайту" id="search">
+                <input type="submit" value="Найти" id="find">
+            </form>
+        </div>
+    </div>
+    <!-- end to do-->
+    <div class="RanksMainArea">
+        <div class="inside_block_wrapper">
+            <center><h2> Результаты прошедших гонок </h2></center>
+            <br>
+            <label for="season_selector">Выберите сезон:</label>
+            <select id="season_selector">
+                <option> hello there</option>
+            </select>
+            <br> <br>
+            <label for="champ_selector">Выберите чемпионат:</label>
+            <select id="champ_selector">
+                <option> hello there</option>
+            </select>
+            <br>
+            <div id="WorldCup" class="infotab" >
+                <br>
+                <table class="infotable" border="1">
+                    <tr>
+                        <th>Место</th>
+                        <th>Гонщик</th>
+                        <th>Команда</th>
+                        <th>Очки</th>
+                        <th>Время гонки</th>
+                    </tr>
+                    <tr>
+                        <td>Место</td>
+                        <td>Гонщик</td>
+                        <td>Команда</td>
+                        <td>Очки</td>
+                        <td>Очки</td>
+                    </tr>
+                    <tr>
+                        <td>Место</td>
+                        <td>Гонщик</td>
+                        <td>Команда</td>
+                        <td>Очки</td>
+                        <td>Очки</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
