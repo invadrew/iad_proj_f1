@@ -132,6 +132,12 @@ li a:hover {
     }
 }
 
+.TeamNameArea {
+    grid-area: TeamNameArea;
+    background-color: black;
+    color: white;
+}
+
 /* */
 
 .inside_block_wrapper {
