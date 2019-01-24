@@ -36,6 +36,7 @@ html, body, .grid-container { height: 100%; margin: 0; background-color: #2f2727
     height: 90%;
     padding: 5%;
     position: relative;
+    align-content: center;
 }
 
 .pic-container img {
@@ -69,6 +70,7 @@ html, body, .grid-container { height: 100%; margin: 0; background-color: #2f2727
 
 .sp-team-story {
     position: relative;
+    overflow: auto;
     width: 45%;
     margin: 2.5%;
 }
