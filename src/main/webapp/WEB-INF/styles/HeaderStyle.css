@@ -178,4 +178,6 @@ li a:hover {
 .res-selector {
     font-size: 20pt;
     border-radius: 10px;
+    margin-top: 1%;
+    margin-bottom: 1%;
 }
