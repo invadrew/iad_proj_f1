@@ -1,0 +1,52 @@
+html, body, .grid-container { height: 100%; margin: 0;   background-color: #2f2727;}
+
+.grid-container * {
+    position: relative;
+}
+
+.grid-container {
+    display: grid;
+    background-color: #2f2727;
+    font: 20pt "Courier New", Courier, monospace;
+    /*grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 0.3fr 0.2fr 2.5fr;*/
+    grid-template-areas: "Header Header Header Header" "HeaderMenu HeaderMenu HeaderMenu HeaderMenu" "MainArea MainArea MainArea MainArea";
+}
+
+.MainArea {
+    display: grid;
+    height: 100vh;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 0.9fr 1.1fr;
+    grid-template-areas: "UserPhotoArea UserInfoArea UserAchArea" "StatisticsArea StatisticsArea UserAchArea";
+    grid-area: MainArea;
+}
+
+.UserPhotoArea { grid-area: UserPhotoArea; }
+
+.UserInfoArea { grid-area: UserInfoArea; }
+
+.UserAchArea { grid-area: UserAchArea; }
+
+.pic-container {
+    width: 90%;
+    height: 90%;
+    padding: 5%;
+    position: relative;
+    align-content: center;
+}
+
+.pic-container img {
+    width: 90%;
+    height: 90%;
+}
+
+.StatisticsArea { grid-area: StatisticsArea; }
+
+@media only screen and (max-device-width: 800px) {
+
+    .MainArea {
+        display: flow-root;
+    }
+
+}
