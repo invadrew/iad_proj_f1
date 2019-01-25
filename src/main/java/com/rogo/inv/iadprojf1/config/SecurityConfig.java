@@ -10,8 +10,12 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
+import org.springframework.security.crypto.password.Md4PasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import sun.security.provider.SHA;
 
 import javax.sql.DataSource;
 
@@ -29,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return NoOpPasswordEncoder.getInstance();
+        return new Md4PasswordEncoder();
     }
 
     @Override
@@ -55,9 +59,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and();
 
         http.formLogin()
-                // указываем страницу с формой логина
                 .loginPage("/")
-                // указываем action с формы логина
+                //Action с формы
                 .loginProcessingUrl("/security_check")
                 // указываем URL при неудачном логине
                 .failureUrl("/")
@@ -67,6 +70,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter("uP")
                 // даем доступ к форме логина всем
                 .permitAll();
+
+        http.logout()
+                .permitAll()
+                // URL логаута
+                .logoutUrl("/logout")
+                // URL при удачном логауте
+                .logoutSuccessUrl("/")
+                .invalidateHttpSession(true);
 
     }
 

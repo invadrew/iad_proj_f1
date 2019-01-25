@@ -17,6 +17,9 @@
         </div>
         <div class="Header-UserInfo-container">
             Никита Рогаленко
+            <form action="/logout">
+                <input type="submit" value="Выйти" id="out"> </input>
+            </form>
         </div>
         <div class="UserPhoto-container">
             <img src="/pictures/rogoVK.jpg">

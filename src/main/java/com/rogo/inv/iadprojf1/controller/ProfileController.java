@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class ProfileController {
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
-    public String printGoodbye(ModelMap model) {
+    public String toProfile(ModelMap model) {
         // model.addAttribute();
         return "UserProfilePage";
     }
