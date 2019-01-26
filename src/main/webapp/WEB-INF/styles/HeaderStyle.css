@@ -104,6 +104,18 @@ li a:hover {
     font-size: 15pt;
 }
 
+#out {
+    width: 25%;
+    padding: 2px;
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    height: 60%;
+    margin-top: 3.5%;
+    font-size: 15pt;
+    margin-bottom: 3%;
+}
+
 @media only screen  and (max-device-width: 830px) {
     .UserPhoto-container {
         width: 8% !important;

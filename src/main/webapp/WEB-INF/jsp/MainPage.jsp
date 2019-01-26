@@ -4,26 +4,26 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="../styles/MainPageStyle.css">
-    <script type="text/javascript" src="../scripts/MainPageScript.js"> </script>
+    <link rel="stylesheet" href="/styles/MainPageStyle.css">
+    <script type="text/javascript" src="/scripts/MainPageScript.js"> </script>
     <title> Добро пожаловать! </title>
 </head>
 <body>
     <div class="grid-container">
         <div class="MainPageHeader" >
             <div class="HeaderContainer">
-                <img src="../../../resources/pictures/Formula_1_logo.jpg">
+                <img src="/pictures/Formula_1_logo.jpg">
             </div>
         </div>
         <div class="LoginForm">
             <div class="inside_block_wrapper">
                 <h2>Вход в систему</h2>
-               <form id = "login">
+               <form id = "login" action="/security_check" method="post">
                    <label for="userName">Логин</label>
-                   <input type="text" id="userName">
+                   <input type="text" id="userName" name="uN" maxlength="20">
                    <br> <br>
                    <label for="pass">Пароль</label>
-                   <input type=password id="pass">
+                   <input type=password id="pass" name="uP">
                    <br> <br>
                    <input type="submit" value="Войти" id="getIn">
                </form>

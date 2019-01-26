@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../styles/DetailAddStyle.css">
+    <link rel="stylesheet" href="../styles/HeaderStyle.css">
+    <title>Добавить комплектующее</title>
+</head>
+<body>
+<style>
+    .res-selector {
+        width: 20%;
+    }
+</style>
+<div class="grid-container">
+    <!-- TODO: try to make ui component for header zone-->
+    <div class="Header">
+        <div class="Header-LogoContainer">
+            <img src="/pictures/Formula_1_logo.jpg">
+        </div>
+        <div class="Header-UserInfo-container">
+            Никита Рогаленко
+            <form action="/logout">
+                <input type="submit" value="Выйти" id="out">
+            </form>
+        </div>
+        <div class="UserPhoto-container">
+            <img src="/pictures/rogoVK.jpg">
+        </div>
+    </div>
+    <div class="HeaderMenu">
+        <ul>
+            <li><a href="MainPage.jsp">Профиль</a></li>
+            <li><a href="MainPage.jsp">Команда</a></li>
+            <li><a href="MainPage.jsp">Гараж</a></li>
+            <li><a href="MainPage.jsp">Заезды</a></li>
+            <li><a href="RanksPage.html">Рейтинг</a></li>
+            <li><a href="MainPage.jsp">Сообщения</a></li>
+        </ul>
+        <div class="searcher">
+            <form>
+                <input type="text" placeholder="Поиск по сайту" id="search">
+                <input type="submit" value="Найти" id="find">
+            </form>
+        </div>
+    </div>
+    <!-- end if-->
+    <div class="TeamNameArea">
+        <br>
+        <center><label style="padding-top: 3px" ><b>RogoNemRacing</b></label></center>
+        <label id="teamHeaderPlace" style="float: right">Место в текущем сезоне: 1</label>
+    </div>
+    <div class="MainArea">
+    <div class="inside_block_wrapper">
+        <div class="infotab">
+            <center><h3>Добавить болид</h3></center>
+            <form>
+                <label for="carLabel">Марка</label>
+                <input type="text" id="carLabel" class="res-selector">
+                <label for="carModel">Модель</label>
+                <input type="text" id="carModel" class="res-selector">
+                <br>
+                <label for="carCarcSelect">Выберите каркас</label>
+                <select id="carCarcSelect" class="res-selector" >
+                    <option>hello there</option>
+                </select>
+                <br>
+                <label for="carChassSelect">Выберите шасси</label>
+                <select id="carChassSelect"  class="res-selector">
+                    <option>hello there</option>
+                </select>
+                <br>
+                <label for="carEngSelect">Выберите двигатель</label>
+                <select id="carEngSelect" class="res-selector">
+                    <option>hello there</option>
+                </select>
+                <br>
+                <label for="carElecSelect">Выберите электронику</label>
+                <select id="carElecSelect" class="res-selector">
+                    <option>hello there</option>
+                </select>
+                <br>
+                <input type="submit" value="Добавить" class="res-selector">
+            </form>
+        </div>
+    </div>
+        <div class="inside_block_wrapper">
+            <div class="infotab">
+                <center><h3>Выберите тип добавляемой детали</h3>
+                <input type="button" value="Каркас" id="carcButt" class="res-selector">
+                <input type="button" value="Шасси" id="chButt" class="res-selector">
+                <input type="button" value="Двигатель" id="engButt" class="res-selector">
+                <input type="button" value="Электроника" id="elecButt" class="res-selector">
+                </center>
+            </div>
+        </div>
+      <!-- Detail adding zones -->
+        <div class="inside_block_wrapper" id="carcAddArea" hidden>
+            <div class="infotab">
+                <form>
+                    <label for="carcMaterial">Материал</label>
+                    <input type="text" id="carcMaterial" class="res-selector">
+                    <br>
+                    <label for="rear-wing">Спойлер</label>
+                    <input type="text" id="rear-wing" class="res-selector">
+                    <br>
+                    <label for="safe-arcs">Дуги безопасности</label>
+                    <input type="text" id="safe-arcs" class="res-selector">
+                    <br>
+                    <label for="wings">Крылья</label>
+                    <input type="text" id="wings" class="res-selector">
+                    <br>
+                    <label for="carcPrice">Цена</label>
+                    <input type="number" id="carcPrice" class="res-selector" min="0">
+                    <br>
+                    <input type="submit" class="res-selector" value="Добавить">
+                </form>
+            </div>
+        </div>
+
+        <div class="inside_block_wrapper" id="chasAddArea" hidden>
+            <div class="infotab">
+                <form>
+                    <label for="chModel">Модель</label>
+                    <input type="text" id="chModel" class="res-selector">
+                    <br>
+                    <label for="chHeight">Высота</label>
+                    <input type="number" id="chHeight" class="res-selector" min="100" max="500">
+                    <br>
+                    <label for="chWidth">Ширина</label>
+                    <input type="number" id="chWidth" class="res-selector" min="100" max="500">
+                    <br>
+                    <label for="chasPrice">Цена</label>
+                    <input type="number" id="chasPrice" class="res-selector" min="0">
+                    <br>
+                    <input type="submit" class="res-selector" value="Добавить">
+                </form>
+            </div>
+        </div>
+
+        <div class="inside_block_wrapper" id="engAddArea" hidden>
+            <div class="infotab">
+                <form>
+
+                </form>
+            </div>
+        </div>
+
+        <div class="inside_block_wrapper" id="elecAddArea" hidden>
+            <div class="infotab">
+                <form>
+
+                </form>
+            </div>
+        </div>
+
+</div>
+</div>

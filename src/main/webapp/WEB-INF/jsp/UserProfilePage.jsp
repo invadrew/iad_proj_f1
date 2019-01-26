@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -11,13 +13,16 @@
     <!-- TODO: try to make ui component for header zone-->
     <div class="Header">
         <div class="Header-LogoContainer">
-            <img src="../../../resources/pictures/Formula_1_logo.jpg">
+            <img src="/pictures/Formula_1_logo.jpg">
         </div>
         <div class="Header-UserInfo-container">
             Никита Рогаленко
+            <form action="/logout">
+                <input type="submit" value="Выйти" id="out"> </input>
+            </form>
         </div>
         <div class="UserPhoto-container">
-            <img src="../../../resources/pictures/rogoVK.jpg">
+            <img src="/pictures/rogoVK.jpg">
         </div>
     </div>
     <div class="HeaderMenu">
@@ -42,7 +47,7 @@
             <div class="inside_block_wrapper">
                 <div class="infotab">
                     <div class="pic-container">
-                        <img src="../../../resources/pictures/rogoVK.jpg">
+                        <img src="/pictures/rogoVK.jpg">
                     </div>
                 </div>
         </div>

@@ -20,17 +20,23 @@ public class WebInitializer implements WebApplicationInitializer {
 
         root.scan("com.rogo.inv.iadprojf1.controller");
         //root.register(AppConfig.class);
-
+        root.register(SecurityConfig.class);
 
         sc.addListener(new ContextLoaderListener(root));
 
         AnnotationConfigWebApplicationContext dispatcherContext = new AnnotationConfigWebApplicationContext();
         dispatcherContext.register(WebConfig.class);
 
-        ServletRegistration.Dynamic appServlet =
+        ServletRegistration.Dynamic authServlet =
                 sc.addServlet("Auth", new DispatcherServlet(new GenericWebApplicationContext()));
-        appServlet.setLoadOnStartup(1);
-        appServlet.addMapping("/");
-        appServlet.addMapping("/MainPage");
+        authServlet.setLoadOnStartup(1);
+        authServlet.addMapping("/");
+        authServlet.addMapping("/MainPage");
+
+        ServletRegistration.Dynamic uprofileServlet =
+                sc.addServlet("User Profile", new DispatcherServlet(new GenericWebApplicationContext()));
+        uprofileServlet.setLoadOnStartup(1);
+        uprofileServlet.addMapping("/profile");
+        uprofileServlet.addMapping("/UserProfilePage");
     }
 }
