@@ -12,6 +12,7 @@
         width: 20%;
     }
 </style>
+<script type="text/javascript" src="../scripts/AddDetailsScript.js"> </script>
 <div class="grid-container">
     <!-- TODO: try to make ui component for header zone-->
     <div class="Header">
@@ -87,16 +88,17 @@
         <div class="inside_block_wrapper">
             <div class="infotab">
                 <center><h3>Выберите тип добавляемой детали</h3>
-                <input type="button" value="Каркас" id="carcButt" class="res-selector">
-                <input type="button" value="Шасси" id="chButt" class="res-selector">
-                <input type="button" value="Двигатель" id="engButt" class="res-selector">
-                <input type="button" value="Электроника" id="elecButt" class="res-selector">
+                <input type="button" value="Каркас" id="carcButt" class="res-selector" onclick="chooseCarcase()">
+                <input type="button" value="Шасси" id="chButt" class="res-selector" onclick="chooseChassis()">
+                <input type="button" value="Двигатель" id="engButt" class="res-selector" onclick="chooseEngine()">
+                <input type="button" value="Электроника" id="elecButt" class="res-selector" onclick="chooseElectronics()">
                 </center>
             </div>
         </div>
       <!-- Detail adding zones -->
         <div class="inside_block_wrapper" id="carcAddArea" hidden>
             <div class="infotab">
+                <center><h3>Добавить каркас</h3></center>
                 <form>
                     <label for="carcMaterial">Материал</label>
                     <input type="text" id="carcMaterial" class="res-selector">
@@ -120,6 +122,7 @@
 
         <div class="inside_block_wrapper" id="chasAddArea" hidden>
             <div class="infotab">
+                <center><h3>Добавить шасси</h3></center>
                 <form>
                     <label for="chModel">Модель</label>
                     <input type="text" id="chModel" class="res-selector">
@@ -140,16 +143,45 @@
 
         <div class="inside_block_wrapper" id="engAddArea" hidden>
             <div class="infotab">
+                <center><h3>Добавить двигатель</h3></center>
                 <form>
-
+                    <label for="engModel">Модель</label>
+                    <input type="text" id="engModel" class="res-selector">
+                    <br>
+                    <label for="cyclNum">Кол-во цилиндров</label>
+                    <input type="number" id="cyclNum" class="res-selector" min="1">
+                    <br>
+                    <label for="capacity">Объём</label>
+                    <input type="number" id="capacity" class="res-selector" min="0">
+                    <br>
+                    <label for="mass">Масса</label>
+                    <input type="number" id="mass" class="res-selector" min="1">
+                    <br>
+                    <label for="stroke">Ход поршня</label>
+                    <input type="number" id="stroke" class="res-selector" min="0">
+                    <br>
+                    <label for="engPrice">Цена</label>
+                    <input type="number" id="engPrice" class="res-selector" min="0">
+                    <br>
+                    <input type="submit" class="res-selector" value="Добавить">
                 </form>
             </div>
         </div>
 
         <div class="inside_block_wrapper" id="elecAddArea" hidden>
             <div class="infotab">
+                <center><h3>Добавить электронику</h3></center>
                 <form>
-
+                    <label for="telemetry">Телеметрия</label>
+                    <input type="text" id="telemetry" class="res-selector">
+                    <br>
+                    <label for="contrModel">Система контроля</label>
+                    <input type="text" id="contrModel" class="res-selector">
+                    <br>
+                    <label for="elecPrice">Цена</label>
+                    <input type="number" id="elecPrice" class="res-selector" min="0">
+                    <br>
+                    <input type="submit" class="res-selector" value="Добавить">
                 </form>
             </div>
         </div>
