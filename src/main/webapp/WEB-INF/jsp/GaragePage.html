@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../styles/GarageStyle.css">
+    <link rel="stylesheet" href="../styles/HeaderStyle.css">
+    <title>Гараж</title>
+</head>
+<body>
+<style>
+    .res-selector {
+        width: 20%;
+    }
+</style>
+<script type="text/javascript" src="../scripts/GarageScript.js"> </script>
+<div class="grid-container">
+    <!-- TODO: try to make ui component for header zone-->
+    <div class="Header">
+        <div class="Header-LogoContainer">
+            <img src="/pictures/Formula_1_logo.jpg">
+        </div>
+        <div class="Header-UserInfo-container">
+            Никита Рогаленко
+            <form action="/logout">
+                <input type="submit" value="Выйти" id="out">
+            </form>
+        </div>
+        <div class="UserPhoto-container">
+            <img src="/pictures/rogoVK.jpg">
+        </div>
+    </div>
+    <div class="HeaderMenu">
+        <ul>
+            <li><a href="MainPage.jsp">Профиль</a></li>
+            <li><a href="MainPage.jsp">Команда</a></li>
+            <li><a href="MainPage.jsp">Гараж</a></li>
+            <li><a href="MainPage.jsp">Заезды</a></li>
+            <li><a href="RanksPage.html">Рейтинг</a></li>
+            <li><a href="MainPage.jsp">Сообщения</a></li>
+        </ul>
+        <div class="searcher">
+            <form>
+                <input type="text" placeholder="Поиск по сайту" id="search">
+                <input type="submit" value="Найти" id="find">
+            </form>
+        </div>
+    </div>
+    <!-- end if-->
+    <div class="TeamNameArea">
+        <br>
+        <center><label style="padding-top: 3px" ><b>RogoNemRacing</b></label></center>
+        <label id="teamHeaderPlace" style="float: right">Место в текущем сезоне: 1</label>
+    </div>
+    <div class="MainArea">
+        <div class="CarSelectArea">
+            <div class="inside_block_wrapper">
+                <div class="infotab"> <center>
+                    <input type="button" class="res-selector" value="Болид"> <br>
+                    <input type="button" class="res-selector" value="Склад"> <br>
+                    <input type="button" class="res-selector" value="Заменить деталь">
+                </center>
+                </div>
+            </div>
+        </div>
+        <div class="WorkingArea">
+            <div class="inside_block_wrapper" style="height: 95%">
+                <div class="infotab" style="height: 93.5%">
+                    <div class="cars-main-zone">
+                        <div class="PhotoArea">
+                            <div class="inside_block_wrapper" style="background: #2f2727">
+                                <div class="infotab">
+                            <div style="width: 50%; height: 50%; position: relative; margin-left: 25%; margin-right: 25%">
+                            <img src="../../../resources/pictures/CarDemo.jpg" style="width: 100%; height: 100%;">
+                            </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="CarInfoArea">
+                            Марка: АККАКД
+                            <br>
+                            Модель: уаыацуау
+                            <br>
+                            Год выпуска: 9428
+                            <br>
+                            Готовность: готов
+                        </div>
+                        <div class="DeatilsInfoArea">
+                            <table class="infotable" border="1">
+                                <tr>
+                                    <th>Тип</th>
+                                    <th>Описание комплектующего</th>
+                                    <th>Состояние</th>
+                                </tr>
+                                <tr>
+                                    <td>Тип</td>
+                                    <td>Описание комплектующего</td>
+                                    <td>Состояние</td>
+                                </tr>
+                                <tr>
+                                    <td>Тип</td>
+                                    <td>Описание комплектующего</td>
+                                    <td>Состояние</td>
+                                </tr>
+                                <tr>
+                                    <td>Тип</td>
+                                    <td>Описание комплектующего</td>
+                                    <td>Состояние</td>
+                                </tr>
+                                <tr>
+                                    <td>Тип</td>
+                                    <td>Описание комплектующего</td>
+                                    <td>Состояние</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="RepairArea">
+                            <center><h3>Ремонт</h3></center>
+                            <table class="infotable">
+                                <tr>
+                                    <td>Корпус</td>
+                                    <td>Описание проблемы апавпавпва</td>
+                                    <td>Цена 4223423</td>
+                                    <td><input type="button" value="Починить" class="res-selector"></td>
+                                </tr>
+                                <tr>
+                                    <td>Корпус</td>
+                                    <td>Описание проблемы апавпавпва</td>
+                                    <td>Цена 4223423</td>
+                                    <td><input type="button" value="Починить" class="res-selector"></td>
+                                </tr>
+                                <tr>
+                                    <td>Корпус</td>
+                                    <td>Описание проблемы апавпавпва</td>
+                                    <td>Цена 4223423</td>
+                                    <td><input type="button" value="Починить" class="res-selector"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

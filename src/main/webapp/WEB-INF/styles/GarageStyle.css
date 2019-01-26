@@ -1,0 +1,73 @@
+html, body, .grid-container { height: 100%; margin: 0; background-color: #2f2727;}
+
+.grid-container * {
+    position: relative;
+}
+
+
+.grid-container {
+    display: grid;
+    font: 20pt "Courier New", Courier, monospace;
+    grid-template-columns: 1fr 0.9fr 1.1fr 1fr;
+    grid-template-rows: 0.3fr 0.2fr 0.2fr 3.3fr;
+    grid-template-areas: "Header Header Header Header" "HeaderMenu HeaderMenu HeaderMenu HeaderMenu" "TeamNameArea TeamNameArea TeamNameArea TeamNameArea" "MainArea MainArea MainArea MainArea";
+}
+
+.MainArea {
+    background-color: #2f2727;
+    display: grid;
+    font: 20pt "Courier New", Courier, monospace;
+    grid-area: MainArea;
+    grid-template-columns: 1.25fr 1.4fr 1fr 1fr;
+    grid-template-rows: 0.9fr 1.1fr 1fr;
+    grid-template-areas: "CarSelectArea WorkingArea WorkingArea WorkingArea" "CarSelectArea WorkingArea WorkingArea WorkingArea" "CarSelectArea WorkingArea WorkingArea WorkingArea";
+
+}
+
+.CarSelectArea {
+    grid-area: CarSelectArea;
+    display: flex;
+    flex-direction: column;
+}
+
+.WorkingArea { grid-area: WorkingArea; }
+
+.res-selector {
+    width: 100% !important;
+}
+
+.cars-main-zone {
+    /*display: grid;*/
+    font: 18pt "Courier New", Courier, monospace;
+    /*grid-template-columns: 0.9fr 0.7fr 1.4fr 1fr;
+    grid-template-rows: 0.9fr 0.5fr 1.2fr 1.4fr;
+    grid-template-areas: "PhotoArea PhotoArea CarInfoArea CarInfoArea" "PhotoArea PhotoArea CarInfoArea CarInfoArea" "DetailsInfoArea DetailsInfoArea DetailsInfoArea DetailsInfoArea" "RepairArea RepairArea RepairArea RepairArea";*/
+   /* grid-template-columns: 0.9fr 1.1fr 1fr 1fr;
+    grid-template-rows: 1fr 0.7fr 1.3fr;
+    grid-template-areas: "PhotoArea CarInfoArea DeatilsInfoArea DeatilsInfoArea" "PhotoArea CarInfoArea DeatilsInfoArea DeatilsInfoArea" "RepairArea RepairArea RepairArea RepairArea";*/
+}
+
+.RepairArea {
+    grid-area: RepairArea;
+    margin: 2%;
+}
+
+.DeatilsInfoArea {
+    grid-area: DeatilsInfoArea;
+    margin: 2%;
+}
+
+.PhotoArea { grid-area: PhotoArea; }
+
+.CarInfoArea {
+    grid-area: CarInfoArea;
+    margin: 2%;
+}
+
+@media only screen  and (max-device-width: 1050px) {
+
+    #teamHeaderPlace {
+        font-size: 16pt;
+    }
+}
+
