@@ -15,6 +15,6 @@ Application based on REST API.
 
 ### Front-end
 
-TBA
+Java Server Pages, JavaScript, CSS
 
 
