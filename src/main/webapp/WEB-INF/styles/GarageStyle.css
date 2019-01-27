@@ -64,10 +64,26 @@ html, body, .grid-container { height: 100%; margin: 0; background-color: #2f2727
     margin: 2%;
 }
 
+.storage-area {
+    /*display: grid;*/
+    display: flex;
+    grid-template-columns: 1fr 1fr 1.1fr 0.9fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas: "StoreTableArea StoreTableArea StoreTableArea FilterArea" "StoreTableArea StoreTableArea StoreTableArea FilterArea" "StoreTableArea StoreTableArea StoreTableArea FilterArea";
+}
+
 @media only screen  and (max-device-width: 1050px) {
 
     #teamHeaderPlace {
         font-size: 16pt;
+    }
+}
+
+@media only screen and (max-device-width: 600px) {
+
+    .MainArea {
+        display: flex;
+        flex-direction: column;
     }
 }
 

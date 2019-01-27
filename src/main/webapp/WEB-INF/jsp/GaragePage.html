@@ -55,17 +55,34 @@
         <div class="CarSelectArea">
             <div class="inside_block_wrapper">
                 <div class="infotab"> <center>
-                    <input type="button" class="res-selector" value="Болид"> <br>
-                    <input type="button" class="res-selector" value="Склад"> <br>
+                    <input type="button" class="res-selector" value="Болиды" onclick="chooseCars()"> <br>
+                    <input type="button" class="res-selector" value="Склад" onclick="chooseStore()"> <br>
                     <input type="button" class="res-selector" value="Заменить деталь">
                 </center>
+                </div>
+                <div class="FilterArea" hidden id="filter">
+                    <div class="inside_block_wrapper" style="background: #2f2727">
+                        <div class="infotab">
+                            <center><h3>Фильтр</h3></center>
+                            <form>
+                                <label for="compType">Тип</label>
+                                <select class="res-selector" id="compType">
+                                    <option selected>Каркас</option>
+                                    <option>Шасси</option>
+                                    <option>Двигатель</option>
+                                    <option>Электроника</option>
+                                </select>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="WorkingArea">
-            <div class="inside_block_wrapper" style="height: 95%">
-                <div class="infotab" style="height: 93.5%">
-                    <div class="cars-main-zone">
+            <div class="inside_block_wrapper">
+                <div class="infotab">
+
+                    <div class="cars-main-zone" id="carsZone">
                         <div class="PhotoArea">
                             <div class="inside_block_wrapper" style="background: #2f2727">
                                 <div class="infotab">
@@ -119,7 +136,7 @@
                                 <tr>
                                     <td>Корпус</td>
                                     <td>Описание проблемы апавпавпва</td>
-                                    <td>Цена 4223423</td>
+                                    <td>Цена: 4223423</td>
                                     <td><input type="button" value="Починить" class="res-selector"></td>
                                 </tr>
                                 <tr>
@@ -137,6 +154,108 @@
                             </table>
                         </div>
                     </div>
+
+                    <div class="storage-area" >
+
+                        <div class="StoreTableArea" id="storage" hidden >
+
+                            <table class="infotable" border="1" style="font-size: 16pt" id="carcTable">
+                                <tr>
+                                    <th>Материал</th>
+                                    <th>Спойлер</th>
+                                    <th>Дуги безопасности</th>
+                                    <th>Крылья</th>
+                                    <th>Состояние</th>
+                                </tr>
+                                <tr>
+                                    <td>Материал</td>
+                                    <td>Спойлер</td>
+                                    <td>Дуги безопасности</td>
+                                    <td>Крылья</td>
+                                    <td>Состояние</td>
+                                </tr>  <tr>
+                                <td>Материал</td>
+                                <td>Спойлер</td>
+                                <td>Дуги безопасности</td>
+                                <td>Крылья</td>
+                                <td>Состояние</td>
+                            </tr>
+                            </table>
+
+                            <table class="infotable" border="1" style="font-size: 16pt" id="chassTable" hidden>
+                                <tr>
+                                    <th>Модель</th>
+                                    <th>Высота</th>
+                                    <th>Ширина</th>
+                                    <th>Состояние</th>
+                                </tr>
+                                <tr>
+                                    <td>Модель</td>
+                                    <td>Высота</td>
+                                    <td>Ширина</td>
+                                    <td>Состояние</td>
+                                </tr>
+                                <tr>
+                                    <td>Модель</td>
+                                    <td>Высота</td>
+                                    <td>Ширина</td>
+                                    <td>Состояние</td>
+                                </tr>
+                            </table>
+
+                            <table class="infotable" border="1" style="font-size: 16pt"  id="engTable" hidden>
+                                <tr>
+                                    <th>Модель</th>
+                                    <th>Кол-во Цилиндров</th>
+                                    <th>Объем</th>
+                                    <th>Масса</th>
+                                    <th>Ход поршня</th>
+                                    <th>Состояние</th>
+                                </tr>
+                                <tr>
+                                    <td>Модель</td>
+                                    <td>Кол-во Цилиндров</td>
+                                    <td>Объем</td>
+                                    <td>Масса</td>
+                                    <td>Ход поршня</td>
+                                    <td>Состояние</td>
+                                </tr>
+                                <tr>
+                                    <td>Модель</td>
+                                    <td>Кол-во Цилиндров</td>
+                                    <td>Объем</td>
+                                    <td>Масса</td>
+                                    <td>Ход поршня</td>
+                                    <td>Состояние</td>
+                                </tr>
+                            </table>
+
+                            <table class="infotable" border="1" style="font-size: 16pt" id="elecTable" hidden>
+                                <tr>
+                                    <th>Телеметрия</th>
+                                    <th>Система контроля</th>
+                                    <th>Состояние</th>
+                                </tr>
+                                <tr>
+                                    <td>Телеметрия</td>
+                                    <td>Система контроля</td>
+                                    <td>Состояние</td>
+                                </tr>
+                                <tr>
+                                    <td>Телеметрия</td>
+                                    <td>Система контроля</td>
+                                    <td>Состояние</td>
+                                </tr>
+                                <tr>
+                                    <td>Телеметрия</td>
+                                    <td>Система контроля</td>
+                                    <td>Состояние</td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
