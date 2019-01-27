@@ -7,11 +7,6 @@
     <title>Гараж</title>
 </head>
 <body>
-<style>
-    .res-selector {
-        width: 20%;
-    }
-</style>
 <script type="text/javascript" src="../scripts/GarageScript.js"> </script>
 <div class="grid-container">
     <!-- TODO: try to make ui component for header zone-->
@@ -57,7 +52,7 @@
                 <div class="infotab"> <center>
                     <input type="button" class="res-selector" value="Болиды" onclick="chooseCars()"> <br>
                     <input type="button" class="res-selector" value="Склад" onclick="chooseStore()"> <br>
-                    <input type="button" class="res-selector" value="Заменить деталь">
+                    <input type="button" class="res-selector" value="Заменить деталь" onclick="chooseChange()">
                 </center>
                 </div>
                 <div class="FilterArea" hidden id="filter">
@@ -66,7 +61,7 @@
                             <center><h3>Фильтр</h3></center>
                             <form>
                                 <label for="compType">Тип</label>
-                                <select class="res-selector" id="compType">
+                                <select class="res-selector" id="compType" style="width: 70% !important;">
                                     <option selected>Каркас</option>
                                     <option>Шасси</option>
                                     <option>Двигатель</option>
@@ -157,9 +152,10 @@
 
                     <div class="storage-area" >
 
-                        <div class="StoreTableArea" id="storage" hidden >
-
-                            <table class="infotable" border="1" style="font-size: 16pt" id="carcTable">
+                        <div class="StoreTableArea" id="storage" style="width: 100%; margin: 2%" hidden >
+                            <h1 style="text-align: center">Склад</h1>
+                            <h2>Каркасы</h2>
+                            <table class="infotable" border="1"  id="carcTable" style="font-size: 16pt">
                                 <tr>
                                     <th>Материал</th>
                                     <th>Спойлер</th>
@@ -182,7 +178,8 @@
                             </tr>
                             </table>
 
-                            <table class="infotable" border="1" style="font-size: 16pt" id="chassTable" hidden>
+                            <h2>Шасси</h2>
+                            <table class="infotable" border="1" style="font-size: 16pt" id="chassTable">
                                 <tr>
                                     <th>Модель</th>
                                     <th>Высота</th>
@@ -203,7 +200,8 @@
                                 </tr>
                             </table>
 
-                            <table class="infotable" border="1" style="font-size: 16pt"  id="engTable" hidden>
+                            <h2>Двигатели</h2>
+                            <table class="infotable" border="1" style="font-size: 16pt"  id="engTable">
                                 <tr>
                                     <th>Модель</th>
                                     <th>Кол-во Цилиндров</th>
@@ -230,7 +228,8 @@
                                 </tr>
                             </table>
 
-                            <table class="infotable" border="1" style="font-size: 16pt" id="elecTable" hidden>
+                            <h2>Электроника</h2>
+                            <table class="infotable" border="1" style="font-size: 16pt" id="elecTable">
                                 <tr>
                                     <th>Телеметрия</th>
                                     <th>Система контроля</th>
@@ -256,8 +255,30 @@
                         </div>
                     </div>
 
+                    <div class="DetailChange" id="changes" hidden>
+                            <center><h3>Замена оборудования</h3></center>
+                            <form>
+                                <label for="car-select">Выберите болид</label>
+                                <select id="car-select" class="res-selector" style="width: 30% !important;">
+                                    <option>Hello there!</option>
+                                </select> <br>
+                                <label for="change-type-select">Тип детали</label>
+                                <select id="change-type-select" class="res-selector" style="width: 30% !important;">
+                                    <option>Hello there!</option>
+                                </select> <br>
+                                <label for="change-detail">Заменить на</label>
+                                <select id="change-detail" class="res-selector" style="width: 30% !important;">
+                                    <option>Hello there!</option>
+                                </select> <br>
+                                <input type="submit" class="res-selector" value="Подтвердить" style="width: 30% !important;">
+                            </form>
+                    </div>
+
                 </div>
             </div>
+
+
+
         </div>
     </div>
 </div>
