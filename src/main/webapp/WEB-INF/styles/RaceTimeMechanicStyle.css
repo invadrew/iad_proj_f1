@@ -1,0 +1,78 @@
+html, body, .grid-container { height: 100%; margin: 0; background-color: #2f2727;}
+
+.grid-container * {
+    position: relative;
+}
+
+.grid-container {
+    display: grid;
+    font: 16pt "Courier New", Courier, monospace;
+    grid-template-rows: 0.3fr 0.2fr 0.2fr 3.3fr;
+    grid-template-areas: "Header Header Header Header" "HeaderMenu HeaderMenu HeaderMenu HeaderMenu"
+    "TeamNameArea TeamNameArea TeamNameArea TeamNameArea" "MainArea MainArea MainArea MainArea";
+}
+
+.MainArea {
+    display: grid;
+    grid-area: MainArea;
+    grid-template-areas: "LeftPart LeftPart RightPart RightPart" "LeftPart LeftPart RightPart RightPart"
+    "LeftPart LeftPart RightPart RightPart" "LeftPart LeftPart RightPart RightPart";
+}
+
+.LeftPart {
+    display: flex;
+    flex-direction: column;
+}
+
+.RightPart {
+    display: flex;
+    flex-direction: column;
+}
+
+.cars-info-area {
+    display: flex;
+    flex-direction: row;
+}
+
+.car-info {
+    width: 50%;
+}
+
+#timeBlock {
+    height: 50%;
+}
+#timeWrapper {
+    height: 70%;
+}
+
+#transfer-num {
+ width: 15%;
+}
+
+.details {
+    margin-left: 3%;
+}
+
+@media only screen  and (max-device-width: 1050px) {
+
+    #teamHeaderPlace {
+        font-size: 16pt;
+    }
+}
+
+@media only screen  and (max-device-width: 1100px) and (min-device-width: 550px) {
+
+    .MainArea {
+        font-size: 17pt !important;
+    }
+}
+
+@media only screen and (max-device-width: 549px) {
+
+    .MainArea {
+        font-size: 27pt;
+        display: flex;
+        flex-direction: column;
+    }
+
+}
