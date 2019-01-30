@@ -24,4 +24,14 @@ public interface RaceResultRepository extends JpaRepository<RaceResult, Integer>
             "  WHERE ((ch.season_id = ?1) AND (ch.NAME = ?2))\n" +
             "  ORDER BY res.place;", nativeQuery = true)
     List<Object[]> getResultTable(int season, String champ);
+
+    @Query(value = "select m2.name, m2.surname, r.date_time, c2.name AS ch, c2.season_id, t.name AS tname FROM race_results res \n" +
+            "INNER JOIN races r on res.race_id = r.id \n" +
+            "INNER JOIN piloting p on res.piloting_id = p.id \n" +
+            "INNER JOIN team_members m2 on p.racer_id = m2.user_id \n" +
+            "INNER JOIN championships c2 on r.champ_id = c2.id \n" +
+            "INNER JOIN teams t on m2.team_id = t.id \n" +
+            "WHERE ((res.place = 1) AND (r.duration IS NOT NULL )) ORDER BY r.date_time DESC LIMIT 1;", nativeQuery = true)
+    Object[] getRaceNews();
+
 }

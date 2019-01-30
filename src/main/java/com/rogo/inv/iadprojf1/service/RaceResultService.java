@@ -14,4 +14,6 @@ public interface RaceResultService {
     RaceResult findById(int car, int race);
 
     List<Object[]> getResultTable(int season, String champ);
+
+    Object[] getRaceNews();
 }

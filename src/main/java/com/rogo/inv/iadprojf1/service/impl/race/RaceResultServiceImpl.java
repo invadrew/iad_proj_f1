@@ -33,6 +33,9 @@ public class RaceResultServiceImpl implements RaceResultService {
         return repository.findById(car, race);
     }
 
-    @Override @Transactional
+    @Override
     public List<Object[]> getResultTable(int season, String champ) { return repository.getResultTable(season, champ);}
+
+    @Override
+    public Object[] getRaceNews() {return repository.getRaceNews();}
 }

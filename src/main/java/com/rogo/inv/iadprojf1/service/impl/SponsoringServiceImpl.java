@@ -35,15 +35,19 @@ public class SponsoringServiceImpl implements SponsoringService {
         return repository.findById(id);
     }
 
-    @Override @Transactional
+    @Override
     public int getTeamCount(int sponsor) { return repository.getTeamCount(sponsor);}
 
-    @Override @Transactional
+    @Override
     public int getSumMoney(int sponsor) { return repository.getSumMoney(sponsor);}
 
-    @Override @Transactional
+    @Override
     public List<Object[]> getSponsInfo(int team) { return repository.getSponsInfo(team);}
 
-    @Override @Transactional
+    @Override
     public List<Sponsoring> findAllByTeamAndSponsor(Team team, Sponsor sponsor) { return repository.findAllByTeamAndSponsor(team, sponsor);}
+
+    @Override
+    public Object[] getLatestSponsNews() {return repository.getLatestSponsNews();}
+
 }

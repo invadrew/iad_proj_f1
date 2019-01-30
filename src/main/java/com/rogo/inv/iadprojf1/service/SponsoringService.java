@@ -22,4 +22,6 @@ public interface SponsoringService {
     List<Object[]> getSponsInfo(int team);
 
     List<Sponsoring> findAllByTeamAndSponsor(Team team, Sponsor sponsor);
+
+    Object[] getLatestSponsNews();
 }

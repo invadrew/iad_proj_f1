@@ -62,8 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/")
                 //Action с формы
                 .loginProcessingUrl("/security_check")
-                // указываем URL при неудачном логине
-                .failureUrl("/")
+                // указываем URL при неудачном логине (нет)
                 .defaultSuccessUrl("/profile")
                 // Указываем параметры логина и пароля с формы логина
                 .usernameParameter("uN")

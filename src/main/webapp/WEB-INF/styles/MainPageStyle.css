@@ -1,5 +1,5 @@
 
-html, body, .grid-container { height: 100%; margin: 0; }
+html, body, .grid-container { height: 100%; margin: 0; background: red}
 
 .grid-container * {
     position: relative;
@@ -32,9 +32,6 @@ html, body, .grid-container { height: 100%; margin: 0; }
     position: relative;
 }
 
-.MainPageResTable {
-}
-
 .HeaderContainer {
     width: 100%;
     height: 100%;
@@ -65,9 +62,17 @@ html, body, .grid-container { height: 100%; margin: 0; }
 .MainPageResultsList {
     grid-area: MainPageResultsList;
     background: red;
-    display: flex;
     position: relative;
+    display: flex;
 
+}
+
+.MainPageResTable {
+    font-size: 18pt;
+    width: 90%;
+    margin-left: 0.5%;
+    border: white;
+    margin-right: 0.5%;
 }
 
 #getIn {
@@ -100,6 +105,20 @@ html, body, .grid-container { height: 100%; margin: 0; }
 }
 
 @media only screen  and (max-device-width: 599px) {
+
+    .CurrentChampTable {
+        display: inline-block !important;
+    }
+
+    .MainPageResultsList {
+    display: inline-block !important;
+    }
+
+    .MainPageResTable {
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
     .grid-container {
         display: flex !important;
         flex-direction: column !important;

@@ -12,4 +12,6 @@ public interface RaceService {
     void delete(Race entity);
 
     Race findById(int id);
+
+    Object[] getCurrentEvent();
 }

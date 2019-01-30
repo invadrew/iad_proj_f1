@@ -31,4 +31,7 @@ public class RaceServiceImpl implements RaceService {
     public Race findById(int id) {
         return repository.findById(id);
     }
+
+    @Override
+    public  Object[] getCurrentEvent() { return repository.getCurrentEvent();}
 }
