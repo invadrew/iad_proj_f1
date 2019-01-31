@@ -38,5 +38,12 @@ public class WebInitializer implements WebApplicationInitializer {
         uprofileServlet.setLoadOnStartup(1);
         uprofileServlet.addMapping("/profile");
         uprofileServlet.addMapping("/UserProfilePage");
+
+
+        ServletRegistration.Dynamic ranksServlet =
+                sc.addServlet("User Profile", new DispatcherServlet(new GenericWebApplicationContext()));
+        ranksServlet.setLoadOnStartup(1);
+        ranksServlet.addMapping("/ranks");
+        ranksServlet.addMapping("/RanksPage");
     }
 }

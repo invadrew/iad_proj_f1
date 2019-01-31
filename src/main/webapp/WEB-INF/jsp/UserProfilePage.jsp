@@ -18,7 +18,7 @@
         <div class="Header-UserInfo-container">
             Никита Рогаленко
             <form action="/logout">
-                <input type="submit" value="Выйти" id="out"> </input>
+                <input type="submit" value="Выйти" id="out">
             </form>
         </div>
         <div class="UserPhoto-container">
@@ -31,7 +31,7 @@
             <li><a href="MainPage.jsp">Команда</a></li>
             <li><a href="MainPage.jsp">Гараж</a></li>
             <li><a href="MainPage.jsp">Заезды</a></li>
-            <li><a href="RanksPage.html">Рейтинг</a></li>
+            <li><a href="RanksPage.jsp">Рейтинг</a></li>
             <li><a href="MainPage.jsp">Сообщения</a></li>
         </ul>
         <div class="searcher">
