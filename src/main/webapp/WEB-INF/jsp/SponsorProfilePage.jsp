@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,6 +16,9 @@
         </div>
         <div class="Header-UserInfo-container">
             Monster Energy
+            <form action="/logout">
+                <input type="submit" value="Выйти" id="out">
+            </form>
         </div>
         <div class="UserPhoto-container">
             <img src="/pictures/MonsterEnergy.jpeg">

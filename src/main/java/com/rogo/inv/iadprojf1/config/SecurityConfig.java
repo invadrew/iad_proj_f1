@@ -10,12 +10,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.Md4PasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import sun.security.provider.SHA;
 
 import javax.sql.DataSource;
 
@@ -27,6 +23,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     DataSource dataSource;
 
+    @Autowired
+    SecurityHandler securityHandler;
 
     @Autowired
     private UserServiceImpl userService;
@@ -63,7 +61,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //Action с формы
                 .loginProcessingUrl("/security_check")
                 // указываем URL при неудачном логине (нет)
-                .defaultSuccessUrl("/profile")
+
+                .successHandler(securityHandler)
+
+                //.defaultSuccessUrl("/profile")
+
                 // Указываем параметры логина и пароля с формы логина
                 .usernameParameter("uN")
                 .passwordParameter("uP")

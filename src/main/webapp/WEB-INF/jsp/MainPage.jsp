@@ -31,7 +31,7 @@
                </form>
                 <c:if test="${not empty SPRING_SECURITY_LAST_EXCEPTION}">
                     <br>
-                    <label>Неверный логин!</label>
+                    <label>Неверное сочетание логина и пароля!</label>
                 </c:if>
             </div>
         </div>
