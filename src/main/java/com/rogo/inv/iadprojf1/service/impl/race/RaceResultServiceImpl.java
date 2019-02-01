@@ -38,4 +38,7 @@ public class RaceResultServiceImpl implements RaceResultService {
 
     @Override
     public Object[] getRaceNews() {return repository.getRaceNews();}
+
+    @Override
+    public List<Object[]> getRacerProfileTable(int user_id) { return repository.getRacerProfileTable(user_id);}
 }

@@ -19,21 +19,21 @@ public interface TeamMemberService {
 
     List<TeamMember> findAllByTeam (Team team);
 
-    int pointsCount(int user, int season);
+    Integer pointsCount(int user, int season);
 
-    int racingsCount(int user, int season);
+    Integer racingsCount(int user, int season);
 
-    int allRaceCount(int user);
+    Integer allRaceCount(int user);
 
-    int cupsWon (int user);
+    Integer cupsWon (int user);
 
-    int champCount (int user);
+    Integer champCount (int user);
 
-    int avergePlaceAtAll (int user);
+    Integer avergePlaceAtAll (int user);
 
-    int avergePlaceAtSeason (int user, int season);
+    Integer avergePlaceAtSeason (int user, int season);
 
-    int bestPlace (int user, int season);
+    Integer bestPlace (int user, int season);
 
     List<Object[]> getBestTrackTime(int user);
 }

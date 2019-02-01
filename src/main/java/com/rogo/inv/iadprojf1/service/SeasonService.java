@@ -13,4 +13,6 @@ public interface SeasonService {
     void delete(Season entity);
 
     Season findByYear(int id);
+
+    Season findTopByOrderByYearDesc();
 }

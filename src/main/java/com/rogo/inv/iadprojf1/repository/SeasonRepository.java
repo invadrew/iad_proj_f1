@@ -13,4 +13,6 @@ import java.util.List;
 public interface SeasonRepository extends JpaRepository<Season, Integer> {
     Season findByYear(int id);
 
+    Season findTopByOrderByYearDesc();
+
 }

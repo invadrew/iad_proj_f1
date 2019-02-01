@@ -6,10 +6,10 @@ import com.rogo.inv.iadprojf1.entity.message.Chat;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -29,7 +29,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Spec spec;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(/* fetch = FetchType.LAZY, */ cascade = CascadeType.ALL)
     @JoinColumn(name = "photo_id")
     private Photo photo;
 
@@ -39,7 +39,7 @@ public class User {
 
     private String comments;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_chat",
             joinColumns = @JoinColumn(name = "user_id"),

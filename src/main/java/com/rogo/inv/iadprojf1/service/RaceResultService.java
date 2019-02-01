@@ -16,4 +16,6 @@ public interface RaceResultService {
     List<Object[]> getResultTable(int season, String champ);
 
     Object[] getRaceNews();
+
+    List<Object[]> getRacerProfileTable(int user_id);
 }

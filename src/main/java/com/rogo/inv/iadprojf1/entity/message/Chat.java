@@ -1,7 +1,6 @@
 package com.rogo.inv.iadprojf1.entity.message;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.google.common.base.Objects;
 import com.google.gson.Gson;
 import com.rogo.inv.iadprojf1.DBUtility;
 import com.rogo.inv.iadprojf1.entity.User;
@@ -34,7 +33,7 @@ public class Chat {
     private List<Message> messages = new ArrayList<>();
 
     @ManyToMany(cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             mappedBy = "chats")
     private Set<User> users = new HashSet<>();
 

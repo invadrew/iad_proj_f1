@@ -34,5 +34,7 @@ public class SeasonServiceImpl implements SeasonService {
         return repository.findByYear(id);
     }
 
+    @Override
+    public Season findTopByOrderByYearDesc() { return repository.findTopByOrderByYearDesc();}
 
 }
