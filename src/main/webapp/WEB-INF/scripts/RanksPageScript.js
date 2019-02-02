@@ -25,11 +25,13 @@ function getSeasonWorldInfo() {
         success: function(data) {
             $('#worldHeader').text('Кубок мира').append(' '+ year);
             for (let i=0; i < data.length; i++) {
+                let ref = '/profile?id=' + data[i][5];
+                let refT = '/team?id=' + data[i][6];
                 let $tr = $('<tr>').append(
                     $('<td>').text(data[i][0]),
-                    $('<td>').text(data[i][1] + data[i][2]),
-                    $('<td>').text(data[i][3]),
-                    $('<td>').text(data[i][4]) );
+                    $('<td>').append($('<a class="redirHref">').attr('href',ref).text(data[i][1] + data[i][2])),
+                    $('<td>').append($('<a class="redirHref">').attr('href',refT).text(data[i][3])),
+                    $('<td>').text(data[i][4]));
                 world.append($tr);
             }
         }
@@ -49,10 +51,11 @@ function getConstrInfo() {
         success: function(data) {
             $('#constrHeader').text('Кубок конструкторов').append(' ' + year);
             for (let i=0; i < data.length; i++) {
+                let refT = '/team?id=' + data[i][3];
                 let $tr = $('<tr>').append(
                     $('<td>').text(data[i][0]),
-                    $('<td>').text(data[i][1]),
-                    $('<td>').text(data[i][2]) );
+                    $('<td>').append($('<a class="redirHref">').attr('href',refT).text(data[i][1])),
+                    $('<td>').text(data[i][2]));
                 constr.append($tr);
             }
         }
