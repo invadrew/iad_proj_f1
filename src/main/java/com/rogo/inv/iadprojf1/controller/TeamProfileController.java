@@ -4,6 +4,7 @@ import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.User;
 import com.rogo.inv.iadprojf1.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -37,15 +38,22 @@ public class TeamProfileController {
     private ConstrCupResultService constrCupResultService;
 
     @RequestMapping(value = "/team", method = RequestMethod.GET)
-    public String toTeamProfile(ModelMap map, Authentication authentication) {
+    public String toTeamProfile(ModelMap map, Authentication authentication, @Param("id") Integer id) {
 
         User user = userService.findByLogin(authentication.getName());
+
+        Team team;
+
+        if (id == null) {
+             team = teamMemberService.findByUserId(user.getId()).getTeam();
+        } else {
+            team = teamService.findById(id);
+        }
 
         String nameSurname = teamMemberService.findByUserId(user.getId()).getName() + " " +
                 teamMemberService.findByUserId(user.getId()).getSurname();
         map.addAttribute("nameSurname",nameSurname);
 
-        Team team = teamMemberService.findByUserId(user.getId()).getTeam();
         map.addAttribute("team", team);
 
         Object gSP = teamService.getSeasPoints(seasonService.findTopByOrderByYearDesc().getYear(), team.getId());

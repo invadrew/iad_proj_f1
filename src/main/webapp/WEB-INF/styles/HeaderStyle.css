@@ -50,6 +50,15 @@
     flex-direction: row;
 }
 
+.redirHref {
+    text-decoration: none;
+    color: white;
+}
+
+.redirHref:hover {
+    text-decoration: underline;
+}
+
 ul {
     width: 75%;
     list-style-type: none;

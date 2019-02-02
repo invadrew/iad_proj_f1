@@ -23,11 +23,11 @@
 </div>
 <div class="HeaderMenu">
     <ul>
-        <li><a href="MainPage.jsp">Профиль</a></li>
-        <li><a href="MainPage.jsp">Команда</a></li>
+        <li><a href="/profile">Профиль</a></li>
+        <li><a href="/team">Команда</a></li>
         <li><a href="MainPage.jsp">Гараж</a></li>
         <li><a href="MainPage.jsp">Заезды</a></li>
-        <li><a href="RanksPage.jsp">Рейтинг</a></li>
+        <li><a href="/ranks">Рейтинг</a></li>
         <li><a href="MainPage.jsp">Сообщения</a></li>
     </ul>
     <div class="searcher">

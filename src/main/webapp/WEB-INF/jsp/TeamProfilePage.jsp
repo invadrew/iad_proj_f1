@@ -35,7 +35,12 @@
                     Менеджеров: ${managers}
                     <br><br>
                     <c:if test="${bestRacer != null}">
-                    Лучший гонщик: ${bestRacer[0][1]} ${bestRacer[0][2]}
+                        <c:url value="/profile" var="uUrl">
+                            <c:param name="id" value="${bestRacer[0][3]}"/>
+                        </c:url>
+                        <a class="redirHref" href="${uUrl}">
+                            Лучший гонщик: ${bestRacer[0][1]} ${bestRacer[0][2]}
+                        </a>
                     </c:if>
                 </div>
             </div>
@@ -78,7 +83,14 @@
                         <c:forEach items="${members}" var="member">
                             <tr>
                                 <td>${members.indexOf(member)+1}</td>
-                                <td>${member[0]} ${member[1]}</td>
+                                <td>
+                                <c:url value="/profile" var="uUrl">
+                                    <c:param name="id" value="${member[3]}"/>
+                                </c:url>
+                                <a class="redirHref" href="${uUrl}">
+                                        ${member[0]} ${member[1]}
+                                </a>
+                                </td>
                                 <td>${member[2]}</td>
                             </tr>
                         </c:forEach>

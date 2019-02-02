@@ -15,7 +15,7 @@ public interface TeamRepository extends JpaRepository<Team, Integer> {
 
     Team findByName(String name);
 
-    @Query(value = "SELECT tm.NAME, tm.surname, u.spec FROM team_members tm\n" +
+    @Query(value = "SELECT tm.NAME, tm.surname, u.spec, u.id FROM team_members tm\n" +
             "   INNER JOIN users u ON (u.id = tm.user_id)\n" +
             "   WHERE (tm.team_id = ?1);", nativeQuery = true)
     List<Object[]> getTeamTable(int team);
@@ -46,10 +46,10 @@ public interface TeamRepository extends JpaRepository<Team, Integer> {
     @Query(value = "SELECT MIN(c.place) FROM constr_cup_result c WHERE (c.team_id = ?1); ", nativeQuery = true)
     Integer getBestPlace(int team);
 
-    @Query(value = "SELECT MIN(s), subq.name n, subq.surname s FROM (\n" +
-            "SELECT r.name , r.surname , SUM(wcr.place) AS s FROM team_members r\n" +
+    @Query(value = "SELECT MIN(s), subq.name n, subq.surname s, subq.user_id FROM (\n" +
+            "SELECT r.name , r.surname , SUM(wcr.place) AS s, r.user_id FROM team_members r\n" +
             "  INNER JOIN world_cup_result wcr ON (wcr.racer_id = r.user_id)\n" +
-            "  WHERE (r.team_id = ?1) GROUP BY r.name,r.surname) subq GROUP BY subq.name, subq.surname;", nativeQuery = true)
+            "  WHERE (r.team_id = ?1) GROUP BY r.name,r.surname, r.user_id) subq GROUP BY subq.name, subq.surname, subq.user_id;", nativeQuery = true)
     List<Object[]> bestRacer(int team);
 
 }

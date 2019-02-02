@@ -27,7 +27,12 @@
           <div class="inside_block_wrapper"  style="height: 95%">
             <div class="infotab" style="height: 93.5%">
                 <center><h2>${nameSurname}</h2></center>
-                Команда: ${team}
+                <c:url value="/team" var="uUrl">
+                    <c:param name="id" value="${member[3]}"/>
+                </c:url>
+                <a class="redirHref" href="${uUrl}">
+                    Команда: ${team}
+                </a>
                 <br> <br>
                 Должность: ${spec}
                 <c:if test="${!(user.spec.toString().equals('RACER'))}">

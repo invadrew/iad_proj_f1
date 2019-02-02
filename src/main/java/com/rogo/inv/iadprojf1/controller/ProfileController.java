@@ -2,20 +2,15 @@ package com.rogo.inv.iadprojf1.controller;
 
 import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.User;
-import com.rogo.inv.iadprojf1.repository.TeamRepository;
 import com.rogo.inv.iadprojf1.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 
@@ -37,16 +32,16 @@ public class ProfileController {
     @Autowired
     private ConstrCupResultService constrCupResultService;
 
-   /* @ModelAttribute("user")
-    public User getUser(HttpServletRequest request)
-    {
-        return (User) request.getAttribute("user");
-    }*/
+    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    public String toProfile(ModelMap map, Authentication authentication, @Param("id") Integer id) {
 
-    @RequestMapping(value = "/profile")
-    public String toProfile(ModelMap map,/* @ModelAttribute("user") User user*/ Authentication authentication) {
+        User user;
 
-        User user = userService.findByLogin(authentication.getName());
+        if (id != null) {
+             user = userService.findById(id);
+        } else {
+            user = userService.findByLogin(authentication.getName());
+        }
 
         map.addAttribute("user",user);
 
