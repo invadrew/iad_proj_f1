@@ -15,43 +15,47 @@
     <jsp:include page="Header.jsp"/>
     <div class="TeamNameArea">
         <br>
-        <center><label style="padding-top: 3px" ><b>RogoNemRacing</b></label></center>
-        <label id="teamHeaderPlace" style="float: right">Место в текущем сезоне: 1</label>
+        <center><label style="padding-top: 3px" ><b>${team.name}</b></label></center>
     </div>
     <div class="MainArea">
         <div class="TeamInfoArea">
             <div class="inside_block_wrapper">
                 <div class="infotab" style="font-size: 16pt">
                     <center><h3>Основная информация</h3></center>
-                    Очков в текущем сезоне: 20
+                    Очков в текущем сезоне: ${seasonPoints}
+                    <br> <br>
+                    Лучшее место по итогам сезона: ${bestPlace}
+                    <br> <br>
+                    Гонщиков: ${racers}
                     <br>
-                    Лучшее место за сезон: 1
+                    Механиков: ${mechanics}
                     <br>
-                    Гонщиков: 1
+                    Конструкторов: ${constrs}
                     <br>
-                    Механиков: 1
+                    Менеджеров: ${managers}
                     <br><br>
-                    Лучший гонщик: Никита Рогаленко
+                    <c:if test="${bestRacer != null}">
+                    Лучший гонщик: ${bestRacer[0][1]} ${bestRacer[0][2]}
+                    </c:if>
                 </div>
             </div>
             <div class="inside_block_wrapper">
                 <div class="infotab">
                     <center><h3>Информация о спонсорах</h3>
-                    Бюджет: 300
+                    Бюджет: ${team.budget}
                         <br> <br>
                         <table class="infotable">
                             <tr>
                                 <th> Спонсоры:</th>
                             </tr>
-                            <tr>
-                                <td> Спонсоры</td>
-                            </tr>
-                            <tr>
-                                <td> Спонсоры</td>
-                            </tr>
-                            <tr>
-                                <td> Спонсоры</td>
-                            </tr>
+                            <c:if test="${sponsors != null}">
+                                <c:forEach items="${sponsors}" var="sp">
+                                <tr><td> <c:out value="${sp[0]}"/></td></tr>
+                                </c:forEach>
+                            </c:if>
+                            <c:if test="${sponsors == null}">
+                                <tr><td> Пока нет спонсоров</td></tr>
+                            </c:if>
                         </table>
                     </center>
                 </div>
@@ -61,38 +65,25 @@
             <div class="inside_block_wrapper" style="height: 95%">
                 <div class="infotab" style="height: 93.5%">
                     <center><h3>Члены команды</h3>
+                        <c:if test="${members == null}">
+                            Пока никого нет...
+                        </c:if>
+                        <c:if test="${members != null}">
                     <table class="infotable" border="1">
                         <tr>
                             <th>№</th>
                             <th>Участник</th>
                             <th>Должность</th>
                         </tr>
-                        <tr>
-                            <td>№</td>
-                            <td>Участник</td>
-                            <td>Должность</td>
-                        </tr>
-                        <tr>
-                            <td>№</td>
-                            <td>Участник</td>
-                            <td>Должность</td>
-                        </tr>
-                        <tr>
-                            <td>№</td>
-                            <td>Участник</td>
-                            <td>Должность</td>
-                        </tr>
-                        <tr>
-                            <td>№</td>
-                            <td>Участник</td>
-                            <td>Должность</td>
-                        </tr>
-                        <tr>
-                            <td>№</td>
-                            <td>Участник</td>
-                            <td>Должность</td>
-                        </tr>
+                        <c:forEach items="${members}" var="member">
+                            <tr>
+                                <td>${members.indexOf(member)+1}</td>
+                                <td>${member[0]} ${member[1]}</td>
+                                <td>${member[2]}</td>
+                            </tr>
+                        </c:forEach>
                     </table>
+                        </c:if>
                     </center>
                 </div>
             </div>
@@ -102,44 +93,23 @@
               <div class="infotab" style="height: 93.5%">
                   <center>
                       <h3>Достижения кубка конструкторов</h3>
+                      <c:if test="${achiv == null}">
+                          Пока нет достижений...
+                      </c:if>
+                      <c:if test="${achiv != null}">
                       <table class="infotable" border="1">
                           <tr>
                               <th>Сезон</th>
                               <th>Место</th>
                           </tr>
-                          <tr>
-                              <td>2012</td>
-                              <td>1</td>
-                          </tr>
-                          <tr>
-                              <td>2013</td>
-                              <td>1</td>
-                          </tr>
-                          <tr>
-                              <td>2014</td>
-                              <td>1</td>
-                          </tr>
-                          <tr>
-                              <td>2015</td>
-                              <td>1</td>
-                          </tr>
-                          <tr>
-                              <td>2016</td>
-                              <td>1</td>
-                          </tr>
-                          <tr>
-                              <td>2017</td>
-                              <td>1</td>
-                          </tr>
-                          <tr>
-                              <td>2018</td>
-                              <td>1</td>
-                          </tr>
-                          <tr>
-                              <td>2019</td>
-                              <td>1</td>
-                          </tr>
+                          <c:forEach items="${achiv}" var="ac">
+                              <tr>
+                                  <td><c:out value="${ac[0]}"/></td>
+                                  <td><c:out value="${ac[1]}"/></td>
+                              </tr>
+                          </c:forEach>
                       </table>
+                      </c:if>
                   </center>
               </div>
           </div>

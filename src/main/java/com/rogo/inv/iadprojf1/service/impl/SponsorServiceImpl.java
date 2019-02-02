@@ -31,4 +31,7 @@ public class SponsorServiceImpl implements SponsorService {
     public Sponsor findByUserId(int id) {
         return repository.findByUserId(id);
     }
+
+    @Override
+    public List<Object[]> getTeamSponsorsList(int team) {return repository.getTeamSponsorsList(team);}
 }

@@ -24,6 +24,7 @@ public class WebConfig  implements WebMvcConfigurer {
         registry.addViewController("/ranks").setViewName("RanksPage");
         registry.addViewController("/admin").setViewName("AdminPage");
         registry.addViewController("/sponsor").setViewName("SponsorProfilePage");
+        registry.addViewController("/team").setViewName("TeamProfilePage");
     }
 
     @Bean

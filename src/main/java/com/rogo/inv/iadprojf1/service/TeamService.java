@@ -19,12 +19,18 @@ public interface TeamService {
 
     List<Object[]> getTeamTable(int team);
 
-    int getSpecCount(int team, User.Spec spec);
+    Integer getRacersCount(int team);
 
-    int getSeasPoints(int season, int team);
+    Integer getMechanicsCount(int team);
 
-    int getBestPlace(int team);
+    Integer getConstrsCount(int team);
 
-    int bestRacer(int team);
+    Integer getManagersCount(int team);
+
+    Integer getSeasPoints(int season, int team);
+
+    Integer getBestPlace(int team);
+
+    List<Object[]> bestRacer(int team);
 
 }

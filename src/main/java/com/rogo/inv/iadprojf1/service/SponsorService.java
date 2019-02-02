@@ -12,4 +12,6 @@ public interface SponsorService {
     void delete(Sponsor entity);
 
     Sponsor findByUserId(int id);
+
+    List<Object[]> getTeamSponsorsList(int team);
 }

@@ -6,7 +6,6 @@ import com.rogo.inv.iadprojf1.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service("teamService")
@@ -41,15 +40,24 @@ public class TeamServiceImpl implements TeamService {
     public List<Object[]> getTeamTable(int team) { return repository.getTeamTable(team); }
 
     @Override
-    public int getSpecCount(int team, User.Spec spec) { return repository.getSpecCount(team, spec);}
+    public Integer getRacersCount(int team) { return repository.getRacersCount(team);}
 
-    @Override @Transactional
-    public int getSeasPoints(int season, int team) { return repository.getSeasPoints(season, team);}
+    @Override
+    public Integer getMechanicsCount(int team) { return repository.getMechanicsCount(team);}
 
-    @Override @Transactional
-    public int getBestPlace(int team) { return repository.getBestPlace(team);}
+    @Override
+    public Integer getConstrsCount(int team) { return repository.getConstrsCount(team);}
 
-    @Override @Transactional
-    public int bestRacer(int team) { return repository.bestRacer(team);}
+    @Override
+    public Integer getManagersCount(int team) { return repository.getManagersCount(team);}
+
+    @Override
+    public Integer getSeasPoints(int season, int team) { return repository.getSeasPoints(season, team);}
+
+    @Override
+    public Integer getBestPlace(int team) { return repository.getBestPlace(team);}
+
+    @Override
+    public List<Object[]> bestRacer(int team) { return repository.bestRacer(team);}
 
 }

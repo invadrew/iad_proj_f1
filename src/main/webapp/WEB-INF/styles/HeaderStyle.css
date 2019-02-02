@@ -149,6 +149,7 @@ li a:hover {
     grid-area: TeamNameArea;
     background-color: black;
     color: white;
+    padding-bottom: 2%;
 }
 
 /* */
