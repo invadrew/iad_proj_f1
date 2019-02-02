@@ -42,6 +42,10 @@ public class TeamProfileController {
 
         User user = userService.findByLogin(authentication.getName());
 
+        String name = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getName() + " " +
+                teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getSurname();
+        map.addAttribute("name", name);
+
         Team team;
 
         if (id == null) {

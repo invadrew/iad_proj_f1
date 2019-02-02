@@ -6,7 +6,7 @@
     </div>
     <div class="Header-UserInfo-container">
         <sec:authorize access="!(hasAuthority('ADMIN'))">
-        ${nameSurname}
+        ${name}
         </sec:authorize>
         <sec:authorize access="hasAuthority('ADMIN')">
             Панель администратора

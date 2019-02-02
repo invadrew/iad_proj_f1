@@ -38,9 +38,9 @@ public class RanksController {
         User user = userService.findByLogin(authentication.getName());
 
         List<Season> seasonsList= seasonService.findAll();
-        String nameSurname = teamMemberService.findByUserId(user.getId()).getName() + " " +
-                teamMemberService.findByUserId(user.getId()).getSurname();
-        map.addAttribute("nameSurname",nameSurname);
+        String name = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getName() + " " +
+                teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getSurname();
+        map.addAttribute("name", name);
         map.addAttribute("seasonsList",seasonsList);
         return "RanksPage";
     }

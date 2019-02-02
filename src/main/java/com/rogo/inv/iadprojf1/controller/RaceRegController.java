@@ -24,9 +24,9 @@ public class RaceRegController {
 
         User user = userService.findByLogin(authentication.getName());
 
-        String nameSurname = teamMemberService.findByUserId(user.getId()).getName() + " " +
-                teamMemberService.findByUserId(user.getId()).getSurname();
-        map.addAttribute("nameSurname",nameSurname);
+        String name = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getName() + " " +
+                teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getSurname();
+        map.addAttribute("name", name);
 
         return "RaceRegistrationPage";
     }

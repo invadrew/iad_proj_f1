@@ -45,8 +45,8 @@ public class ProfileController {
 
         map.addAttribute("user",user);
 
-        String name = teamMemberService.findByUserId(user.getId()).getName() + " " +
-                teamMemberService.findByUserId(user.getId()).getSurname();
+        String name = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getName() + " " +
+                teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getSurname();
         map.addAttribute("name", name);
 
         if (user.getSpec().equals(User.Spec.RACER)) {

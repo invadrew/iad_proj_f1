@@ -14,7 +14,7 @@ public interface RaceResultRepository extends JpaRepository<RaceResult, Integer>
     @Query(value = "select r from RaceResult r where r.car = ?1 and r.race = ?2")
     RaceResult findById(@Param("car") int car, @Param("race") int race);
 
-    @Query(value = "SELECT res.place, racers.NAME as rc, racers.surname, team.NAME, res.points, res.race_time FROM race_results AS res\n" +
+    @Query(value = "SELECT res.place, racers.NAME as rc, racers.surname, team.NAME, res.points, res.race_time, racers.user_id, team.id FROM race_results AS res\n" +
             "  INNER JOIN piloting p ON (res.piloting_id = p.id)\n" +
             "  INNER JOIN cars c2 ON (p.car_id = c2.id)\n" +
             "  INNER JOIN teams team ON (c2.team_id = team.id)\n" +

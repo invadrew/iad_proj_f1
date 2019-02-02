@@ -11,6 +11,8 @@
     <title>Архив гонок</title>
 </head>
 <body>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script type="text/javascript" src="../scripts/RaceResultsScript.js"></script>
 <div class="grid-container">
    <jsp:include page="Header.jsp"/>
     <div class="RanksMainArea">
@@ -18,38 +20,24 @@
             <center><h2> Результаты прошедших гонок </h2></center>
             <br>
             <label for="season_selector">Выберите сезон:</label>
-            <select id="season_selector">
-                <option> hello there</option>
+            <select id="season_selector" onchange="getChamps()">
+                <c:forEach items="${seasonsList}" var="season">
+                    <option value="${season.year}"> <c:out value="${season.year}"/> </option>
+                </c:forEach>
             </select>
             <br> <br>
             <label for="champ_selector">Выберите чемпионат:</label>
-            <select id="champ_selector">
-                <option> hello there</option>
-            </select>
+            <select id="champ_selector" onchange="getData()"> </select>
             <br>
             <div id="WorldCup" class="infotab" >
                 <br>
-                <table class="infotable" border="1">
+                <table class="infotable" border="1" id="race-table">
                     <tr>
                         <th>Место</th>
                         <th>Гонщик</th>
                         <th>Команда</th>
                         <th>Очки</th>
                         <th>Время гонки</th>
-                    </tr>
-                    <tr>
-                        <td>Место</td>
-                        <td>Гонщик</td>
-                        <td>Команда</td>
-                        <td>Очки</td>
-                        <td>Очки</td>
-                    </tr>
-                    <tr>
-                        <td>Место</td>
-                        <td>Гонщик</td>
-                        <td>Команда</td>
-                        <td>Очки</td>
-                        <td>Очки</td>
                     </tr>
                 </table>
             </div>
