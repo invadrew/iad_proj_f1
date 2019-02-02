@@ -13,38 +13,7 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 <script type="text/javascript" src="../scripts/RanksPageScript.js"> </script>
 <div class="grid-container">
-    <!-- TODO: try to make ui component for header zone-->
-    <div class="Header">
-      <div class="Header-LogoContainer">
-        <img src="/pictures/Formula_1_logo.jpg">
-      </div>
-        <div class="Header-UserInfo-container">
-            Никита Рогаленко
-            <form action="/logout">
-                <input type="submit" value="Выйти" id="out">
-            </form>
-        </div>
-        <div class="UserPhoto-container">
-            <img src="/pictures/rogoVK.jpg">
-        </div>
-    </div>
-    <div class="HeaderMenu">
-        <ul>
-            <li><a href="MainPage.jsp">Профиль</a></li>
-            <li><a href="MainPage.jsp">Команда</a></li>
-            <li><a href="MainPage.jsp">Гараж</a></li>
-            <li><a href="MainPage.jsp">Заезды</a></li>
-            <li><a href="RanksPage.jsp">Рейтинг</a></li>
-            <li><a href="MainPage.jsp">Сообщения</a></li>
-        </ul>
-        <div class="searcher">
-            <form>
-        <input type="text" placeholder="Поиск по сайту" id="search">
-                <input type="submit" value="Найти" id="find">
-            </form>
-        </div>
-        </div>
-    <!-- end to do-->
+   <jsp:include page="Header.jsp"/>
     <div class="RanksMainArea">
       <div class="inside_block_wrapper">
           <center><h2> Таблица результатов </h2></center>

@@ -1,10 +1,10 @@
 package com.rogo.inv.iadprojf1.controller;
 
 import com.rogo.inv.iadprojf1.entity.Season;
-import com.rogo.inv.iadprojf1.service.ConstrCupResultService;
-import com.rogo.inv.iadprojf1.service.SeasonService;
-import com.rogo.inv.iadprojf1.service.WorldCupResultService;
+import com.rogo.inv.iadprojf1.entity.User;
+import com.rogo.inv.iadprojf1.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,9 +26,21 @@ public class RanksController {
     @Autowired
     private WorldCupResultService worldCupResultService;
 
+    @Autowired
+    private TeamMemberService teamMemberService;
+
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(value = "/ranks", method = RequestMethod.GET)
-    public String toRanks(ModelMap map) {
+    public String toRanks(ModelMap map, Authentication authentication) {
+
+        User user = userService.findByLogin(authentication.getName());
+
         List<Season> seasonsList= seasonService.findAll();
+        String nameSurname = teamMemberService.findByUserId(user.getId()).getName() + " " +
+                teamMemberService.findByUserId(user.getId()).getSurname();
+        map.addAttribute("nameSurname",nameSurname);
         map.addAttribute("seasonsList",seasonsList);
         return "RanksPage";
     }

@@ -10,37 +10,7 @@
 <body>
 <script type="text/javascript" src="../scripts/AdminPageScript.js"> </script>
 <div class="grid-container">
-    <!-- TODO: try to make ui component for header zone-->
-    <div class="Header">
-        <div class="Header-LogoContainer">
-            <img src="/pictures/Formula_1_logo.jpg">
-        </div>
-        <div class="Header-UserInfo-container">
-            Панель администратора
-            <form action="/logout">
-                <input type="submit" value="Выйти" id="out">
-            </form>
-        </div>
-        <div class="UserPhoto-container">
-        </div>
-    </div>
-    <div class="HeaderMenu">
-        <ul>
-            <li><a href="MainPage.jsp">Профиль</a></li>
-            <li><a href="MainPage.jsp">Команда</a></li>
-            <li><a href="MainPage.jsp">Гараж</a></li>
-            <li><a href="MainPage.jsp">Заезды</a></li>
-            <li><a href="RanksPage.jsp">Рейтинг</a></li>
-            <li><a href="MainPage.jsp">Сообщения</a></li>
-        </ul>
-        <div class="searcher">
-            <form>
-                <input type="text" placeholder="Поиск по сайту" id="search">
-                <input type="submit" value="Найти" id="find">
-            </form>
-        </div>
-    </div>
-    <!-- end if-->
+  <jsp:include page="Header.jsp"/>
     <div class="MainArea">
         <div class="inside_block_wrapper">
             <div class="infotab">
