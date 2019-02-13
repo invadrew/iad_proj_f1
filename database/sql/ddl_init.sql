@@ -1,20 +1,26 @@
-CREATE DATABASE f1_sys;
+﻿CREATE TYPE accept_status AS ENUM ('ACCEPTED','ON_REVIEW','REFUSED');
+CREATE TYPE user_spec AS ENUM ('RACER','MANAGER','ADMIN','SPONSOR','CONSTRUCTOR','MECHANIC');
+CREATE TYPE message_type AS ENUM ('ORDINARY','TEAM_INVITE','JOIN_REQUEST','TEAM_CREATE','BUY_PERMISSION');
+CREATE TYPE component_condition AS ENUM ('PERFECT','GOOD','NORMAL','BAD','AWFUL');
+CREATE TYPE component_types AS ENUM ('CARCASE','ENGINE','CHASSIS','ELECTRONICS');
+CREATE TYPE tire_types AS ENUM ('TOUGH','SOFT');
+CREATE TYPE transfers AS ENUM ('TOUGH','FUEL','SOFT');
 
 CREATE TABLE photos (
   id SERIAL PRIMARY KEY,
-  path VARCHAR(255) NOT NULL,
+  path TEXT NOT NULL,
   UNIQUE (path)
 );
 
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
-  login VARCHAR(24) NOT NULL ,
+  login VARCHAR(20) NOT NULL ,
   UNIQUE (login),
-  password VARCHAR(32) NOT NULL ,
+  password VARCHAR(25) NOT NULL ,
   spec user_spec NOT NULL ,
   photo_id INT REFERENCES photos(id),
   status accept_status NOT NULL ,
-  comments VARCHAR(255),
+  comments TEXT,
   CHECK (photo_id > 0)
 );
 
@@ -34,7 +40,7 @@ INSERT INTO users(login, password, spec, status, comments) VALUES
 
 CREATE TABLE teams (
   id SERIAL PRIMARY KEY ,
-  name VARCHAR(48) NOT NULL ,
+  name VARCHAR(20) NOT NULL ,
   UNIQUE (name),
   budget BIGINT NOT NULL ,
   status accept_status NOT NULL ,
@@ -50,8 +56,8 @@ INSERT INTO teams(name, budget, status, comments) VALUES
 
 CREATE TABLE team_members (
   user_id INT REFERENCES users(id) PRIMARY KEY ,
-  name VARCHAR(48) NOT NULL ,
-  surname VARCHAR(48) NOT NULL ,
+  name VARCHAR(30) NOT NULL ,
+  surname VARCHAR(30) NOT NULL ,
   can_buy BOOLEAN NOT NULL ,
   team_id INT REFERENCES teams(id),
   CHECK (team_id > 0),
@@ -169,29 +175,29 @@ CREATE TABLE engine_storage (
   id SERIAL PRIMARY KEY ,
   team_id INT REFERENCES teams(id) NOT NULL ,
   model VARCHAR(30) NOT NULL ,
-  cyclinders INT NOT NULL ,
+  cylinders INT NOT NULL ,
   capacity REAL NOT NULL ,
   mass REAL,
   stroke REAL,
   condition component_condition NOT NULL ,
-  price MONEY NOT NULL,
+  price BIGINT NOT NULL,
   status accept_status NOT NULL,
   CHECK (team_id > 0),
-  CHECK (cyclinders > 0),
+  CHECK (cylinders > 0),
   CHECK (capacity > 0),
   CHECK (mass > 0),
   CHECK (stroke > 0),
-  CHECK (price >= '0'::money)
+  CHECK (price >= 0)
 );
 
 INSERT INTO engine_storage (team_id, model, cyclinders, capacity, mass, stroke, condition, price, status) VALUES
-  (2,'RS27',8,1.9,90.4,39.7,'GOOD','76743'::money,'ACCEPTED'),
-  (2,'ER-75',8,2.3,96.8,38.7,'PERFECT','11237'::money,'ACCEPTED'),
-  (1,'R7',8,2.1,80.7,40.73,'NORMAL','8234'::money,'ACCEPTED'),
-  (1,'S2-T6',8,2.0,88.4,39.9,'AWFUL','7655'::money,'ACCEPTED'),
-  (2,'AQ-W',16,2.8,70.45,39.8,'PERFECT','99999'::money,'ON_REVIEW');
+  (2,'RS27',8,1.9,90.4,39.7,'GOOD',76743,'ACCEPTED'),
+  (2,'ER-75',8,2.3,96.8,38.7,'PERFECT',11237,'ACCEPTED'),
+  (1,'R7',8,2.1,80.7,40.73,'NORMAL',8234,'ACCEPTED'),
+  (1,'S2-T6',8,2.0,88.4,39.9,'AWFUL',7655,'ACCEPTED'),
+  (2,'AQ-W',16,2.8,70.45,39.8,'PERFECT',99999,'ON_REVIEW');
 INSERT INTO engine_storage (team_id, model, cyclinders, capacity, mass, stroke, condition, price, status) VALUES
-  (2,'RS28',8,1.887,98.4,39.78,'GOOD','76743'::money,'ACCEPTED');
+  (2,'RS28',8,1.887,98.4,39.78,'GOOD',76743,'ACCEPTED');
 
 CREATE TABLE chassis_storage (
   id SERIAL PRIMARY KEY ,
@@ -200,22 +206,22 @@ CREATE TABLE chassis_storage (
   height REAL NOT NULL ,
   width REAL NOT NULL ,
   condition component_condition NOT NULL ,
-  price MONEY NOT NULL ,
+  price BIGINT NOT NULL ,
   status accept_status NOT NULL ,
   CHECK (team_id > 0),
   CHECK (height > 0),
   CHECK (width > 0),
-  CHECK (price >= '0'::money)
+  CHECK (price >= 0)
 );
 
 INSERT INTO chassis_storage(team_id, model, height, width, condition, price, status) VALUES
-  (2,'SH-X',300,100,'NORMAL','2344'::money,'ACCEPTED'),
-  (2,'H-12',476,176,'GOOD','24764'::money,'ACCEPTED'),
-  (1,'GachiCH',509,143,'PERFECT','62244'::money,'ON_REVIEW'),
-  (2,'RG-sh',234,99,'NORMAL','76534'::money,'REFUSED'),
-  (1,'ULTRA-c-h-12',199,198,'PERFECT','1422838'::money,'ACCEPTED');
+  (2,'SH-X',300,100,'NORMAL',2344,'ACCEPTED'),
+  (2,'H-12',476,176,'GOOD',24764,'ACCEPTED'),
+  (1,'GachiCH',509,143,'PERFECT',62244,'ON_REVIEW'),
+  (2,'RG-sh',234,99,'NORMAL',76534,'REFUSED'),
+  (1,'ULTRA-c-h-12',199,198,'PERFECT',1422838,'ACCEPTED');
 INSERT INTO chassis_storage(team_id, model, height, width, condition, price, status) VALUES
-  (2,'SH-X2',302,120,'NORMAL','232244'::money,'ACCEPTED');
+  (2,'SH-X2',302,120,'NORMAL',232244,'ACCEPTED');
 
 CREATE TABLE carcase_storage (
   id SERIAL PRIMARY KEY ,
@@ -225,20 +231,20 @@ CREATE TABLE carcase_storage (
   safety_arcs VARCHAR(25) NOT NULL ,
   wings VARCHAR(40) NOT NULL ,
   condition component_condition NOT NULL ,
-  price MONEY NOT NULL ,
+  price BIGINT NOT NULL ,
   status accept_status NOT NULL ,
   CHECK (team_id > 0),
-  CHECK (price >= '0'::money)
+  CHECK (price >= 0)
 );
 
 INSERT INTO carcase_storage (team_id, material, rear_wing, safety_arcs, wings, condition, price, status) VALUES
-  (1,'carbon','XX-1','SEC-01','Q-typed W-2','GOOD','44555'::money,'ACCEPTED'),
-  (1,'carbon','XX-2','SEC-02','R-typed W-3','NORMAL','6555'::money,'ON_REVIEW'),
-  (2,'carbon','XX-3','SEC-01','U-typed W-2','GOOD','464355'::money,'ACCEPTED'),
-  (2,'carbon','XX-4','SEC-01','Y-typed W-2','BAD','8885'::money,'ACCEPTED'),
-  (2,'carbon','XX-5','SEC-00','T-typed W-0','AWFUL','999999'::money,'REFUSED');
+  (1,'carbon','XX-1','SEC-01','Q-typed W-2','GOOD',44555,'ACCEPTED'),
+  (1,'carbon','XX-2','SEC-02','R-typed W-3','NORMAL',6555,'ON_REVIEW'),
+  (2,'carbon','XX-3','SEC-01','U-typed W-2','GOOD',464355,'ACCEPTED'),
+  (2,'carbon','XX-4','SEC-01','Y-typed W-2','BAD',8885,'ACCEPTED'),
+  (2,'carbon','XX-5','SEC-00','T-typed W-0','AWFUL',999999,'REFUSED');
 INSERT INTO carcase_storage (team_id, material, rear_wing, safety_arcs, wings, condition, price, status) VALUES
-  (2,'carbon','XX-6','SEC-01','Q-typed W-2','GOOD','44555'::money,'ACCEPTED');
+  (2,'carbon','XX-6','SEC-01','Q-typed W-2','GOOD',44555,'ACCEPTED');
 
 CREATE TABLE electronics_storage (
   id SERIAL PRIMARY KEY ,
@@ -246,20 +252,20 @@ CREATE TABLE electronics_storage (
   telemetry VARCHAR(30) NOT NULL ,
   control_system VARCHAR(30),
   condition component_condition NOT NULL ,
-  price MONEY NOT NULL ,
+  price BIGINT NOT NULL ,
   status accept_status NOT NULL ,
   CHECK (team_id > 0),
-  CHECK (price >= '0'::money)
+  CHECK (price >= 0)
 );
 
 INSERT INTO electronics_storage(team_id, telemetry, control_system, condition, price, status) VALUES
-  (1,'type 1','GachiContr-3','GOOD','12455'::money,'ACCEPTED'),
-  (1,'type 2','cs-12','NORMAL','55655'::money,'ON_REVIEW'),
-  (2,'type 3','Rogogog','GOOD','3255'::money,'ACCEPTED'),
-  (2,'type 4','Nem_electro','BAD','98885'::money,'ACCEPTED'),
-  (2,'type 5','o-0','AWFUL','9999'::money,'REFUSED');
+  (1,'type 1','GachiContr-3','GOOD',12455,'ACCEPTED'),
+  (1,'type 2','cs-12','NORMAL',55655,'ON_REVIEW'),
+  (2,'type 3','Rogogog','GOOD',3255,'ACCEPTED'),
+  (2,'type 4','Nem_electro','BAD',98885,'ACCEPTED'),
+  (2,'type 5','o-0','AWFUL',9999,'REFUSED');
 INSERT INTO electronics_storage(team_id, telemetry, control_system, condition, price, status) VALUES
-  (2,'type 6', 'NEmo','PERFECT','74563'::money,'ACCEPTED');
+  (2,'type 6', 'NEmo','PERFECT',74563,'ACCEPTED');
 
 CREATE TABLE cars (
   id SERIAL PRIMARY KEY ,
@@ -374,7 +380,7 @@ CREATE TABLE messages (
   is_read BOOLEAN NOT NULL ,
   mess_text TEXT NOT NULL ,
   type message_type NOT NULL ,
-  result BOOLEAN,
+  result SMALLINT,
   CHECK (author_id > 0),
   CHECK (chat_id > 0),
   CHECK (EXTRACT(YEAR FROM time) >= 2019)
@@ -505,19 +511,21 @@ CREATE TABLE pit_stop_service (
   laps INT NOT NULL ,
   fuel REAL,
   tires tire_types,
+  race_time TIME,
   status accept_status NOT NULL,
   CHECK (race_id > 0),
   CHECK (car_id > 0),
   CHECK (place_id > 0),
   CHECK (laps >= 0),
-  CHECK (fuel >= 0)
+  CHECK (fuel >= 0),
+  CHECK (race_time >= '00:00:00')
 );
 
-INSERT INTO pit_stop_service(race_id, place_id, car_id, laps, fuel, tires, status) VALUES
-  (1,1,4,3,20,'SOFT','ACCEPTED'),
-  (1,1,4,9,NULL,'TOUGH','REFUSED'),
-  (1,4,1,16,14,NULL,'ON_REVIEW'),
-  (1,3,2,11,13,'SOFT','ACCEPTED');
+INSERT INTO pit_stop_service(race_id, place_id, car_id, laps, fuel, tires, status,race_time) VALUES
+  (1,1,4,3,20,'SOFT','ACCEPTED','00:00:45'),
+  (1,1,4,9,NULL,'TOUGH','REFUSED','00:12:56'),
+  (1,4,1,16,14,NULL,'ON_REVIEW','00:20:33'),
+  (1,3,2,11,13,'SOFT','ACCEPTED','00:25:01');
 
 CREATE TABLE pit_stop_repair (
   id SERIAL PRIMARY KEY ,
@@ -526,16 +534,18 @@ CREATE TABLE pit_stop_repair (
   car_id INT REFERENCES cars(id) NOT NULL ,
   comment TEXT,
   component component_types,
+  race_time TIME,
   status accept_status NOT NULL,
   CHECK (race_id > 0),
   CHECK (car_id > 0),
-  CHECK (place_id > 0)
+  CHECK (place_id > 0),
+  CHECK (race_time >= '00:00:00')
 );
 
-INSERT INTO pit_stop_repair (race_id, place_id, car_id, comment, component, status) VALUES
-  (1,2,4,'engine is almost dead','ENGINE','REFUSED'),
-  (1,3,1,'wings are destroyed','CARCASE','ON_REVIEW'),
-  (1,1,4,'electronics broken','ELECTRONICS','ACCEPTED');
+INSERT INTO pit_stop_repair (race_id, place_id, car_id, comment, component, status,race_time) VALUES
+  (1,2,4,'engine is almost dead','ENGINE','REFUSED','00:02:02'),
+  (1,3,1,'wings are destroyed','CARCASE','ON_REVIEW','00:04:03'),
+  (1,1,4,'electronics broken','ELECTRONICS','ACCEPTED','00:07:34');
 
 CREATE TABLE pilot_change (
   id SERIAL PRIMARY KEY ,
@@ -544,15 +554,17 @@ CREATE TABLE pilot_change (
   car_id INT REFERENCES cars(id) NOT NULL ,
   pilot_id INT REFERENCES team_members(user_id)  NOT NULL ,
   comment TEXT NOT NULL ,
+  race_time TIME,
   status accept_status NOT NULL,
   CHECK (race_id > 0),
   CHECK (car_id > 0),
   CHECK (place_id > 0),
-  CHECK (pilot_id > 0)
+  CHECK (pilot_id > 0),
+  CHECK (race_time >= '00:00:00')
 );
 
-INSERT INTO pilot_change (race_id, place_id, car_id, pilot_id, comment, status) VALUES
-  (1,3,1,2,'Something happened','REFUSED');
+INSERT INTO pilot_change (race_id, place_id, car_id, pilot_id, comment, status,race_time) VALUES
+  (1,3,1,2,'Something happened','REFUSED','00:37:18');
 
 CREATE TABLE pit_stop_transfer (
   id SERIAL PRIMARY KEY ,
@@ -561,23 +573,17 @@ CREATE TABLE pit_stop_transfer (
   place_to_id INT REFERENCES pit_stop_places(id) NOT NULL ,
   transfer transfers NOT NULL ,
   amount REAL NOT NULL ,
+  race_time TIME,
   status accept_status NOT NULL ,
   CHECK (race_id > 0),
   CHECK (place_from_id > 0),
   CHECK (place_to_id > 0),
-  CHECK (amount > 0)
+  CHECK (amount > 0),
+  CHECK (race_time >= '00:00:00')
 );
 
-INSERT INTO pit_stop_transfer (race_id, place_from_id, place_to_id, transfer, amount, status) VALUES
-  (1,1,2,'FUEL',10,'ACCEPTED'),
-  (1,4,3,'SOFT',2,'ACCEPTED'),
-  (1,2,1,'TOUGH',5,'REFUSED'),
-  (1,3,4,'FUEL',34,'ON_REVIEW');
-
-CREATE TYPE accept_status AS ENUM ('ACCEPTED','ON_REVIEW','REFUSED');
-CREATE TYPE user_spec AS ENUM ('RACER','MANAGER','ADMIN','SPONSOR','CONSTRUCTOR','MECHANIC');
-CREATE TYPE message_type AS ENUM ('ORDINARY','TEAM_INVITE','JOIN_REQUEST','TEAM_CREATE','BUY_PERMISSION');
-CREATE TYPE component_condition AS ENUM ('PERFECT','GOOD','NORMAL','BAD','AWFUL');
-CREATE TYPE component_types AS ENUM ('CARCASE','ENGINE','CHASSIS','ELECTRONICS');
-CREATE TYPE tire_types AS ENUM ('TOUGH','SOFT');
-CREATE TYPE transfers AS ENUM ('TOUGH','FUEL','SOFT');
+INSERT INTO pit_stop_transfer (race_id, place_from_id, place_to_id, transfer, amount, status,race_time) VALUES
+  (1,1,2,'FUEL',10,'ACCEPTED','00:04:23'),
+  (1,4,3,'SOFT',2,'ACCEPTED','00:14:56'),
+  (1,2,1,'TOUGH',5,'REFUSED','00:12:23'),
+  (1,3,4,'FUEL',34,'ON_REVIEW','00:29:38');

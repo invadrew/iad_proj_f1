@@ -1,0 +1,13 @@
+DROP FUNCTION user_type_control() CASCADE;
+DROP FUNCTION non_team_type_control() CASCADE;
+DROP FUNCTION check_buy_ability() CASCADE;
+DROP FUNCTION check_team_accepted() CASCADE ;
+DROP FUNCTION components_changing_check() CASCADE ;
+DROP FUNCTION money_sponsor_control() CASCADE ;
+DROP FUNCTION pilot_change_check() CASCADE;
+DROP FUNCTION piloting_control() CASCADE ;
+DROP FUNCTION pit_stop_repair_check() CASCADE ;
+DROP FUNCTION pit_stop_transfer_check() CASCADE ;
+DROP FUNCTION race_result_check() CASCADE ;
+DROP FUNCTION racers_in_world_cup_control() CASCADE ;
+DROP FUNCTION storage_check() CASCADE ;
