@@ -18,6 +18,11 @@ public interface TeamMemberRepository extends JpaRepository<TeamMember, Integer>
             "  WHERE ((tm.team_id = ?1) AND (u.spec = ?2));", nativeQuery = true)
     List<TeamMember> getAllspecificType(int team, User.Spec spec);
 
+    @Query(value = "SELECT user_id, NAME, surname FROM team_members tm\n" +
+            "  INNER JOIN users u ON (tm.user_id = u.id)\n" +
+            "  WHERE ((tm.team_id = ?1) AND (u.spec = 'RACER'));", nativeQuery = true)
+    List<Object[]> getAllRacers(int team);
+
    List<TeamMember> findAllByTeam (Team team);
 
    @Query(value = "SELECT SUM(res.points) FROM race_results res\n" +

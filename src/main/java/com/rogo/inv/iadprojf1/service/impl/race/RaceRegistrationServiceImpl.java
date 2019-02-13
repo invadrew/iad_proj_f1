@@ -33,6 +33,6 @@ public class RaceRegistrationServiceImpl implements RaceRegistrationService {
         return repository.findById(team, race);
     }
 
-    @Override @Transactional
+    @Override
     public List<Object[]> getRegistrationTable(int race) { return repository.getRegistrationTable(race); }
 }

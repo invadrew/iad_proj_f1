@@ -13,5 +13,7 @@ public interface RaceService {
 
     Race findById(int id);
 
-    Object[] getCurrentEvent();
+    List<Object[]> getCurrentEvent();
+
+    Race findTopByOrderByDateTimeDesc();
 }

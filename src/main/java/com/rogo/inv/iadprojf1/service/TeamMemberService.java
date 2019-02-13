@@ -36,4 +36,6 @@ public interface TeamMemberService {
     Integer bestPlace (int user, int season);
 
     List<Object[]> getBestTrackTime(int user);
+
+    List<Object[]> getAllRacers(int team);
 }

@@ -33,5 +33,8 @@ public class RaceServiceImpl implements RaceService {
     }
 
     @Override
-    public  Object[] getCurrentEvent() { return repository.getCurrentEvent();}
+    public  List<Object[]> getCurrentEvent() { return repository.getCurrentEvent();}
+
+    @Override
+    public  Race findTopByOrderByDateTimeDesc() { return repository.findTopByOrderByDateTimeDesc();}
 }

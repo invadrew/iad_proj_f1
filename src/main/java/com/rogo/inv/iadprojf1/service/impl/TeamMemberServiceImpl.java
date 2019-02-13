@@ -32,7 +32,7 @@ public class TeamMemberServiceImpl implements TeamMemberService {
 
     public TeamMember findByUserId(int id) {return repository.findByUserId(id);}
 
-    @Override @Transactional
+    @Override
     public List<TeamMember> getAllspecificType(int team, User.Spec spec) { return repository.getAllspecificType(team,spec); }
 
     @Override
@@ -64,4 +64,7 @@ public class TeamMemberServiceImpl implements TeamMemberService {
 
     @Override
     public List<Object[]> getBestTrackTime(int user) { return repository.getBestTrackTime(user);}
+
+    @Override
+    public List<Object[]> getAllRacers(int team) { return repository.getAllRacers(team);}
 }

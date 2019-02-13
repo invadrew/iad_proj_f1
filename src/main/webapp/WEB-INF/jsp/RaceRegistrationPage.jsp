@@ -19,39 +19,61 @@
             <div class="inside_block_wrapper">
                 <div class="infotab">
                     <center><h3>Ближайшая гонка</h3></center>
-                    Гран-При России 2019
+                    ${currRace[0][1]} ${currRace[0][0]}
                     <br>
-                    Участников: 20
+                    Макс. участников: ${currRace[0][5]}
                     <br>
-                    Команд: 10
+                    Макс. команд: ${currRace[0][5]/2}
                     <br>
-                    Начало: бла-бла-бла
+                    Начало: <fmt:formatDate value="${currRace[0][3]}" pattern="dd-MM-yyyy HH:mm" />
+                    <br>
+                    Номер этапа: ${currRace[0][2]}
+                    <br>
+                    Трасса: ${currRace[0][4]}
                 </div>
                 <div class="infotab">
                     <center><h3>Принять участие</h3></center>
-                    Команда: RogoNemRacing
+                    <sec:authorize access="hasAuthority('MANAGER')">
+                        <c:url value="/team" var="uUrl">
+                            <c:param name="id" value="${team.id}"/>
+                        </c:url>
+                        <a class="redirHref" href="${uUrl}">
+                            Команда: ${team.name}
+                        </a>
                     <br> <br>
                     <form>
                         <label for="firstPilotreg">Первый пилот:</label>
                         <select class="res-selector" id="firstPilotreg">
-                            <option>hello there</option>
+                            <c:forEach items="${racers}" var="racer">
+                                <option value="${racer[0]}"> <c:out value="${racer[1]} ${racer[2]}"/> </option>
+                            </c:forEach>
                         </select>
                         <label for="firstCarreg">Болид:</label>
                         <select class="res-selector" id="firstCarreg">
-                            <option>hello there</option>
+                            <c:forEach items="${cars}" var="car">
+                                <option value="${car.id}"> <c:out value="${car.label} ${car.model}"/> </option>
+                            </c:forEach>
                         </select>
                         <br>
                         <label for="secPilotreg">Второй пилот:</label>
                         <select class="res-selector" id="secPilotreg">
-                            <option>hello there</option>
+                            <c:forEach items="${racers}" var="racer">
+                                <option value="${racer[0]}"> <c:out value="${racer[1]} ${racer[2]}"/> </option>
+                            </c:forEach>
                         </select>
                         <label for="secCarreg">Болид:</label>
                         <select class="res-selector" id="secCarreg">
-                            <option>hello there</option>
+                            <c:forEach items="${cars}" var="car">
+                                <option value="${car.id}"> <c:out value="${car.label} ${car.model}"/> </option>
+                            </c:forEach>
                         </select>
                         <br> <br>
                         <center><input type="submit" class="res-selector" value="Зарегистрироваться"></center>
                     </form>
+                    </sec:authorize>
+                    <sec:authorize access="hasAnyAuthority('RACER','MECHANIC','CONSTRUCTOR','SPONSOR','ADMIN')">
+                        Только менеджеры регестритруют команды
+                    </sec:authorize>
                 </div>
                 <div class="infotab" style="text-align: center" id="toArch">
                     Узнать результаты прошлых гонок:
@@ -70,48 +92,30 @@
                             <th>Команда</th>
                             <th>Болид</th>
                         </tr>
+                        <% int i = 0;%>
+                        <c:forEach items="${regTable}" var="row">
                         <tr>
-                            <td>№</td>
-                            <td>Гонщик</td>
-                            <td>Команда</td>
-                            <td>Болид</td>
+                            <% i++;%>
+                            <td> <%= i%> </td>
+                            <td>
+                                <c:url value="/profile" var="uUrl">
+                                    <c:param name="id" value="${row[5]}"/>
+                                </c:url>
+                                <a class="redirHref" href="${uUrl}">
+                                        ${row[0]} ${row[1]}
+                                </a>
+                            </td>
+                            <td>
+                                <c:url value="/team" var="uUrl">
+                                    <c:param name="id" value="${row[6]}"/>
+                                </c:url>
+                                <a class="redirHref" href="${uUrl}">
+                                        ${row[2]}
+                                </a>
+                            </td>
+                            <td> ${row[3]} ${row[4]} </td>
                         </tr>
-                        <tr>
-                            <td>№</td>
-                            <td>Гонщик</td>
-                            <td>Команда</td>
-                            <td>Болид</td>
-                        </tr>
-                        <tr>
-                            <td>№</td>
-                            <td>Гонщик</td>
-                            <td>Команда</td>
-                            <td>Болид</td>
-                        </tr>
-                        <tr>
-                            <td>№</td>
-                            <td>Гонщик</td>
-                            <td>Команда</td>
-                            <td>Болид</td>
-                        </tr>
-                        <tr>
-                            <td>№</td>
-                            <td>Гонщик</td>
-                            <td>Команда</td>
-                            <td>Болид</td>
-                        </tr>
-                        <tr>
-                            <td>№</td>
-                            <td>Гонщик</td>
-                            <td>Команда</td>
-                            <td>Болид</td>
-                        </tr>
-                        <tr>
-                            <td>№</td>
-                            <td>Гонщик</td>
-                            <td>Команда</td>
-                            <td>Болид</td>
-                        </tr>
+                        </c:forEach>
                     </table>
                 </div>
             </div>

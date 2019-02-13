@@ -30,7 +30,7 @@ public class AuthController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String toMain(ModelMap map) {
         List<Object[]> mainPageResTable = constrCupResultService.getRates();
-        Object[] currentEvent = raceService.getCurrentEvent();
+        List<Object[]> currentEvent = raceService.getCurrentEvent();
         Object[] newSponsNews = sponsoringService.getLatestSponsNews();
         Object[] newRaceNews = raceResultService.getRaceNews();
         map.addAttribute("mainPageResTable", mainPageResTable);
