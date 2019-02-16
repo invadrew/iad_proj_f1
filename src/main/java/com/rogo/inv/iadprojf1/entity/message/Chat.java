@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.gson.Gson;
 import com.rogo.inv.iadprojf1.DBUtility;
 import com.rogo.inv.iadprojf1.entity.User;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -32,6 +29,7 @@ public class Chat {
             mappedBy = "chat")
     private List<Message> messages = new ArrayList<>();
 
+    @EqualsAndHashCode.Exclude
     @ManyToMany(cascade = CascadeType.ALL,
             fetch = FetchType.EAGER,
             mappedBy = "chats")

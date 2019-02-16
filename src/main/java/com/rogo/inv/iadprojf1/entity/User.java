@@ -39,6 +39,7 @@ public class User {
 
     private String comments;
 
+    @EqualsAndHashCode.Exclude
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_chat",
