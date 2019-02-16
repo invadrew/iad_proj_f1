@@ -41,3 +41,9 @@ html, body, .grid-container { height: 100%; margin: 0; }
         flex-direction: column;
     }
 }
+
+@media only screen  and (min-device-width: 451px) and (max-device-width: 1080px) {
+    .MainArea {
+        font-size: 14pt;
+    }
+}

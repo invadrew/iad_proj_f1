@@ -1,12 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <div class="Header">
+    <script type="text/javascript" src="../scripts/HeaderScript.js"> </script>
     <div class="Header-LogoContainer">
         <img src="/pictures/Formula_1_logo.jpg">
     </div>
     <div class="Header-UserInfo-container">
         <sec:authorize access="!(hasAuthority('ADMIN'))">
-        ${name}
+            ${name}
         </sec:authorize>
         <sec:authorize access="hasAuthority('ADMIN')">
             Панель администратора
@@ -16,9 +17,9 @@
         </form>
     </div>
     <div class="UserPhoto-container">
-    <sec:authorize access="!(hasAuthority('ADMIN'))">
-        <img src="/pictures/rogoVK.jpg">
-    </sec:authorize>
+        <sec:authorize access="!(hasAuthority('ADMIN'))">
+            <img src="/pictures/rogoVK.jpg">
+        </sec:authorize>
     </div>
 </div>
 <div class="HeaderMenu">
@@ -33,7 +34,7 @@
     <div class="searcher">
         <form>
             <input type="text" placeholder="Поиск по сайту" id="search">
-            <input type="submit" value="Найти" id="find">
+            <input type="submit" value="Найти" id="find" onclick="window.location = ('/search?toSearch' + document.getElementById('search').value)">
         </form>
     </div>
 </div>
