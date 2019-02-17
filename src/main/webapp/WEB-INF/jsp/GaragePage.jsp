@@ -1,3 +1,8 @@
+<%@ page import="java.util.List" %>
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,41 +14,10 @@
 <body>
 <script type="text/javascript" src="../scripts/GarageScript.js"> </script>
 <div class="grid-container">
-    <!-- TODO: try to make ui component for header zone-->
-    <div class="Header">
-        <div class="Header-LogoContainer">
-            <img src="/pictures/Formula_1_logo.jpg">
-        </div>
-        <div class="Header-UserInfo-container">
-            Никита Рогаленко
-            <form action="/logout">
-                <input type="submit" value="Выйти" id="out">
-            </form>
-        </div>
-        <div class="UserPhoto-container">
-            <img src="/pictures/rogoVK.jpg">
-        </div>
-    </div>
-    <div class="HeaderMenu">
-        <ul>
-            <li><a href="MainPage.jsp">Профиль</a></li>
-            <li><a href="MainPage.jsp">Команда</a></li>
-            <li><a href="MainPage.jsp">Гараж</a></li>
-            <li><a href="MainPage.jsp">Заезды</a></li>
-            <li><a href="RanksPage.jsp">Рейтинг</a></li>
-            <li><a href="MainPage.jsp">Сообщения</a></li>
-        </ul>
-        <div class="searcher">
-            <form>
-                <input type="text" placeholder="Поиск по сайту" id="search">
-                <input type="submit" value="Найти" id="find">
-            </form>
-        </div>
-    </div>
-    <!-- end if-->
+    <jsp:include page="Header.jsp"/>
     <div class="TeamNameArea">
         <br>
-        <center><label style="padding-top: 3px" ><b>RogoNemRacing</b></label></center>
+        <center><label style="padding-top: 3px" ><b>${team.name}</b></label></center>
     </div>
     <div class="MainArea">
         <div class="CarSelectArea">
@@ -51,7 +25,12 @@
                 <div class="infotab"> <center>
                     <input type="button" class="res-selector" value="Болиды" onclick="chooseCars()"> <br>
                     <input type="button" class="res-selector" value="Склад" onclick="chooseStore()"> <br>
+                    <sec:authorize access="hasAuthority('MECHANIC')">
                     <input type="button" class="res-selector" value="Заменить деталь" onclick="chooseChange()">
+                    </sec:authorize>
+                    <sec:authorize access="hasAuthority('CONSTRUCTOR')">
+                        <input type="button" class="res-selector" value="Добавить деталь" onclick="location.href='/add_detail'">
+                    </sec:authorize>
                 </center>
                 </div>
                 <div class="FilterArea" hidden id="filter">
@@ -74,14 +53,15 @@
         </div>
         <div class="WorkingArea">
             <div class="inside_block_wrapper">
-                <div class="infotab">
 
+                <div class="infotab">
+                    <c:forEach items="${cars}" var="car"/>
                     <div class="cars-main-zone" id="carsZone">
                         <div class="PhotoArea">
                             <div class="inside_block_wrapper" style="background: #2f2727">
                                 <div class="infotab">
                             <div style="width: 50%; height: 50%; position: relative; margin-left: 25%; margin-right: 25%">
-                            <img src="../../../resources/pictures/CarDemo.jpg" style="width: 100%; height: 100%;">
+                            <img src="/pictures/CarDemo.jpg" style="width: 100%; height: 100%;">
                             </div>
                                 </div>
                             </div>
@@ -124,6 +104,7 @@
                                 </tr>
                             </table>
                         </div>
+                        <sec:authorize access="hasAuthority('MECHANIC')">
                         <div class="RepairArea">
                             <center><h3>Ремонт</h3></center>
                             <table class="infotable">
@@ -147,6 +128,7 @@
                                 </tr>
                             </table>
                         </div>
+                        </sec:authorize>
                     </div>
 
                     <div class="storage-area" >
@@ -256,6 +238,7 @@
 
                     <div class="DetailChange" id="changes" hidden>
                             <center><h3>Замена оборудования</h3></center>
+                            <sec:authorize access="hasAuthority('MECHANIC')">
                             <form>
                                 <label for="car-select">Выберите болид</label>
                                 <select id="car-select" class="res-selector" style="width: 30% !important;">
@@ -271,6 +254,7 @@
                                 </select> <br>
                                 <input type="submit" class="res-selector" value="Подтвердить" style="width: 30% !important;">
                             </form>
+                            </sec:authorize>
                     </div>
 
                 </div>

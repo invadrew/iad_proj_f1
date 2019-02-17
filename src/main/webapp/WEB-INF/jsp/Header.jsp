@@ -26,7 +26,7 @@
     <ul>
         <li><a href="/profile">Профиль</a></li>
         <li><a href="/team">Команда</a></li>
-        <li><a href="MainPage.jsp">Гараж</a></li>
+        <li><a href="/garage">Гараж</a></li>
         <li><a href="/race-reg">Заезды</a></li>
         <li><a href="/ranks">Рейтинг</a></li>
         <li><a href="MainPage.jsp">Сообщения</a></li>
