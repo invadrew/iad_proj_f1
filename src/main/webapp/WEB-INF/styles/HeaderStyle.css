@@ -51,8 +51,8 @@
 }
 
 .redirHref {
-    text-decoration: none;
-    color: white;
+    text-decoration: none; !important;
+    color: white; !important;
 }
 
 .redirHref:hover {

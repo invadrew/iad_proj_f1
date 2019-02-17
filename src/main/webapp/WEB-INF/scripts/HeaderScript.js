@@ -1,14 +1,14 @@
 function sendSearch() {
 
-    let search = document.getElementById('search').value;
+    let toSearch =  $('#search').val();
 
     $.ajax({
         type: "GET",
         url: "/search",
         data: {
-            "toSearch": search
-        },
-        success: window.location = '/search?toSearch' + search
+            "toSearch": toSearch
+        }
+        //success: window.location = '/search?toSearch=' + search
     });
 
 }

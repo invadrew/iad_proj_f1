@@ -32,6 +32,7 @@ public class Sponsor {
     @NotNull @Min(0)
     private long budget;
 
+    @ToString.Exclude
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
             mappedBy = "sponsor",
             orphanRemoval = true)

@@ -6,6 +6,7 @@ import com.rogo.inv.iadprojf1.entity.Season;
 import com.rogo.inv.iadprojf1.entity.Team;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -23,6 +24,7 @@ public class ConstrCupResult {
     @JsonBackReference
     private Season season;
 
+    @ToString.Exclude
     @Id @NotNull
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "team_id")

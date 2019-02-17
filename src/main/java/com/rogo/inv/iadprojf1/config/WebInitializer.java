@@ -45,5 +45,11 @@ public class WebInitializer implements WebApplicationInitializer {
         ranksServlet.setLoadOnStartup(1);
         ranksServlet.addMapping("/ranks");
         ranksServlet.addMapping("/RanksPage");
+
+        ServletRegistration.Dynamic searchServlet =
+                sc.addServlet("Search servlet", new DispatcherServlet(new GenericWebApplicationContext()));
+        ranksServlet.setLoadOnStartup(1);
+        ranksServlet.addMapping("/search");
+        ranksServlet.addMapping("/SearchPage");
     }
 }

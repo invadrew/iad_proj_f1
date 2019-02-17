@@ -1,8 +1,6 @@
 package com.rogo.inv.iadprojf1.repository;
 
 import com.rogo.inv.iadprojf1.entity.Team;
-import com.rogo.inv.iadprojf1.entity.TeamMember;
-import com.rogo.inv.iadprojf1.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

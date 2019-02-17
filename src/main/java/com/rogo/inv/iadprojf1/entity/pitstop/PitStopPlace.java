@@ -22,6 +22,7 @@ public class PitStopPlace {
     @NotNull @Column(length = DBUtility.NAME_LEN)
     private String name;
 
+    @ToString.Exclude
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")

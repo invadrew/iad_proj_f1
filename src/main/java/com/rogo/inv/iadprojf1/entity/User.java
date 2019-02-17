@@ -6,9 +6,7 @@ import com.rogo.inv.iadprojf1.entity.message.Chat;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.*;
 
 @Entity
@@ -39,6 +37,7 @@ public class User {
 
     private String comments;
 
+    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(

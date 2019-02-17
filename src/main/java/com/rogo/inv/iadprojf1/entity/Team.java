@@ -11,6 +11,7 @@ import com.rogo.inv.iadprojf1.entity.storage.ElectronicsStorage;
 import com.rogo.inv.iadprojf1.entity.storage.EngineStorage;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -38,53 +39,61 @@ public class Team {
 
     private String comments;
 
+    @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             mappedBy = "team")
     @JsonManagedReference
     private List<TeamMember> teamMembers = new ArrayList<>();
 
+    @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             mappedBy = "team")
     @JsonManagedReference
     private List<Sponsoring> sponsorings = new ArrayList<>();
 
+    @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             mappedBy = "team")
     @JsonManagedReference
     private List<Car> cars = new ArrayList<>();
 
+    @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             mappedBy = "team")
     @JsonManagedReference
     private List<EngineStorage> engines = new ArrayList<>();
 
+    @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             mappedBy = "team")
     @JsonManagedReference
     private List<ChassisStorage> chassis = new ArrayList<>();
 
+    @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             mappedBy = "team")
     @JsonManagedReference
     private List<ElectronicsStorage> electronics = new ArrayList<>();
 
+    @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             mappedBy = "team")
     private List<CarcaseStorage> carcases = new ArrayList<>();
 
-
+    @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             mappedBy = "team")
     private List<ConstrCupResult> constrCupResults = new ArrayList<>();
 
+    @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             mappedBy = "team")

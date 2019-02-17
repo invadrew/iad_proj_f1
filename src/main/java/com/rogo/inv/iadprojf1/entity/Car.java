@@ -9,6 +9,7 @@ import com.rogo.inv.iadprojf1.entity.race.RaceResult;
 import com.rogo.inv.iadprojf1.entity.storage.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -33,6 +34,7 @@ public class Car {
     @NotNull @Min(1900)
     private int creationYear;
 
+    @ToString.Exclude
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "team_id")

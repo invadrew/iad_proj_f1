@@ -32,9 +32,9 @@
         <li><a href="MainPage.jsp">Сообщения</a></li>
     </ul>
     <div class="searcher">
-        <form>
-            <input type="text" placeholder="Поиск по сайту" id="search">
-            <input type="submit" value="Найти" id="find" onclick="window.location = ('/search?toSearch' + document.getElementById('search').value)">
+        <form  action="/search">
+            <input type="text" name="toSearch" placeholder="Поиск по сайту" id="search">
+            <input type="submit" value="Найти" id="find" onclick="sendSearch()" />
         </form>
     </div>
 </div>

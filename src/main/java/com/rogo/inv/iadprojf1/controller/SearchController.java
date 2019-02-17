@@ -1,8 +1,10 @@
 package com.rogo.inv.iadprojf1.controller;
 
+import com.rogo.inv.iadprojf1.entity.Sponsor;
 import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.TeamMember;
 import com.rogo.inv.iadprojf1.entity.User;
+import com.rogo.inv.iadprojf1.service.SponsorService;
 import com.rogo.inv.iadprojf1.service.TeamMemberService;
 import com.rogo.inv.iadprojf1.service.TeamService;
 import com.rogo.inv.iadprojf1.service.UserService;
@@ -13,12 +15,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 @Controller
 public class SearchController {
+
+    @Autowired
+    private SponsorService sponsorService;
 
     @Autowired
     private UserService userService;
@@ -30,7 +39,7 @@ public class SearchController {
     private TeamService teamService;
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public String toSearch(ModelMap map, Authentication authentication, @Param("toSearch") String toSearch) {
+    public String toSearch(ModelMap map, Authentication authentication, @RequestParam String toSearch, HttpServletRequest request, HttpServletResponse response) {
 
         User user = userService.findByLogin(authentication.getName());
 
@@ -40,6 +49,7 @@ public class SearchController {
 
         List<TeamMember> users = teamMemberService.findAll();
         List<Team> teams = teamService.findAll();
+        List<Sponsor> sponsors = sponsorService.findAll();
 
         Iterator<TeamMember> itU = users.iterator();
         while (itU.hasNext()) {
@@ -61,8 +71,36 @@ public class SearchController {
             }
         }
 
+        Iterator<Sponsor> itS = sponsors.iterator();
+        while (itS.hasNext()) {
+            Sponsor sponsor = itS.next();
+            if (!(sponsorService.findByUserId(userService.findById(sponsor.getUserId()).getId()).getName().toLowerCase()
+                    .contains(toSearch.toLowerCase()))) {
+                itS.remove();
+            }
+        }
+
+
+       /* List<Object[]> user_names = new ArrayList<>();
+        List<Object[]> team_names = new ArrayList<>();
+
+        for ( int i=0; i<users.size(); i++) {
+            String un = users.get(i).getName() + " " + users.get(i).getSurname();
+            Integer id = users.get(i).getUserId();
+            Object[] uO = {un , id };
+            user_names.add(uO);
+        }
+
+        for ( int i=0; i<teams.size(); i++) {
+            String tn = teams.get(i).getName();
+            Integer id = teams.get(i).getId();
+            Object[] tO = {tn, id };
+            team_names.add(tO);
+        }
+*/
         map.addAttribute("users", users);
         map.addAttribute("teams", teams);
+        map.addAttribute("sponsors", sponsors);
 
         return "SearchPage";
 
