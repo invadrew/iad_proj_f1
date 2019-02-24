@@ -74,6 +74,11 @@ public class GarageController {
         map.addAttribute("carcases", carcases);
         map.addAttribute("electronics", electronics);
 
+        map.addAttribute("carcaseStorage", carcaseStorageService.findAllByTeam(team));
+        map.addAttribute("enginesStorage", engineStorageService.findAllByTeam(team));
+        map.addAttribute("chassisStorage", chassisStorageService.findAllByTeam(team));
+        map.addAttribute("electronicsStorage", electronicsStorageService.findAllByTeam(team));
+
         return "GaragePage";
     }
 }

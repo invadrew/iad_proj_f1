@@ -13,6 +13,7 @@
     <title>Гараж</title>
 </head>
 <body>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 <script type="text/javascript" src="../scripts/GarageScript.js"> </script>
 <div class="grid-container">
     <jsp:include page="Header.jsp"/>
@@ -36,20 +37,42 @@
                 </div>
                 <div class="FilterArea" hidden id="filter">
                     <div class="inside_block_wrapper" style="background: #2f2727">
+
                         <div class="infotab">
                             <center><h3>Фильтр</h3></center>
-                            <form>
+                          <!--   <form> -->
                                 <label for="compType">Тип</label>
-                                <select class="res-selector" id="compType" style="width: 70% !important;">
-                                    <option selected>Каркас</option>
-                                    <option>Шасси</option>
-                                    <option>Двигатель</option>
-                                    <option>Электроника</option>
+                                <select class="res-selector" id="compType" style="width: 70% !important;" onchange="chooseFilter()">
+                                    <option selected value="any">Любой</option>
+                                    <option value="carcase">Каркас</option>
+                                    <option value="chassis">Шасси</option>
+                                    <option value="engine">Двигатель</option>
+                                    <option value="electronics">Электроника</option>
                                 </select>
-                            </form>
+
+                              <!--  <input type="submit" value="Показать" class="res-selector" style="margin-top: 7%">
+                            </form> -->
                         </div>
+
+                            <div class="infotab" id="carcase_filter" hidden>
+
+                            </div>
+
+                            <div class="infotab" id="chassis_filter" hidden>
+                                dfgfdgd
+                            </div>
+
+                            <div class="infotab" id="engine_filter" hidden>
+                                dfgdf
+                            </div>
+
+                            <div class="infotab" id="electronics_filter" hidden>
+                                dfgdfgfd
+                            </div>
+
                     </div>
                 </div>
+
             </div>
         </div>
         <div class="WorkingArea">
@@ -91,7 +114,7 @@
                                 </tr>
                                 <tr>
                                     <td>Каркас</td>
-                                    <td> Антикрыло: ${carcases.get(cars.indexOf(car)).rearWing}.
+                                    <td> Спойлер: ${carcases.get(cars.indexOf(car)).rearWing}.
                                         Дуги безопасности: ${carcases.get(cars.indexOf(car)).safetyArcs} .
                                         Крылья: ${carcases.get(cars.indexOf(car)).wings} </td>
                                     <td>
@@ -184,19 +207,21 @@
                                     <th>Крылья</th>
                                     <th>Состояние</th>
                                 </tr>
+                                <c:forEach items="${carcaseStorage}" var="carc">
                                 <tr>
-                                    <td>Материал</td>
-                                    <td>Спойлер</td>
-                                    <td>Дуги безопасности</td>
-                                    <td>Крылья</td>
-                                    <td>Состояние</td>
-                                </tr>  <tr>
-                                <td>Материал</td>
-                                <td>Спойлер</td>
-                                <td>Дуги безопасности</td>
-                                <td>Крылья</td>
-                                <td>Состояние</td>
-                            </tr>
+                                    <td>${carc.material}</td>
+                                    <td>${carc.rearWing}</td>
+                                    <td>${carc.safetyArcs}</td>
+                                    <td>${carc.wings}</td>
+                                    <td>
+                                        <c:if test="${carc.condition.equals(ComponentCondition.PERFECT)}">Идеальное</c:if>
+                                        <c:if test="${carc.condition.equals(ComponentCondition.GOOD)}">Хорошее</c:if>
+                                        <c:if test="${carc.condition.equals(ComponentCondition.NORMAL)}">Нормальное</c:if>
+                                        <c:if test="${carc.condition.equals(ComponentCondition.BAD)}">Плохое</c:if>
+                                        <c:if test="${carc.condition.equals(ComponentCondition.AWFUL)}">Ужасное</c:if>
+                                    </td>
+                                </tr>
+                                </c:forEach>
                             </table>
 
                             <h2>Шасси</h2>
@@ -207,18 +232,20 @@
                                     <th>Ширина</th>
                                     <th>Состояние</th>
                                 </tr>
+                               <c:forEach items="${chassisStorage}" var="chass">
                                 <tr>
-                                    <td>Модель</td>
-                                    <td>Высота</td>
-                                    <td>Ширина</td>
-                                    <td>Состояние</td>
+                                    <td>${chass.model}</td>
+                                    <td>${chass.height}</td>
+                                    <td>${chass.width}</td>
+                                    <td>
+                                        <c:if test="${chass.condition.equals(ComponentCondition.PERFECT)}">Идеальное</c:if>
+                                        <c:if test="${chass.condition.equals(ComponentCondition.GOOD)}">Хорошее</c:if>
+                                        <c:if test="${chass.condition.equals(ComponentCondition.NORMAL)}">Нормальное</c:if>
+                                        <c:if test="${chass.condition.equals(ComponentCondition.BAD)}">Плохое</c:if>
+                                        <c:if test="${chass.condition.equals(ComponentCondition.AWFUL)}">Ужасное</c:if>
+                                    </td>
                                 </tr>
-                                <tr>
-                                    <td>Модель</td>
-                                    <td>Высота</td>
-                                    <td>Ширина</td>
-                                    <td>Состояние</td>
-                                </tr>
+                               </c:forEach>
                             </table>
 
                             <h2>Двигатели</h2>
@@ -231,22 +258,22 @@
                                     <th>Ход поршня</th>
                                     <th>Состояние</th>
                                 </tr>
+                                <c:forEach items="${enginesStorage}" var="eng">
                                 <tr>
-                                    <td>Модель</td>
-                                    <td>Кол-во Цилиндров</td>
-                                    <td>Объем</td>
-                                    <td>Масса</td>
-                                    <td>Ход поршня</td>
-                                    <td>Состояние</td>
+                                    <td>${eng.model}</td>
+                                    <td>${eng.cyclinders}</td>
+                                    <td>${eng.capacity}</td>
+                                    <td>${eng.mass}</td>
+                                    <td>${eng.stroke}</td>
+                                    <td>
+                                        <c:if test="${eng.condition.equals(ComponentCondition.PERFECT)}">Идеальное</c:if>
+                                        <c:if test="${eng.condition.equals(ComponentCondition.GOOD)}">Хорошее</c:if>
+                                        <c:if test="${eng.condition.equals(ComponentCondition.NORMAL)}">Нормальное</c:if>
+                                        <c:if test="${eng.condition.equals(ComponentCondition.BAD)}">Плохое</c:if>
+                                        <c:if test="${eng.condition.equals(ComponentCondition.AWFUL)}">Ужасное</c:if>
+                                    </td>
                                 </tr>
-                                <tr>
-                                    <td>Модель</td>
-                                    <td>Кол-во Цилиндров</td>
-                                    <td>Объем</td>
-                                    <td>Масса</td>
-                                    <td>Ход поршня</td>
-                                    <td>Состояние</td>
-                                </tr>
+                                </c:forEach>
                             </table>
 
                             <h2>Электроника</h2>
@@ -256,21 +283,19 @@
                                     <th>Система контроля</th>
                                     <th>Состояние</th>
                                 </tr>
+                                <c:forEach items="${electronicsStorage}" var="electr">
                                 <tr>
-                                    <td>Телеметрия</td>
-                                    <td>Система контроля</td>
-                                    <td>Состояние</td>
+                                    <td>${electr.telemetry}</td>
+                                    <td>${electr.controlSystem}</td>
+                                    <td>
+                                        <c:if test="${electr.condition.equals(ComponentCondition.PERFECT)}">Идеальное</c:if>
+                                        <c:if test="${electr.condition.equals(ComponentCondition.GOOD)}">Хорошее</c:if>
+                                        <c:if test="${electr.condition.equals(ComponentCondition.NORMAL)}">Нормальное</c:if>
+                                        <c:if test="${electr.condition.equals(ComponentCondition.BAD)}">Плохое</c:if>
+                                        <c:if test="${electr.condition.equals(ComponentCondition.AWFUL)}">Ужасное</c:if>
+                                    </td>
                                 </tr>
-                                <tr>
-                                    <td>Телеметрия</td>
-                                    <td>Система контроля</td>
-                                    <td>Состояние</td>
-                                </tr>
-                                <tr>
-                                    <td>Телеметрия</td>
-                                    <td>Система контроля</td>
-                                    <td>Состояние</td>
-                                </tr>
+                                </c:forEach>
                             </table>
 
                         </div>
