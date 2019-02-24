@@ -3,10 +3,11 @@ package com.rogo.inv.iadprojf1.controller;
 import com.rogo.inv.iadprojf1.entity.Car;
 import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.User;
-import com.rogo.inv.iadprojf1.service.CarService;
-import com.rogo.inv.iadprojf1.service.TeamMemberService;
-import com.rogo.inv.iadprojf1.service.TeamService;
-import com.rogo.inv.iadprojf1.service.UserService;
+import com.rogo.inv.iadprojf1.entity.storage.CarcaseStorage;
+import com.rogo.inv.iadprojf1.entity.storage.ChassisStorage;
+import com.rogo.inv.iadprojf1.entity.storage.ElectronicsStorage;
+import com.rogo.inv.iadprojf1.entity.storage.EngineStorage;
+import com.rogo.inv.iadprojf1.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -27,10 +28,19 @@ public class GarageController {
     private TeamMemberService teamMemberService;
 
     @Autowired
-    private TeamService teamService;
+    private CarService carService;
 
     @Autowired
-    private CarService carService;
+    private ChassisStorageService chassisStorageService;
+
+    @Autowired
+    private EngineStorageService engineStorageService;
+
+    @Autowired
+    private ElectronicsStorageService electronicsStorageService;
+
+    @Autowired
+    private CarcaseStorageService carcaseStorageService;
 
     @RequestMapping(value = "/garage", method = RequestMethod.GET)
     public String toGarage(ModelMap map, Authentication authentication) {
@@ -45,7 +55,24 @@ public class GarageController {
 
         List<Car> cars = carService.findAllByTeam(team);
 
+        List<ChassisStorage> chassis = new ArrayList<>();
+        List<EngineStorage> engines = new ArrayList<>();
+        List<CarcaseStorage> carcases = new ArrayList<>();
+        List<ElectronicsStorage> electronics = new ArrayList<>();
+
+        for (Car car: cars) {
+            chassis.add(car.getCurrentChassis());
+            engines.add(car.getCurrentEngine());
+            carcases.add(car.getCurrentCarcase());
+            electronics.add(car.getCurrentElectronics());
+        }
+        
         map.addAttribute("cars", cars);
+
+        map.addAttribute("chassis", chassis);
+        map.addAttribute("engines",engines);
+        map.addAttribute("carcases", carcases);
+        map.addAttribute("electronics", electronics);
 
         return "GaragePage";
     }

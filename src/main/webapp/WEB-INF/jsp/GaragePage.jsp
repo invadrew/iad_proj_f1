@@ -1,4 +1,5 @@
 <%@ page import="java.util.List" %>
+<%@ page import="com.rogo.inv.iadprojf1.entity.ComponentCondition" %>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -55,8 +56,9 @@
             <div class="inside_block_wrapper">
 
                 <div class="infotab">
-                    <c:forEach items="${cars}" var="car"/>
                     <div class="cars-main-zone" id="carsZone">
+                        <c:forEach items="${cars}" var="car">
+                            <div class="infotab">
                         <div class="PhotoArea">
                             <div class="inside_block_wrapper" style="background: #2f2727">
                                 <div class="infotab">
@@ -67,40 +69,76 @@
                             </div>
                         </div>
                         <div class="CarInfoArea">
-                            Марка: АККАКД
+                            Марка: ${car.label}
                             <br>
-                            Модель: уаыацуау
+                            Модель: ${car.model}
                             <br>
-                            Год выпуска: 9428
+                            Год выпуска: ${car.creationYear}
                             <br>
-                            Готовность: готов
+                            <c:if test="${(car.isReady)}">
+                                <c:out value="Готов к гонке"/>
+                            </c:if>
+                            <c:if test="${!(car.isReady)}">
+                                <c:out value="Не готов к гонке"/>
+                            </c:if>
                         </div>
                         <div class="DeatilsInfoArea">
-                            <table class="infotable" border="1">
+                            <table class="infotable" border="1" style="text-align: left">
                                 <tr>
                                     <th>Тип</th>
                                     <th>Описание комплектующего</th>
                                     <th>Состояние</th>
                                 </tr>
                                 <tr>
-                                    <td>Тип</td>
-                                    <td>Описание комплектующего</td>
-                                    <td>Состояние</td>
+                                    <td>Каркас</td>
+                                    <td> Антикрыло: ${carcases.get(cars.indexOf(car)).rearWing}.
+                                        Дуги безопасности: ${carcases.get(cars.indexOf(car)).safetyArcs} .
+                                        Крылья: ${carcases.get(cars.indexOf(car)).wings} </td>
+                                    <td>
+                                        <c:if test="${carcases.get(cars.indexOf(car)).condition.equals(ComponentCondition.PERFECT)}">Идеальное</c:if>
+                                        <c:if test="${carcases.get(cars.indexOf(car)).condition.equals(ComponentCondition.GOOD)}">Хорошее</c:if>
+                                        <c:if test="${carcases.get(cars.indexOf(car)).condition.equals(ComponentCondition.NORMAL)}">Нормальное</c:if>
+                                        <c:if test="${carcases.get(cars.indexOf(car)).condition.equals(ComponentCondition.BAD)}">Плохое</c:if>
+                                        <c:if test="${carcases.get(cars.indexOf(car)).condition.equals(ComponentCondition.AWFUL)}">Ужасное</c:if>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td>Тип</td>
-                                    <td>Описание комплектующего</td>
-                                    <td>Состояние</td>
+                                    <td>Двигатель</td>
+                                    <td> Мод. ${engines.get(cars.indexOf(car)).model}, ход поршня: ${engines.get(cars.indexOf(car)).stroke} мм,
+                                            ${engines.get(cars.indexOf(car)).cyclinders} цил., ${engines.get(cars.indexOf(car)).capacity} литров,
+                                            ${engines.get(cars.indexOf(car)).mass} кг
+                                    </td>
+                                    <td>
+                                        <c:if test="${engines.get(cars.indexOf(car)).condition.equals(ComponentCondition.PERFECT)}">Идеальное</c:if>
+                                        <c:if test="${engines.get(cars.indexOf(car)).condition.equals(ComponentCondition.GOOD)}">Хорошее</c:if>
+                                        <c:if test="${engines.get(cars.indexOf(car)).condition.equals(ComponentCondition.NORMAL)}">Нормальное</c:if>
+                                        <c:if test="${engines.get(cars.indexOf(car)).condition.equals(ComponentCondition.BAD)}">Плохое</c:if>
+                                        <c:if test="${engines.get(cars.indexOf(car)).condition.equals(ComponentCondition.AWFUL)}">Ужасное</c:if>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td>Тип</td>
-                                    <td>Описание комплектующего</td>
-                                    <td>Состояние</td>
+                                    <td>Шасси</td>
+                                    <td> Мод. ${chassis.get(cars.indexOf(car)).model}, ширина: ${chassis.get(cars.indexOf(car)).width},
+                                        высота: ${chassis.get(cars.indexOf(car)).height} </td>
+                                    <td>
+                                        <c:if test="${chassis.get(cars.indexOf(car)).condition.equals(ComponentCondition.PERFECT)}">Идеальное</c:if>
+                                        <c:if test="${chassis.get(cars.indexOf(car)).condition.equals(ComponentCondition.GOOD)}">Хорошее</c:if>
+                                        <c:if test="${chassis.get(cars.indexOf(car)).condition.equals(ComponentCondition.NORMAL)}">Нормальное</c:if>
+                                        <c:if test="${chassis.get(cars.indexOf(car)).condition.equals(ComponentCondition.BAD)}">Плохое</c:if>
+                                        <c:if test="${chassis.get(cars.indexOf(car)).condition.equals(ComponentCondition.AWFUL)}">Ужасное</c:if>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td>Тип</td>
-                                    <td>Описание комплектующего</td>
-                                    <td>Состояние</td>
+                                    <td>Электроника </td>
+                                    <td> Телеметрия: ${electronics.get(cars.indexOf(car)).telemetry}.
+                                        Сист. контроля: ${electronics.get(cars.indexOf(car)).controlSystem}</td>
+                                    <td>
+                                        <c:if test="${electronics.get(cars.indexOf(car)).condition.equals(ComponentCondition.PERFECT)}">Идеальное</c:if>
+                                        <c:if test="${electronics.get(cars.indexOf(car)).condition.equals(ComponentCondition.GOOD)}">Хорошее</c:if>
+                                        <c:if test="${electronics.get(cars.indexOf(car)).condition.equals(ComponentCondition.NORMAL)}">Нормальное</c:if>
+                                        <c:if test="${electronics.get(cars.indexOf(car)).condition.equals(ComponentCondition.BAD)}">Плохое</c:if>
+                                        <c:if test="${electronics.get(cars.indexOf(car)).condition.equals(ComponentCondition.AWFUL)}">Ужасное</c:if>
+                                    </td>
                                 </tr>
                             </table>
                         </div>
@@ -129,6 +167,8 @@
                             </table>
                         </div>
                         </sec:authorize>
+                            </div>
+                        </c:forEach>
                     </div>
 
                     <div class="storage-area" >

@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.ComponentCondition;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -13,6 +15,7 @@ import javax.validation.constraints.*;
 
 @MappedSuperclass
 @NoArgsConstructor
+@Getter @Setter @ToString
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public abstract class BaseStorage {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

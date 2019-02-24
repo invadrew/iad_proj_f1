@@ -8,6 +8,7 @@ import com.rogo.inv.iadprojf1.entity.pitstop.PitStopService;
 import com.rogo.inv.iadprojf1.entity.race.RaceResult;
 import com.rogo.inv.iadprojf1.entity.storage.*;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -47,7 +48,7 @@ public class Car {
     private Photo photo;
 
     @NotNull
-    private boolean isReady;
+    private Boolean isReady;
 
     @NotNull
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -93,7 +94,7 @@ public class Car {
     /* ================================
      constructors
     ================================ */
-    public Car(@NotNull String label, @NotNull String model, @NotNull @Min(1900) int creationYear, @NotNull Team team, @NotNull Photo photo, @NotNull boolean isReady, @NotNull CarcaseStorage currentCarcase, @NotNull EngineStorage currentEngine, @NotNull ChassisStorage currentChassis, @NotNull ElectronicsStorage currentElectronics) {
+    public Car(@NotNull String label, @NotNull String model, @NotNull @Min(1900) int creationYear, @NotNull Team team, @NotNull Photo photo, @NotNull Boolean isReady, @NotNull CarcaseStorage currentCarcase, @NotNull EngineStorage currentEngine, @NotNull ChassisStorage currentChassis, @NotNull ElectronicsStorage currentElectronics) {
         this.label = label;
         this.model = model;
         this.creationYear = creationYear;
