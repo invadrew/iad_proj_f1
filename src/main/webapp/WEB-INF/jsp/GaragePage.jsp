@@ -141,7 +141,51 @@
                             </div>
 
                             <div class="infotab" id="electronics_filter" hidden>
+                                <form>
 
+                                    <% List<Object> elecTel = new ArrayList<>();
+                                        pageContext.setAttribute("elecTel", elecTel);%>
+                                    <label for="elec-tel">Телеметрия</label>
+                                    <select class="res-selector" id="elec-tel" style="width: 70% !important;">
+                                        <option value="any">Любой</option>
+                                        <c:forEach items="${electronicsStorage}" var="elec">
+                                            <c:if test="${!elecTel.contains(elec.telemetry)}">
+                                                <option value="${elec.telemetry}">${elec.telemetry}</option>
+                                                <c:set var="telemetry" value="${elec.telemetry}"/>
+                                                <% elecTel.add(pageContext.getAttribute("telemetry"));%>
+                                            </c:if>
+                                        </c:forEach>
+                                    </select>
+                                    <br>
+
+                                    <% List<Object> elecCS = new ArrayList<>();
+                                        pageContext.setAttribute("elecCS", elecCS);%>
+                                    <label for="elec-cs">Система контроля</label>
+                                    <select class="res-selector" id="elec-cs" style="width: 70% !important;">
+                                        <option value="any">Любой</option>
+                                        <c:forEach items="${electronicsStorage}" var="elec">
+                                            <c:if test="${!elecCS.contains(elec.controlSystem)}">
+                                                <option value="${elec.controlSystem}">${elec.controlSystem}</option>
+                                                <c:set var="cs" value="${elec.controlSystem}"/>
+                                                <% elecCS.add(pageContext.getAttribute("cs"));%>
+                                            </c:if>
+                                        </c:forEach>
+                                    </select>
+                                    <br>
+
+                                    <label for="elec-cond">Состояние</label>
+                                    <select class="res-selector" id="elec-cond" style="width: 70% !important;">
+                                        <option value="ANY">Любое</option>
+                                        <option value="PERFECT">Идеальное</option>
+                                        <option value="GOOD">Хорошее</option>
+                                        <option value="NORMAL">Нормальное</option>
+                                        <option value="BAD">Плохое</option>
+                                        <option value="AWFUL">Ужасное</option>
+                                    </select>
+                                    <br>
+
+                                    <input type="button" class="res-selector" value="Показать" style="margin-top: 4%" onclick="sendElectronicsData(event)" >
+                                </form>
                             </div>
 
                     </div>

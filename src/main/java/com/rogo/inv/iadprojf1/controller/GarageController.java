@@ -131,4 +131,47 @@ public class GarageController {
 
         return filteredCarcases;
     }
+
+    @RequestMapping(value = "/garage/electronics", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Object[]> getFilteredCarcases(@RequestParam String telemetry, @RequestParam String controlSystem,
+                                              @RequestParam ComponentCondition condition, Authentication authentication) {
+        List<ElectronicsStorage> teamElectronics = electronicsStorageService.findAllByTeam(
+                teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam());
+        List<Object[]> filteredElectronics = new ArrayList<>();
+
+        for (ElectronicsStorage elec: teamElectronics) {
+            if ((elec.getTelemetry().equals(telemetry) || telemetry.equals("any")) &&
+                    (elec.getControlSystem().equals(controlSystem) || controlSystem.equals("any"))
+                    && (elec.getCondition().equals(condition) || (condition.equals(ANY)))) {
+
+                String elCond = "";
+
+                switch (elec.getCondition()) {
+                    case AWFUL:
+                        elCond = "Ужасное";
+                        break;
+                    case BAD:
+                        elCond = "Плохое";
+                        break;
+                    case NORMAL:
+                        elCond = "Нормальное";
+                        break;
+                    case GOOD:
+                        elCond = "Хорошее";
+                        break;
+                    case PERFECT:
+                        elCond = "Идеальное";
+                        break;
+                }
+
+                Object[] characteristics = { elec.getTelemetry(), elec.getControlSystem(), elCond};
+                filteredElectronics.add(characteristics);
+
+            }
+        }
+
+        return filteredElectronics;
+    }
+
 }

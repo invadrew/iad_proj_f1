@@ -43,6 +43,16 @@ function chooseFilter() {
          chassisFilter.hidden = true;
          engineFilter.hidden = true;
          electronicsFilter.hidden = true;
+
+         document.getElementById("carcTable").hidden = false;
+         document.getElementById("carcTabLabel").hidden = false;
+         document.getElementById("chassTable").hidden = false;
+         document.getElementById("chassTabLabel").hidden = false;
+         document.getElementById("engTable").hidden = false;
+         document.getElementById("engTabLabel").hidden = false;
+         document.getElementById("elecTable").hidden = false;
+         document.getElementById("elecTabLabel").hidden = false;
+
          break;
 
      case 'carcase':
@@ -116,4 +126,41 @@ function sendCarcaseData(event) {
 
         }
     });
+}
+
+function sendElectronicsData(event) {
+
+    let telemetry = $('#elec-tel').val();
+    let controlSystem = $('#elec-cs').val();
+    let condition = $('#elec-cond').val();
+
+    $.ajax({
+        type: "GET",
+        url: "/garage/electronics",
+        data: {
+            "telemetry": telemetry,
+            "controlSystem": controlSystem,
+            "condition": condition
+        },
+        success: function (data) {
+            $('#elecTable').find("tr:gt(0)").remove();
+            document.getElementById("carcTable").hidden = true;
+            document.getElementById("carcTabLabel").hidden = true;
+            document.getElementById("chassTable").hidden = true;
+            document.getElementById("chassTabLabel").hidden = true;
+            document.getElementById("engTable").hidden = true;
+            document.getElementById("engTabLabel").hidden = true;
+            document.getElementById("elecTable").hidden = false;
+            document.getElementById("elecTabLabel").hidden = false;
+            for (let i=0; i < data.length; i++) {
+                let $tr = $('<tr>').append(
+                    $('<td>').text(data[i][0]),
+                    $('<td>').text(data[i][1]),
+                    $('<td>').text(data[i][2]));
+                $('#elecTable').append($tr);
+            }
+
+        }
+    });
+
 }
