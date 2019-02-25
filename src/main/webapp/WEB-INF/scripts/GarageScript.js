@@ -128,6 +128,62 @@ function sendCarcaseData(event) {
     });
 }
 
+function sendChassisData(event) {
+
+    let model = $('#chass-model').val();
+    let heightFrom = $('#height-from').val();
+    let heightTo = $('#height-to').val();
+    let widthFrom = $('#width-from').val();
+    let widthTo = $('#width-to').val();
+    let condition = $('#chass-cond').val();
+
+    if (widthFrom > widthTo) {
+        let tmp = widthTo;
+        widthTo = widthFrom;
+        widthFrom = tmp;
+    }
+
+    if (widthTo === "") { widthTo = 9999999; }
+    if (widthFrom === "") { widthFrom = 0; }
+    if (heightTo === "") { heightTo = 9999999; }
+    if (heightFrom === "") { heightFrom = 0; }
+
+    $.ajax({
+        type: "GET",
+        url: "/garage/chassis",
+        data: {
+            "model": model,
+            "heightFrom": heightFrom,
+            "heightTo": heightTo,
+            "widthFrom": widthFrom,
+            "widthTo": widthTo,
+            "condition": condition
+        },
+        success: function (data) {
+            $('#chassTable').find("tr:gt(0)").remove();
+            document.getElementById("carcTable").hidden = true;
+            document.getElementById("carcTabLabel").hidden = true;
+            document.getElementById("chassTable").hidden = false;
+            document.getElementById("chassTabLabel").hidden = false;
+            document.getElementById("engTable").hidden = true;
+            document.getElementById("engTabLabel").hidden = true;
+            document.getElementById("elecTable").hidden = true;
+            document.getElementById("elecTabLabel").hidden = true;
+            for (let i=0; i < data.length; i++) {
+                let $tr = $('<tr>').append(
+                    $('<td>').text(data[i][0]),
+                    $('<td>').text(data[i][1]),
+                    $('<td>').text(data[i][2]),
+                    $('<td>').text(data[i][3]));
+                $('#chassTable').append($tr);
+            }
+
+        }
+    });
+
+
+}
+
 function sendElectronicsData(event) {
 
     let telemetry = $('#elec-tel').val();

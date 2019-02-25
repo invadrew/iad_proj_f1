@@ -133,7 +133,50 @@
                             </div>
 
                             <div class="infotab" id="chassis_filter" hidden>
+                                <form>
 
+                                    <% List<Object> chassModel = new ArrayList<>();
+                                        pageContext.setAttribute("chassModel", chassModel);%>
+                                    <label for="chass-model">Модель</label>
+                                    <select class="res-selector" id="chass-model" style="width: 70% !important;">
+                                        <option value="any">Любой</option>
+                                        <c:forEach items="${chassisStorage}" var="chass">
+                                            <c:if test="${!chassModel.contains(chass.model)}">
+                                                <option value="${chass.model}">${chass.model}</option>
+                                                <c:set var="chModel" value="${chass.model}"/>
+                                                <% chassModel.add(pageContext.getAttribute("chModel"));%>
+                                            </c:if>
+                                        </c:forEach>
+                                    </select>
+                                    <br>
+                                    Высота
+                                    <br>
+                                    <label for="height-from">От</label>
+                                    <input type="number" min="0" class="res-selector" id="height-from" style="width: 30% !important;">
+                                    <label for="height-to">до</label>
+                                    <input type="number" min="0" class="res-selector" id="height-to" style="width: 30% !important;">
+                                    <br>
+                                    Ширина
+                                    <br>
+                                    <label for="width-from">От</label>
+                                    <input type="number" min="0" class="res-selector" id="width-from" style="width: 30% !important;">
+                                    <label for="width-to">до</label>
+                                    <input type="number" min="0" class="res-selector" id="width-to" style="width: 30% !important;">
+                                    <br>
+
+                                    <label for="chass-cond">Состояние</label>
+                                    <select class="res-selector" id="chass-cond" style="width: 70% !important;">
+                                        <option value="ANY">Любое</option>
+                                        <option value="PERFECT">Идеальное</option>
+                                        <option value="GOOD">Хорошее</option>
+                                        <option value="NORMAL">Нормальное</option>
+                                        <option value="BAD">Плохое</option>
+                                        <option value="AWFUL">Ужасное</option>
+                                    </select>
+                                    <br>
+
+                                    <input type="button" class="res-selector" value="Показать" style="margin-top: 4%" onclick="sendChassisData(event)" >
+                                </form>
                             </div>
 
                             <div class="infotab" id="engine_filter" hidden>
