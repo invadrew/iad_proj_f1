@@ -5,5 +5,6 @@ public enum ComponentCondition {
     GOOD,
     NORMAL,
     BAD,
-    AWFUL
+    AWFUL,
+    ANY
 }

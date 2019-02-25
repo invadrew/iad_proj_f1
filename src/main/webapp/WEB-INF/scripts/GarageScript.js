@@ -74,5 +74,46 @@ function chooseFilter() {
          break;
  }
 
+}
 
+function sendCarcaseData(event) {
+
+    let material = $('#carc-material').val();
+    let rearWing = $('#carc-rareWing').val();
+    let safetyArcs = $('#carc-safetyArcs').val();
+    let wings = $('#carc-wings').val();
+    let condition = $('#carc-cond').val();
+
+    $.ajax({
+        type: "GET",
+        url: "/garage/carcase",
+        data: {
+            "material": material,
+            "rearWing": rearWing,
+            "safetyArcs": safetyArcs,
+            "wings": wings,
+            "condition": condition
+        },
+        success: function (data) {
+            $('#carcTable').find("tr:gt(0)").remove();
+            document.getElementById("carcTable").hidden = false;
+            document.getElementById("carcTabLabel").hidden = false;
+            document.getElementById("chassTable").hidden = true;
+            document.getElementById("chassTabLabel").hidden = true;
+            document.getElementById("engTable").hidden = true;
+            document.getElementById("engTabLabel").hidden = true;
+            document.getElementById("elecTable").hidden = true;
+            document.getElementById("elecTabLabel").hidden = true;
+            for (let i=0; i < data.length; i++) {
+                let $tr = $('<tr>').append(
+                    $('<td>').text(data[i][0]),
+                    $('<td>').text(data[i][1]),
+                    $('<td>').text(data[i][2]),
+                    $('<td>').text(data[i][3]),
+                    $('<td>').text(data[i][4]));
+                $('#carcTable').append($tr);
+            }
+
+        }
+    });
 }

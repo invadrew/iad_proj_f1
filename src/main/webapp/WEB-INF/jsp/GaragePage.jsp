@@ -1,5 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.rogo.inv.iadprojf1.entity.ComponentCondition" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -55,19 +56,92 @@
                         </div>
 
                             <div class="infotab" id="carcase_filter" hidden>
+                                <form>
+                                    <% List<Object> carcMaterial = new ArrayList<>();
+                                       pageContext.setAttribute("material", carcMaterial);%>
+                                    <label for="carc-material">Материал</label>
+                                    <select class="res-selector" id="carc-material" style="width: 70% !important;">
+                                        <option value="any">Любой</option>
+                                        <c:forEach items="${carcaseStorage}" var="carc">
+                                            <c:if test="${!material.contains(carc.material)}">
+                                              <option value="${carc.material}">${carc.material}</option>
+                                                <c:set var="mat" value="${carc.material}"/>
+                                                <% carcMaterial.add(pageContext.getAttribute("mat"));%>
+                                            </c:if>
+                                        </c:forEach>
+                                    </select>
+                                    <br>
 
+                                    <% List<Object> carcRWing = new ArrayList<>();
+                                        pageContext.setAttribute("Rwing", carcRWing);%>
+                                    <label for="carc-rareWing">Спойлер</label>
+                                    <select class="res-selector" id="carc-rareWing" style="width: 70% !important;">
+                                        <option value="any">Любой</option>
+                                        <c:forEach items="${carcaseStorage}" var="carc">
+                                            <c:if test="${!Rwing.contains(carc.rearWing)}">
+                                            <option value="${carc.rearWing}">${carc.rearWing}</option>
+                                                <c:set var="rwing" value="${carc.rearWing}"/>
+                                                <% carcRWing.add(pageContext.getAttribute("rwing"));%>
+                                            </c:if>
+                                        </c:forEach>
+                                    </select>
+                                    <br>
+
+                                    <% List<Object> carcSArcs = new ArrayList<>();
+                                        pageContext.setAttribute("carcSArcs", carcSArcs);%>
+                                    <label for="carc-safetyArcs">Дуги безопасности</label>
+                                    <select class="res-selector" id="carc-safetyArcs" style="width: 70% !important;">
+                                        <option value="any">Любой</option>
+                                        <c:forEach items="${carcaseStorage}" var="carc">
+                                            <c:if test="${!carcSArcs.contains(carc.safetyArcs)}">
+                                            <option value="${carc.safetyArcs}">${carc.safetyArcs}</option>
+                                                <c:set var="sarcs" value="${carc.safetyArcs}"/>
+                                                <% carcSArcs.add(pageContext.getAttribute("sarcs"));%>
+                                            </c:if>
+                                        </c:forEach>
+                                    </select>
+                                    <br>
+
+                                    <% List<Object> carcWings = new ArrayList<>();
+                                        pageContext.setAttribute("carcWings", carcWings);%>
+                                    <label for="carc-wings">Крылья</label>
+                                    <select class="res-selector" id="carc-wings" style="width: 70% !important;">
+                                        <option value="any">Любой</option>
+                                        <c:forEach items="${carcaseStorage}" var="carc">
+                                            <c:if test="${!carcWings.contains(carc.wings)}">
+                                            <option value="${carc.wings}">${carc.wings}</option>
+                                                <c:set var="wings" value="${carc.wings}"/>
+                                                <% carcWings.add(pageContext.getAttribute("wings"));%>
+                                            </c:if>
+                                        </c:forEach>
+                                    </select>
+                                    <br>
+
+                                    <label for="carc-cond">Состояние</label>
+                                    <select class="res-selector" id="carc-cond" style="width: 70% !important;">
+                                        <option value="ANY">Любое</option>
+                                        <option value="PERFECT">Идеальное</option>
+                                        <option value="GOOD">Хорошее</option>
+                                        <option value="NORMAL">Нормальное</option>
+                                        <option value="BAD">Плохое</option>
+                                        <option value="AWFUL">Ужасное</option>
+                                    </select>
+                                    <br>
+
+                                    <input type="button" class="res-selector" value="Показать" style="margin-top: 4%" onclick="sendCarcaseData(event)" >
+                                </form>
                             </div>
 
                             <div class="infotab" id="chassis_filter" hidden>
-                                dfgfdgd
+
                             </div>
 
                             <div class="infotab" id="engine_filter" hidden>
-                                dfgdf
+
                             </div>
 
                             <div class="infotab" id="electronics_filter" hidden>
-                                dfgdfgfd
+
                             </div>
 
                     </div>
@@ -198,7 +272,7 @@
 
                         <div class="StoreTableArea" id="storage" style="width: 100%; margin: 2%" hidden >
                             <h1 style="text-align: center">Склад</h1>
-                            <h2>Каркасы</h2>
+                            <h2 id="carcTabLabel">Каркасы</h2>
                             <table class="infotable" border="1"  id="carcTable" style="font-size: 16pt">
                                 <tr>
                                     <th>Материал</th>
@@ -224,7 +298,7 @@
                                 </c:forEach>
                             </table>
 
-                            <h2>Шасси</h2>
+                            <h2 id="chassTabLabel">Шасси</h2>
                             <table class="infotable" border="1" style="font-size: 16pt" id="chassTable">
                                 <tr>
                                     <th>Модель</th>
@@ -248,7 +322,7 @@
                                </c:forEach>
                             </table>
 
-                            <h2>Двигатели</h2>
+                            <h2 id="engTabLabel">Двигатели</h2>
                             <table class="infotable" border="1" style="font-size: 16pt"  id="engTable">
                                 <tr>
                                     <th>Модель</th>
@@ -276,7 +350,7 @@
                                 </c:forEach>
                             </table>
 
-                            <h2>Электроника</h2>
+                            <h2 id="elecTabLabel">Электроника</h2>
                             <table class="infotable" border="1" style="font-size: 16pt" id="elecTable">
                                 <tr>
                                     <th>Телеметрия</th>
