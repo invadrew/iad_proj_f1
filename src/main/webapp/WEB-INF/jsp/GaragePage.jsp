@@ -181,6 +181,66 @@
 
                             <div class="infotab" id="engine_filter" hidden>
 
+                                <form>
+
+                                    <% List<Object> engModel = new ArrayList<>();
+                                        pageContext.setAttribute("engModel", engModel);%>
+                                    <label for="eng-model">Модель</label>
+                                    <select class="res-selector" id="eng-model" style="width: 70% !important;">
+                                        <option value="any">Любой</option>
+                                        <c:forEach items="${enginesStorage}" var="eng">
+                                            <c:if test="${!engModel.contains(eng.model)}">
+                                                <option value="${eng.model}">${eng.model}</option>
+                                                <c:set var="engModel" value="${eng.model}"/>
+                                                <% engModel.add(pageContext.getAttribute("engModel"));%>
+                                            </c:if>
+                                        </c:forEach>
+                                    </select>
+                                    <br>
+
+                                    Цилиндров
+                                    <br>
+                                    <label for="cycl-from">От</label>
+                                    <input type="number" min="0" class="res-selector" id="cycl-from" style="width: 30% !important;">
+                                    <label for="cycl-to">до</label>
+                                    <input type="number" min="0" class="res-selector" id="cycl-to" style="width: 30% !important;">
+                                    <br>
+                                    Объем
+                                    <br>
+                                    <label for="cap-from">От</label>
+                                    <input type="number" min="0" class="res-selector" id="cap-from" style="width: 30% !important;">
+                                    <label for="cap-to">до</label>
+                                    <input type="number" min="0" class="res-selector" id="cap-to" style="width: 30% !important;">
+                                    <br>
+                                    Масса
+                                    <br>
+                                    <label for="mass-from">От</label>
+                                    <input type="number" min="0" class="res-selector" id="mass-from" style="width: 30% !important;">
+                                    <label for="mass-to">до</label>
+                                    <input type="number" min="0" class="res-selector" id="mass-to" style="width: 30% !important;">
+                                    <br>
+                                    Ход поршня
+                                    <br>
+                                    <label for="stroke-from">От</label>
+                                    <input type="number" min="0" class="res-selector" id="stroke-from" style="width: 30% !important;">
+                                    <label for="stroke-to">до</label>
+                                    <input type="number" min="0" class="res-selector" id="stroke-to" style="width: 30% !important;">
+                                    <br>
+
+                                    <label for="eng-cond">Состояние</label>
+                                    <select class="res-selector" id="eng-cond" style="width: 70% !important;">
+                                        <option value="ANY">Любое</option>
+                                        <option value="PERFECT">Идеальное</option>
+                                        <option value="GOOD">Хорошее</option>
+                                        <option value="NORMAL">Нормальное</option>
+                                        <option value="BAD">Плохое</option>
+                                        <option value="AWFUL">Ужасное</option>
+                                    </select>
+                                    <br>
+
+                                    <input type="button" class="res-selector" value="Показать" style="margin-top: 4%" onclick="sendEngineData(event)" >
+                                </form>
+
                             </div>
 
                             <div class="infotab" id="electronics_filter" hidden>

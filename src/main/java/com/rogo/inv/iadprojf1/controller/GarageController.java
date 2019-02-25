@@ -170,6 +170,42 @@ public class GarageController {
 
     }
 
+
+    @RequestMapping(value = "/garage/engines", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Object[]> getFilteredEngines(@RequestParam String model,
+                                             @RequestParam Double cyclFrom, @RequestParam Double cyclTo,
+                                             @RequestParam Double capFrom, @RequestParam Double capTo,
+                                             @RequestParam Double massFrom, @RequestParam Double massTo,
+                                             @RequestParam Double strokeFrom, @RequestParam Double strokeTo,
+                                             @RequestParam ComponentCondition condition, Authentication authentication) {
+
+        List<EngineStorage> teamEngines = engineStorageService.findAllByTeam(
+                teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam());
+        List<Object[]> filteredEngines = new ArrayList<>();
+
+
+        for (EngineStorage eng:teamEngines) {
+
+            if ((eng.getModel().equals(model) || model.equals("any")) &&
+                    ( (eng.getCyclinders() >= cyclFrom) && (eng.getCyclinders() <= cyclTo) )
+                    && ((eng.getCapacity() >= capFrom) && (eng.getCapacity() <= capTo))
+                    && ((eng.getMass() >= massFrom) && (eng.getMass() <= massTo))
+                    && ((eng.getStroke() >= strokeFrom) && (eng.getStroke() <= strokeTo))
+                    && (eng.getCondition().equals(condition) || (condition.equals(ANY)))) {
+
+                String cond = getNamedCondition(eng.getCondition());
+
+                Object[] characteristics = { eng.getModel(), eng.getCyclinders(), eng.getCapacity(), eng.getMass(), eng.getStroke(), cond};
+                filteredEngines.add(characteristics);
+
+            }
+        }
+
+        return filteredEngines;
+
+    }
+
     private String getNamedCondition( @NotNull ComponentCondition condition) {
         String cond = "";
         switch (condition) {

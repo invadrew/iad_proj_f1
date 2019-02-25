@@ -143,6 +143,13 @@ function sendChassisData(event) {
         widthFrom = tmp;
     }
 
+    if (heightFrom > heightTo) {
+        let tmp = heightTo;
+        heightTo = heightFrom;
+        heightFrom = tmp;
+    }
+
+
     if (widthTo === "") { widthTo = 9999999; }
     if (widthFrom === "") { widthFrom = 0; }
     if (heightTo === "") { heightTo = 9999999; }
@@ -176,6 +183,96 @@ function sendChassisData(event) {
                     $('<td>').text(data[i][2]),
                     $('<td>').text(data[i][3]));
                 $('#chassTable').append($tr);
+            }
+
+        }
+    });
+
+
+}
+
+
+function sendEngineData(event) {
+
+    let model = $('#eng-model').val();
+    let cyclFrom = $('#cycl-from').val();
+    let cyclTo = $('#cycl-to').val();
+    let capFrom = $('#cap-from').val();
+    let capTo = $('#cap-to').val();
+    let strokeFrom = $('#stroke-from').val();
+    let strokeTo = $('#stroke-to').val();
+    let massFrom = $('#mass-from').val();
+    let massTo = $('#mass-to').val();
+    let condition = $('#eng-cond').val();
+
+    if (cyclFrom > cyclTo) {
+        let tmp = cyclTo;
+        cyclTo = cyclFrom;
+        cyclFrom = tmp;
+    }
+
+    if (strokeFrom > strokeTo) {
+        let tmp = strokeTo;
+        strokeTo = strokeFrom;
+        strokeFrom = tmp;
+    }
+
+    if (capFrom > capTo) {
+        let tmp = capTo;
+        capTo = capFrom;
+        capFrom = tmp;
+    }
+
+    if (massFrom > massTo) {
+        let tmp = massTo;
+        massTo = massFrom;
+        massFrom = tmp;
+    }
+
+
+    if (capTo === "") { capTo = 9999999; }
+    if (capFrom === "") { capFrom = 0; }
+    if (massTo === "") { massTo = 9999999; }
+    if (massFrom === "") { massFrom = 0; }
+    if (strokeTo === "") { strokeTo = 9999999; }
+    if (strokeFrom === "") { strokeFrom = 0; }
+    if (cyclTo === "") { cyclTo = 9999999; }
+    if (cyclFrom === "") { cyclFrom = 0; }
+
+    $.ajax({
+        type: "GET",
+        url: "/garage/engines",
+        data: {
+            "model": model,
+            "cyclFrom": cyclFrom,
+            "cyclTo": cyclTo,
+            "capFrom": capFrom,
+            "capTo": capTo,
+            "massFrom": massFrom,
+            "massTo": massTo,
+            "strokeFrom": strokeFrom,
+            "strokeTo": strokeTo,
+            "condition": condition
+        },
+        success: function (data) {
+            $('#engTable').find("tr:gt(0)").remove();
+            document.getElementById("carcTable").hidden = true;
+            document.getElementById("carcTabLabel").hidden = true;
+            document.getElementById("chassTable").hidden = true;
+            document.getElementById("chassTabLabel").hidden = true;
+            document.getElementById("engTable").hidden = false;
+            document.getElementById("engTabLabel").hidden = false;
+            document.getElementById("elecTable").hidden = true;
+            document.getElementById("elecTabLabel").hidden = true;
+            for (let i=0; i < data.length; i++) {
+                let $tr = $('<tr>').append(
+                    $('<td>').text(data[i][0]),
+                    $('<td>').text(data[i][1]),
+                    $('<td>').text(data[i][2]),
+                    $('<td>').text(data[i][3]),
+                    $('<td>').text(data[i][4]),
+                    $('<td>').text(data[i][5]));
+                $('#engTable').append($tr);
             }
 
         }
