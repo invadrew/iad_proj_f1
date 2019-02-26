@@ -51,7 +51,8 @@ public class SponsorController {
         List<Object[]> sponsorings = new ArrayList<>();
 
         for (Object[] team: spTeams) {
-            Object[] elements = { team[0], team[1] , sponsoringService.findAllByTeamAndSponsor(teamService.findById( (Integer) team[1]),
+            Object[] elements = { team[0], team[1] , sponsoringService.getSumMoneyForTeam(sponsor.getUserId(), teamService.findById((Integer) team[1]).getId()) ,
+                    sponsoringService.findAllByTeamAndSponsor(teamService.findById( (Integer) team[1]),
                     sponsorService.findByUserId(sponsor.getUserId())) };
             sponsorings.add(elements);
         }

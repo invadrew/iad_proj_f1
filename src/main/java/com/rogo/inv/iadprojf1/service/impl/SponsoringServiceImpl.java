@@ -50,4 +50,7 @@ public class SponsoringServiceImpl implements SponsoringService {
     @Override
     public Object[] getLatestSponsNews() {return repository.getLatestSponsNews();}
 
+    @Override
+    public  int getSumMoneyForTeam(int sponsor, int team) { return repository.getSumMoneyForTeam(sponsor, team);}
+
 }

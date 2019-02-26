@@ -19,6 +19,9 @@ public interface SponsoringRepository extends JpaRepository<Sponsoring, Integer>
     @Query(value = "SELECT SUM(sp.sp_money) FROM sponsoring sp WHERE (sp.sponsor_id = ?1);", nativeQuery = true)
     int getSumMoney(int sponsor);
 
+    @Query(value = "SELECT SUM(sp.sp_money) FROM sponsoring sp WHERE ((sp.sponsor_id = ?1) AND (sp.team_id = ?2));", nativeQuery = true)
+    int getSumMoneyForTeam(int sponsor, int team);
+
     @Query(value = "SELECT DISTINCT sp.team_id FROM sponsoring sp WHERE (sp.sponsor_id = ?1);", nativeQuery = true)
     List<Object[]> getSponsInfo(int team);
 

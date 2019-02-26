@@ -43,7 +43,7 @@
                 <div class="sptab">
                     <div class="sp-team-info">
                         <h3>${sponsoring[0]}</h3>
-                        Суммарно потрачено:
+                        Суммарно потрачено: ${sponsoring[2]}
                         <br>
                         <form>
                             <label for="moneySp">Спонсировать</label>
@@ -58,7 +58,7 @@
                                     <th> Дата </th>
                                     <th> Потрачено </th>
                                 </tr>
-                                <c:forEach items="${sponsoring[2]}" var="sp_info">
+                                <c:forEach items="${sponsoring[3]}" var="sp_info">
                                 <tr>
                                     <td> <fmt:formatDate value="${sp_info.date}" pattern="dd-MM-yyyy" /> </td>
                                     <td> ${sp_info.spMoney} </td>

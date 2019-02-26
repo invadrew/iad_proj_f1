@@ -36,7 +36,12 @@
                 <div class="infotab">
                     <h4 style="text-align: center">Спонсоры</h4>
                     <c:forEach items="${sponsors}" var="sponsor">
+                        <c:url value="/sponsor" var="uUrl">
+                            <c:param name="id" value="${sponsor.userId}"/>
+                        </c:url>
+                        <a class="redirHref" href="${uUrl}">
                             <label style="float: left; margin-left: 15%" class="redirHref"> ${sponsor.name} </label>
+                        </a>
                         <br> <br>
                     </c:forEach>
                 </div>

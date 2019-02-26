@@ -21,6 +21,8 @@ public interface SponsoringService {
 
     List<Object[]> getSponsInfo(int team);
 
+    int getSumMoneyForTeam(int sponsor, int team);
+
     List<Sponsoring> findAllByTeamAndSponsor(Team team, Sponsor sponsor);
 
     Object[] getLatestSponsNews();

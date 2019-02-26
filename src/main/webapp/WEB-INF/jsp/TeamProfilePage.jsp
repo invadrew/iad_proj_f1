@@ -55,7 +55,14 @@
                             </tr>
                             <c:if test="${sponsors != null}">
                                 <c:forEach items="${sponsors}" var="sp">
-                                <tr><td> <c:out value="${sp[0]}"/></td></tr>
+                                <tr><td>
+                                    <c:url value="/sponsor" var="uUrl">
+                                        <c:param name="id" value="${sp[1]}"/>
+                                    </c:url>
+                                    <a class="redirHref" href="${uUrl}">
+                                        <c:out value="${sp[0]}"/>
+                                    </a>
+                                </td></tr>
                                 </c:forEach>
                             </c:if>
                             <c:if test="${sponsors == null}">
