@@ -33,13 +33,24 @@ public class RaceArchiveController {
     @Autowired
     private RaceResultService raceResultService;
 
+    @Autowired
+    private SponsorService sponsorService;
+
     @RequestMapping(value = "/race-res", method = RequestMethod.GET)
     public String toRaceResPage(ModelMap map, Authentication authentication) {
 
         User user = userService.findByLogin(authentication.getName());
 
-        String name = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getName() + " " +
-                teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getSurname();
+        String name = "Панель администратора";
+
+        if (userService.findByLogin(authentication.getName()).getSpec().equals(User.Spec.SPONSOR)) {
+            name = sponsorService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getName();
+        }
+
+        if (!(userService.findByLogin(authentication.getName()).getSpec().equals(User.Spec.SPONSOR)) && !(userService.findByLogin(authentication.getName()).getSpec().equals(User.Spec.ADMIN))) {
+            name = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getName() + " " +
+                    teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getSurname();
+        }
         map.addAttribute("name", name);
 
         map.addAttribute("seasonsList",seasonService.findAll());

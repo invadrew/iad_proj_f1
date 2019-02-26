@@ -32,15 +32,27 @@ public class RanksController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private SponsorService sponsorService;
+
     @RequestMapping(value = "/ranks", method = RequestMethod.GET)
     public String toRanks(ModelMap map, Authentication authentication) {
 
         User user = userService.findByLogin(authentication.getName());
 
-        List<Season> seasonsList= seasonService.findAll();
-        String name = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getName() + " " +
-                teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getSurname();
+        String name = "Панель администратора";
+
+        if (userService.findByLogin(authentication.getName()).getSpec().equals(User.Spec.SPONSOR)) {
+            name = sponsorService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getName();
+        }
+
+        if (!(userService.findByLogin(authentication.getName()).getSpec().equals(User.Spec.SPONSOR)) && !(userService.findByLogin(authentication.getName()).getSpec().equals(User.Spec.ADMIN))) {
+            name = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getName() + " " +
+                    teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getSurname();
+        }
         map.addAttribute("name", name);
+
+        List<Season> seasonsList= seasonService.findAll();
         map.addAttribute("seasonsList",seasonsList);
         return "RanksPage";
     }

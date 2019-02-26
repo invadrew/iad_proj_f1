@@ -43,6 +43,7 @@ public class SponsorController {
             sponsor = sponsorService.findByUserId(userService.findByLogin(authentication.getName()).getId());
         }
 
+        map.addAttribute("userName", userService.findById(sponsorService.findByUserId(sponsor.getUserId()).getUserId()).getLogin());
         map.addAttribute("sponsor", sponsor);
         map.addAttribute("teamCount", sponsoringService.getTeamCount(sponsor.getUserId()));
         map.addAttribute("sumMoney", sponsoringService.getSumMoney(sponsor.getUserId()));
@@ -59,14 +60,17 @@ public class SponsorController {
 
         map.addAttribute("sponsorings", sponsorings);
 
-        try { String name = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getName() + " " +
-                teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getSurname();
-        map.addAttribute("name", name); }
+        String name = "Панель администратора";
 
-        catch (NullPointerException e ) {
-            String name = sponsorService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getName();
-            map.addAttribute("name", name);
+        if (userService.findByLogin(authentication.getName()).getSpec().equals(User.Spec.SPONSOR)) {
+            name = sponsorService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getName();
         }
+
+        if (!(userService.findByLogin(authentication.getName()).getSpec().equals(User.Spec.SPONSOR)) && !(userService.findByLogin(authentication.getName()).getSpec().equals(User.Spec.ADMIN))) {
+            name = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getName() + " " +
+                    teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getSurname();
+        }
+        map.addAttribute("name", name);
 
         return "SponsorProfilePage";
     }

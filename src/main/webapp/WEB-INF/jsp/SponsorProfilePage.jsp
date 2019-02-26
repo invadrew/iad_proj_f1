@@ -1,3 +1,6 @@
+<%@ page import="org.springframework.security.core.Authentication" %>
+<%@ page import="java.security.Principal" %>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -45,11 +48,17 @@
                         <h3>${sponsoring[0]}</h3>
                         Суммарно потрачено: ${sponsoring[2]}
                         <br>
+                       <% Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                       String name = authentication.getName();
+                       pageContext.setAttribute("currName", name);
+                       %>
+                        <c:if test="${currName.equals(userName)}">
                         <form>
                             <label for="moneySp">Спонсировать</label>
                             <input type="number" id="moneySp" >
                             <input type="submit" class="res-selector" value="Перевести">
                         </form>
+                        </c:if>
                     </div>
                     <div class="sp-team-story">
                         <center>

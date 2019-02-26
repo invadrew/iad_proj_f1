@@ -30,6 +30,9 @@ public class ProfileController {
     private TeamMemberService teamMemberService;
 
     @Autowired
+    private SponsorService sponsorService;
+
+    @Autowired
     private ConstrCupResultService constrCupResultService;
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
@@ -45,8 +48,16 @@ public class ProfileController {
 
         map.addAttribute("user",user);
 
-        String name = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getName() + " " +
-                teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getSurname();
+        String name = "Панель администратора";
+
+        if (userService.findByLogin(authentication.getName()).getSpec().equals(User.Spec.SPONSOR)) {
+           name = sponsorService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getName();
+        }
+
+        if (!(userService.findByLogin(authentication.getName()).getSpec().equals(User.Spec.SPONSOR)) && !(userService.findByLogin(authentication.getName()).getSpec().equals(User.Spec.ADMIN))) {
+            name = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getName() + " " +
+                    teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getSurname();
+        }
         map.addAttribute("name", name);
 
         if (user.getSpec().equals(User.Spec.RACER)) {

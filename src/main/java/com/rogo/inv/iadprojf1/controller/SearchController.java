@@ -43,8 +43,16 @@ public class SearchController {
 
         User user = userService.findByLogin(authentication.getName());
 
-        String name = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getName() + " " +
-                teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getSurname();
+        String name = "Панель администратора";
+
+        if (userService.findByLogin(authentication.getName()).getSpec().equals(User.Spec.SPONSOR)) {
+            name = sponsorService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getName();
+        }
+
+        if (!(userService.findByLogin(authentication.getName()).getSpec().equals(User.Spec.SPONSOR)) && !(userService.findByLogin(authentication.getName()).getSpec().equals(User.Spec.ADMIN))) {
+            name = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getName() + " " +
+                    teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getSurname();
+        }
         map.addAttribute("name", name);
 
         List<TeamMember> users = teamMemberService.findAll();

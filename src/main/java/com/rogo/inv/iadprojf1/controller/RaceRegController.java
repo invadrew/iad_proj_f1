@@ -35,13 +35,24 @@ public class RaceRegController {
     @Autowired
     private CarService carService;
 
+    @Autowired
+    private SponsorService sponsorService;
+
     @RequestMapping(value = "/race-reg", method = RequestMethod.GET)
     public String toRaceRegPage(ModelMap map, Authentication authentication) {
 
         User user = userService.findByLogin(authentication.getName());
 
-        String name = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getName() + " " +
-                teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getSurname();
+        String name = "Панель администратора";
+
+        if (userService.findByLogin(authentication.getName()).getSpec().equals(User.Spec.SPONSOR)) {
+            name = sponsorService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getName();
+        }
+
+        if (!(userService.findByLogin(authentication.getName()).getSpec().equals(User.Spec.SPONSOR)) && !(userService.findByLogin(authentication.getName()).getSpec().equals(User.Spec.ADMIN))) {
+            name = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getName() + " " +
+                    teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getSurname();
+        }
         map.addAttribute("name", name);
 
         List<Object[]> currRace = raceService.getCurrentEvent();
@@ -50,17 +61,19 @@ public class RaceRegController {
         List<Object[]> regTable = raceRegistrationService.getRegistrationTable(raceService.findTopByOrderByDateTimeDesc().getId());
         map.addAttribute("regTable", regTable);
 
-        Team team = teamService.findById(teamMemberService.findByUserId(user.getId()).getTeam().getId());
+        if (user.getSpec().equals(User.Spec.MANAGER)) {
+            Team team = teamService.findById(teamMemberService.findByUserId(user.getId()).getTeam().getId());
 
-        map.addAttribute("team", team);
+            map.addAttribute("team", team);
 
-        List<Object[]> teamMembers = teamMemberService.getAllRacers(team.getId());
+            List<Object[]> teamMembers = teamMemberService.getAllRacers(team.getId());
 
-        map.addAttribute("racers", teamMembers);
+            map.addAttribute("racers", teamMembers);
 
-        List<Car> cars = carService.findAllByTeam(team);
-        map.addAttribute("cars", cars);
+            List<Car> cars = carService.findAllByTeam(team);
+            map.addAttribute("cars", cars);
 
+        }
         return "RaceRegistrationPage";
     }
 

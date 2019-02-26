@@ -42,21 +42,25 @@ public class TeamProfileController {
 
         User user = userService.findByLogin(authentication.getName());
 
-        String name = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getName() + " " +
-                teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getSurname();
+        String name = "Панель администратора";
+
+        if (userService.findByLogin(authentication.getName()).getSpec().equals(User.Spec.SPONSOR)) {
+            name = sponsorService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getName();
+        }
+
+        if (!(userService.findByLogin(authentication.getName()).getSpec().equals(User.Spec.SPONSOR)) && !(userService.findByLogin(authentication.getName()).getSpec().equals(User.Spec.ADMIN))) {
+            name = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getName() + " " +
+                    teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getSurname();
+        }
         map.addAttribute("name", name);
 
         Team team;
 
         if (id == null) {
-             team = teamMemberService.findByUserId(user.getId()).getTeam();
+            team = teamMemberService.findByUserId(user.getId()).getTeam();
         } else {
             team = teamService.findById(id);
         }
-
-        String nameSurname = teamMemberService.findByUserId(user.getId()).getName() + " " +
-                teamMemberService.findByUserId(user.getId()).getSurname();
-        map.addAttribute("nameSurname",nameSurname);
 
         map.addAttribute("team", team);
 

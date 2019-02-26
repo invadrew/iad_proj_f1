@@ -6,7 +6,7 @@
         <img src="/pictures/Formula_1_logo.jpg">
     </div>
     <div class="Header-UserInfo-container">
-        <sec:authorize access="!(hasAuthority('ADMIN'))">
+        <sec:authorize access="!hasAuthority('ADMIN')">
             ${name}
         </sec:authorize>
         <sec:authorize access="hasAuthority('ADMIN')">
@@ -24,9 +24,11 @@
 </div>
 <div class="HeaderMenu">
     <ul>
-        <li><a href="/profile">Профиль</a></li>
-        <li><a href="/team">Команда</a></li>
-        <li><a href="/garage">Гараж</a></li>
+        <sec:authorize access="hasAnyAuthority('RACER','MANAGER','CONSTRUCTOR','MECHANIC')"> <li><a href="/profile">Профиль</a></li> </sec:authorize>
+        <sec:authorize access="hasAuthority('SPONSOR')"> <li><a href="/sponsor">Профиль</a></li>  </sec:authorize>
+        <sec:authorize access="hasAuthority('ADMIN')"> <li><a href="/admin">Профиль</a></li>  </sec:authorize>
+        <sec:authorize access="hasAnyAuthority('RACER','MANAGER','CONSTRUCTOR','MECHANIC')"> <li><a href="/team">Команда</a></li> </sec:authorize>
+        <sec:authorize access="hasAnyAuthority('RACER','MANAGER','CONSTRUCTOR','MECHANIC')"> <li><a href="/garage">Гараж</a></li> </sec:authorize>
         <li><a href="/race-reg">Заезды</a></li>
         <li><a href="/ranks">Рейтинг</a></li>
         <li><a href="MainPage.jsp">Сообщения</a></li>
