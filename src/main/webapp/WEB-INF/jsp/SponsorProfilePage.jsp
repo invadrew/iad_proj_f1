@@ -1,5 +1,8 @@
-<%@ page contentType="text/html;charset=UTF-8"%>
 <!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -9,38 +12,7 @@
 </head>
 <body>
 <div class="grid-container">
-    <!-- TODO: try to make ui component for header zone-->
-    <div class="Header">
-        <div class="Header-LogoContainer">
-            <img src="/pictures/Formula_1_logo.jpg">
-        </div>
-        <div class="Header-UserInfo-container">
-            Monster Energy
-            <form action="/logout">
-                <input type="submit" value="Выйти" id="out">
-            </form>
-        </div>
-        <div class="UserPhoto-container">
-            <img src="/pictures/MonsterEnergy.jpeg">
-        </div>
-    </div>
-    <div class="HeaderMenu">
-        <ul>
-            <li><a href="MainPage.jsp">Профиль</a></li>
-            <li><a href="MainPage.jsp">Команда</a></li>
-            <li><a href="MainPage.jsp">Гараж</a></li>
-            <li><a href="MainPage.jsp">Заезды</a></li>
-            <li><a href="RanksPage.jsp">Рейтинг</a></li>
-            <li><a href="MainPage.jsp">Сообщения</a></li>
-        </ul>
-        <div class="searcher">
-            <form>
-                <input type="text" placeholder="Поиск по сайту" id="search">
-                <input type="submit" value="Найти" id="find">
-            </form>
-        </div>
-    </div>
-    <!-- end if-->
+    <jsp:include page="Header.jsp"/>
     <div class="MainArea">
         <div class="LeftArea"></div>
         <div class="SponsorPhotoArea">
@@ -55,21 +27,22 @@
         <div class="SponsorInfoArea">
             <div class="inside_block_wrapper" style="height: 95%">
                 <div class="infotab" style="height: 93.5%">
-                <center><h3>Monster Energy</h3></center>
-                    Бюджет: 34234
+                <center><h3>${sponsor.name}</h3></center>
+                    Бюджет: ${sponsor.budget}
                     <br> <br>
-                    Спонсировано команд: 11
+                    Спонсировано команд: ${teamCount}
                     <br> <br>
-                    Суммарно потрачено: 5837584
+                    Суммарно потрачено: ${sumMoney}
                 </div>
             </div>
         </div>
         <div class="SponsoringArea">
             <div class="inside_block_wrapper">
                 <center><h3>Спонсирование</h3></center>
+                <c:forEach items="${sponsorings}" var="sponsoring" >
                 <div class="sptab">
                     <div class="sp-team-info">
-                        <h3>RogoNemRacing</h3>
+                        <h3>${sponsoring[0]}</h3>
                         Суммарно потрачено:
                         <br>
                         <form>
@@ -85,26 +58,17 @@
                                     <th> Дата </th>
                                     <th> Потрачено </th>
                                 </tr>
+                                <c:forEach items="${sponsoring[2]}" var="sp_info">
                                 <tr>
-                                    <td> Дата </td>
-                                    <td> Потрачено </td>
+                                    <td> <fmt:formatDate value="${sp_info.date}" pattern="dd-MM-yyyy" /> </td>
+                                    <td> ${sp_info.spMoney} </td>
                                 </tr>
-                                <tr>
-                                    <td> Дата </td>
-                                    <td> Потрачено </td>
-                                </tr>
-                                <tr>
-                                    <td> Дата </td>
-                                    <td> Потрачено </td>
-                                </tr>
-                                <tr>
-                                    <td> Дата </td>
-                                    <td> Потрачено </td>
-                                </tr>
+                                </c:forEach>
                             </table>
                         </center>
                     </div>
                 </div>
+                </c:forEach>
             </div>
         </div>
         <div class="RightArea"></div>

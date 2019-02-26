@@ -14,4 +14,6 @@ public interface SponsorService {
     Sponsor findByUserId(int id);
 
     List<Object[]> getTeamSponsorsList(int team);
+
+    List<Object[]> getTeamsBySponsor(int sponsor);
 }

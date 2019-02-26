@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "sponsoring")
@@ -33,12 +34,12 @@ public class Sponsoring {
     @NotNull @Min(0)
     private long spMoney;
 
-    private LocalDateTime date;
+    private Date date;
 
     /* ================================
      constructors
     ================================ */
-    public Sponsoring(@NotNull Team team, @NotNull Sponsor sponsor, @NotNull @Min(0) long spMoney, LocalDateTime date) {
+    public Sponsoring(@NotNull Team team, @NotNull Sponsor sponsor, @NotNull @Min(0) long spMoney, Date date) {
         this.team = team;
         this.sponsor = sponsor;
         this.spMoney = spMoney;
