@@ -301,6 +301,9 @@
 
                 <div class="infotab">
                     <div class="cars-main-zone" id="carsZone">
+                        <c:if test="${cars.size() == 0}">
+                            <h3 style="text-align: center;">Нет болидов</h3>
+                        </c:if>
                         <c:forEach items="${cars}" var="car">
                             <div class="infotab">
                         <div class="PhotoArea">

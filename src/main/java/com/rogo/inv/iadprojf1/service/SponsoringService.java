@@ -15,13 +15,13 @@ public interface SponsoringService {
 
     Sponsoring findById(int id);
 
-    int getTeamCount(int sponsor);
+    Integer getTeamCount(int sponsor);
 
-    int getSumMoney(int sponsor);
+    Integer getSumMoney(int sponsor);
 
     List<Object[]> getSponsInfo(int team);
 
-    int getSumMoneyForTeam(int sponsor, int team);
+    Integer getSumMoneyForTeam(int sponsor, int team);
 
     List<Sponsoring> findAllByTeamAndSponsor(Team team, Sponsor sponsor);
 

@@ -133,7 +133,9 @@ public class ProfileController {
             // Team name
 
             Team team = teamMemberService.findByUserId(user.getId()).getTeam();
-            map.addAttribute("team",team.getName());
+            try { map.addAttribute("team",team.getName()); } catch (NullPointerException n) {
+                map.addAttribute("team","Нет команды");
+            }
 
             // Spec
 
@@ -156,8 +158,8 @@ public class ProfileController {
                 }
             }
 
-            List<Object[]> teamAch = constrCupResultService.getProfileAchievs(team.getId());
-            map.addAttribute("ach",teamAch);
+           try { List<Object[]> teamAch = constrCupResultService.getProfileAchievs(team.getId());
+            map.addAttribute("ach",teamAch); } catch (NullPointerException n) {map.addAttribute("ach",null);}
 
         return "UserProfilePage";
     }

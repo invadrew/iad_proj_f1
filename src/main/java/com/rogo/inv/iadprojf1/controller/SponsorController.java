@@ -45,19 +45,28 @@ public class SponsorController {
 
         map.addAttribute("userName", userService.findById(sponsorService.findByUserId(sponsor.getUserId()).getUserId()).getLogin());
         map.addAttribute("sponsor", sponsor);
-        map.addAttribute("teamCount", sponsoringService.getTeamCount(sponsor.getUserId()));
-        map.addAttribute("sumMoney", sponsoringService.getSumMoney(sponsor.getUserId()));
+        try {
+            map.addAttribute("teamCount", sponsoringService.getTeamCount(sponsor.getUserId()));
+            map.addAttribute("sumMoney", sponsoringService.getSumMoney(sponsor.getUserId()));
+
+        } catch (NullPointerException n) {
+
+            map.addAttribute("teamCount", 0);
+            map.addAttribute("sumMoney", 0);
+        }
 
         List<Object[]> spTeams = sponsorService.getTeamsBySponsor(sponsor.getUserId());
         List<Object[]> sponsorings = new ArrayList<>();
 
-        for (Object[] team: spTeams) {
-            Object[] elements = { team[0], team[1] , sponsoringService.getSumMoneyForTeam(sponsor.getUserId(), teamService.findById((Integer) team[1]).getId()) ,
-                    sponsoringService.findAllByTeamAndSponsor(teamService.findById( (Integer) team[1]),
-                    sponsorService.findByUserId(sponsor.getUserId())) };
-            sponsorings.add(elements);
-        }
+        if (spTeams != null) {
 
+            for (Object[] team : spTeams) {
+                Object[] elements = {team[0], team[1], sponsoringService.getSumMoneyForTeam(sponsor.getUserId(), teamService.findById((Integer) team[1]).getId()),
+                        sponsoringService.findAllByTeamAndSponsor(teamService.findById((Integer) team[1]),
+                                sponsorService.findByUserId(sponsor.getUserId()))};
+                sponsorings.add(elements);
+            }
+        }
         map.addAttribute("sponsorings", sponsorings);
 
         String name = "Панель администратора";

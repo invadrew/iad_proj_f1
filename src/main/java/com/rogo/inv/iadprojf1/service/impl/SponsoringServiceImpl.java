@@ -36,10 +36,10 @@ public class SponsoringServiceImpl implements SponsoringService {
     }
 
     @Override
-    public int getTeamCount(int sponsor) { return repository.getTeamCount(sponsor);}
+    public Integer getTeamCount(int sponsor) { return repository.getTeamCount(sponsor);}
 
     @Override
-    public int getSumMoney(int sponsor) { return repository.getSumMoney(sponsor);}
+    public Integer getSumMoney(int sponsor) { return repository.getSumMoney(sponsor);}
 
     @Override
     public List<Object[]> getSponsInfo(int team) { return repository.getSponsInfo(team);}
@@ -51,6 +51,6 @@ public class SponsoringServiceImpl implements SponsoringService {
     public Object[] getLatestSponsNews() {return repository.getLatestSponsNews();}
 
     @Override
-    public  int getSumMoneyForTeam(int sponsor, int team) { return repository.getSumMoneyForTeam(sponsor, team);}
+    public  Integer getSumMoneyForTeam(int sponsor, int team) { return repository.getSumMoneyForTeam(sponsor, team);}
 
 }

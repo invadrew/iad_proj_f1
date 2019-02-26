@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 @Repository
@@ -14,13 +15,13 @@ public interface SponsoringRepository extends JpaRepository<Sponsoring, Integer>
     Sponsoring findById(int id);
 
     @Query(value = "SELECT COUNT( DISTINCT sp.team_id) FROM sponsoring sp WHERE (sp.sponsor_id = ?1);", nativeQuery = true)
-    int getTeamCount(int sponsor);
+    Integer getTeamCount(int sponsor);
 
     @Query(value = "SELECT SUM(sp.sp_money) FROM sponsoring sp WHERE (sp.sponsor_id = ?1);", nativeQuery = true)
-    int getSumMoney(int sponsor);
+    Integer getSumMoney(int sponsor);
 
     @Query(value = "SELECT SUM(sp.sp_money) FROM sponsoring sp WHERE ((sp.sponsor_id = ?1) AND (sp.team_id = ?2));", nativeQuery = true)
-    int getSumMoneyForTeam(int sponsor, int team);
+    Integer getSumMoneyForTeam(int sponsor, int team);
 
     @Query(value = "SELECT DISTINCT sp.team_id FROM sponsoring sp WHERE (sp.sponsor_id = ?1);", nativeQuery = true)
     List<Object[]> getSponsInfo(int team);
