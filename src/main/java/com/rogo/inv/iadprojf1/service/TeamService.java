@@ -3,6 +3,7 @@ package com.rogo.inv.iadprojf1.service;
 
 import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.User;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -32,5 +33,7 @@ public interface TeamService {
     Integer getBestPlace(int team);
 
     List<Object[]> bestRacer(int team);
+
+    int updTeamBudget(@Param("budg") Double budg, @Param("tId") Integer tId);
 
 }

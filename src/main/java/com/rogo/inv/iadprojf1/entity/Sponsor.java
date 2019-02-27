@@ -30,7 +30,7 @@ public class Sponsor {
     private String name;
 
     @NotNull @Min(0)
-    private long budget;
+    private double budget;
 
     @ToString.Exclude
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,
@@ -43,7 +43,7 @@ public class Sponsor {
      constructors
     ================================ */
 
-    public Sponsor(int userId, User user, @NotNull String name, @NotNull @Min(0) long budget, List<Sponsoring> sponsoring) {
+    public Sponsor(int userId, User user, @NotNull String name, @NotNull @Min(0) double budget, List<Sponsoring> sponsoring) {
         this.userId = userId;
         this.user = user;
         this.name = name;

@@ -32,14 +32,14 @@ public class Sponsoring {
     private Sponsor sponsor;
 
     @NotNull @Min(0)
-    private long spMoney;
+    private double spMoney;
 
     private Date date;
 
     /* ================================
      constructors
     ================================ */
-    public Sponsoring(@NotNull Team team, @NotNull Sponsor sponsor, @NotNull @Min(0) long spMoney, Date date) {
+    public Sponsoring(@NotNull Team team, @NotNull Sponsor sponsor, @NotNull @Min(0) double spMoney, Date date) {
         this.team = team;
         this.sponsor = sponsor;
         this.spMoney = spMoney;

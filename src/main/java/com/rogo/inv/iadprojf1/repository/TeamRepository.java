@@ -2,7 +2,9 @@ package com.rogo.inv.iadprojf1.repository;
 
 import com.rogo.inv.iadprojf1.entity.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -49,5 +51,9 @@ public interface TeamRepository extends JpaRepository<Team, Integer> {
             "  INNER JOIN world_cup_result wcr ON (wcr.racer_id = r.user_id)\n" +
             "  WHERE (r.team_id = ?1) GROUP BY r.name,r.surname, r.user_id) subq GROUP BY subq.name, subq.surname, subq.user_id;", nativeQuery = true)
     List<Object[]> bestRacer(int team);
+
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE Team t SET t.budget = :budg WHERE t.id = :tId")
+    int updTeamBudget(@Param("budg") Double budg, @Param("tId") Integer tId);
 
 }

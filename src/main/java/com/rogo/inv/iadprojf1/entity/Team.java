@@ -31,7 +31,7 @@ public class Team {
     private String name;
 
     @NotNull @Min(0)
-    private long budget;
+    private double budget;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -102,7 +102,7 @@ public class Team {
     /* ================================
      constructors
     ================================ */
-    public Team(@NotNull String name, @NotNull @Min(0) long budget, @NotNull AcceptStatus status, String comments) {
+    public Team(@NotNull String name, @NotNull @Min(0) double budget, @NotNull AcceptStatus status, String comments) {
         this.name = name;
         this.budget = budget;
         this.status = status;

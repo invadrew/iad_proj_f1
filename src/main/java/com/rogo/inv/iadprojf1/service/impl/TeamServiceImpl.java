@@ -4,8 +4,10 @@ import com.rogo.inv.iadprojf1.entity.User;
 import com.rogo.inv.iadprojf1.repository.TeamRepository;
 import com.rogo.inv.iadprojf1.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service("teamService")
@@ -59,5 +61,8 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public List<Object[]> bestRacer(int team) { return repository.bestRacer(team);}
+
+    @Override @Transactional
+    public int updTeamBudget(@Param("budg") Double budg, @Param("tId") Integer tId) {return repository.updTeamBudget(budg, tId);}
 
 }

@@ -45,7 +45,12 @@
                 <c:forEach items="${sponsorings}" var="sponsoring" >
                 <div class="sptab">
                     <div class="sp-team-info">
-                        <h3>${sponsoring[0]}</h3>
+                        <c:url value="/team" var="uUrl">
+                            <c:param name="id" value="${sponsoring[1]}"/>
+                        </c:url>
+                        <a class="redirHref" href="${uUrl}">
+                            <h3>${sponsoring[0]}</h3>
+                        </a>
                         Суммарно потрачено: ${sponsoring[2]}
                         <br>
                        <% Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -54,9 +59,15 @@
                        %>
                         <c:if test="${currName.equals(userName)}">
                         <form>
-                            <label for="moneySp">Спонсировать</label>
-                            <input type="number" id="moneySp" >
-                            <input type="submit" class="res-selector" value="Перевести">
+                            <input type="hidden" value="${sponsoring[1]}" id="teamId${sponsoring[1]}">
+                            <input type="hidden" value="${sponsor.budget}" id="allMoney">
+                            <input type="hidden" value="${sponsor.userId}" id="spId${sponsor.userId}">
+                            <label for="moneySp${sponsoring[1]}">Спонсировать</label>
+                            <input type="number" class="res-selector" id="moneySp${sponsoring[1]}" >
+                            <input type="button" class="res-selector" value="Перевести" onclick="sendMoney(${sponsoring[1]}, ${sponsor.userId})">
+                            <br>
+                            <label id="notEnough" hidden> Недостаточно денег </label>
+                            <label id="done" hidden> Успешно </label>
                         </form>
                         </c:if>
                     </div>
@@ -84,5 +95,7 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script type="text/javascript" src="../scripts/SponsorsScript.js"> </script>
 </body>
 </html>
