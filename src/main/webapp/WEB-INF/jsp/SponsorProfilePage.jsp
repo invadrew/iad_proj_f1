@@ -80,8 +80,16 @@
                                 </tr>
                                 <c:forEach items="${sponsoring[3]}" var="sp_info">
                                 <tr>
-                                    <td> <fmt:formatDate value="${sp_info.date}" pattern="dd-MM-yyyy" /> </td>
-                                    <td> ${sp_info.spMoney} </td>
+                                    <c:if test="${sp_info.date != null}">
+                                    <td>
+                                    <fmt:formatDate value="${sp_info.date}" pattern="dd-MM-yyyy" />
+                                    </td>
+                                    </c:if>
+                                        <c:if test="${sp_info.spMoney != 0.0}">
+                                    <td>
+                                            ${sp_info.spMoney}
+                                    </td>
+                                        </c:if>
                                 </tr>
                                 </c:forEach>
                             </table>
@@ -89,6 +97,20 @@
                     </div>
                 </div>
                 </c:forEach>
+                    <c:if test="${currName.equals(userName)}">
+                <div class="infotab">
+                        <button class="res-selector" id="addTeamButtonOpener" onclick="openTeamAdd()">Добавить команду</button>
+                    <br>
+                        <div id="addTeamSpForm" hidden>
+                            <form>
+                                <label for="teamToSponse">Введите название команды</label>
+                                <input type="text" id="teamToSponse" class="res-selector">
+                                <input type="button" value="Подтвердить" class="res-selector" onclick="sendNewTeam(${sponsor.userId})">
+                                <br> <label id="noTeam" hidden> Нет такой команды </label>
+                            </form>
+                        </div>
+                </div>
+                    </c:if>
             </div>
         </div>
         <div class="RightArea"></div>

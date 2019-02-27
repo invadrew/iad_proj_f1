@@ -29,3 +29,35 @@ function sendMoney(id, sId) {
     }
 
 }
+
+function openTeamAdd() {
+    document.getElementById('addTeamButtonOpener').hidden = true;
+    document.getElementById('addTeamSpForm').hidden = false;
+}
+
+function sendNewTeam(sId) {
+
+    let no = document.getElementById("noTeam");
+
+    no.hidden = true;
+
+    let team = $('#teamToSponse').val();
+    let spId = $('#spId' + sId).val();
+
+    $.ajax({
+        type : "POST",
+        url : "/sponsor/new",
+        data : {
+            "teamName" : team ,
+            "sponsor" : spId
+        },
+        success: function(data) {
+            if (!data) {
+                no.hidden = false;
+            } else {
+                location.reload();
+            }
+        }
+    });
+
+}

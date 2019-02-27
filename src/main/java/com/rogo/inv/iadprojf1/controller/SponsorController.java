@@ -116,6 +116,23 @@ public class SponsorController {
 
     }
 
+    @RequestMapping(value = "/sponsor/new", method = RequestMethod.POST)
+    @ResponseBody
+    public Integer addTeam(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+
+        String teamName = request.getParameter("teamName");
+        Integer spId = Integer.parseInt(request.getParameter("sponsor"));
+
+        try { Team team = teamService.findByName(teamName);
+
+        Sponsoring sponsoring = new Sponsoring(team, sponsorService.findByUserId(spId), 0, null);
+
+        sponsoringService.save(sponsoring);
+
+        return 1; } catch (Exception ex) {
+            return 0;
+        }
+    }
 
 
 }
