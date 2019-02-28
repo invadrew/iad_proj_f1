@@ -7,7 +7,6 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/styles/MainPageStyle.css">
-    <script type="text/javascript" src="/scripts/MainPageScript.js"> </script>
     <title> Добро пожаловать! </title>
 </head>
 <body>

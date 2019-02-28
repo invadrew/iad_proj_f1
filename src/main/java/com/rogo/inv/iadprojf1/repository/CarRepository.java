@@ -7,7 +7,9 @@ import com.rogo.inv.iadprojf1.entity.storage.ChassisStorage;
 import com.rogo.inv.iadprojf1.entity.storage.ElectronicsStorage;
 import com.rogo.inv.iadprojf1.entity.storage.EngineStorage;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -33,5 +35,9 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
             "  INNER JOIN electronics_storage es ON (c.current_electronics_id = es.id)\n" +
             "  WHERE (c.id = ?1);", nativeQuery = true)
     List<Object[]> getConditionTable(int car);
+
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE Car t SET t.currentCarcase = :carc WHERE t.id = :car")
+    int updCarcase(@Param("carc") CarcaseStorage carc, @Param("car") Integer car);
 
 }

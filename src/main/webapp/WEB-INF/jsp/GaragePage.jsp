@@ -14,8 +14,6 @@
     <title>Гараж</title>
 </head>
 <body>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-<script type="text/javascript" src="../scripts/GarageScript.js"> </script>
 <div class="grid-container">
     <jsp:include page="Header.jsp"/>
     <div class="TeamNameArea">
@@ -530,18 +528,80 @@
                             <sec:authorize access="hasAuthority('MECHANIC')">
                             <form>
                                 <label for="car-select">Выберите болид</label>
-                                <select id="car-select" class="res-selector" style="width: 30% !important;">
-                                    <option>Hello there!</option>
+                                <select id="car-select" class="res-selector" style="width: 30% !important;" onchange="selectCompType()">
+                                    <c:forEach items="${cars}" var="car">
+                                    <option value="${car.id}">${car.label} ${car.model}</option>
+                                    </c:forEach>
                                 </select> <br>
                                 <label for="change-type-select">Тип детали</label>
-                                <select id="change-type-select" class="res-selector" style="width: 30% !important;">
-                                    <option>Hello there!</option>
+                                <select id="change-type-select" class="res-selector" style="width: 30% !important;" onchange="selectCompType()">
+                                    <option value="Carcase" selected>Каркас</option>
+                                    <option value="Chassis">Шасси</option>
+                                    <option value="Engine">Двигатель</option>
+                                    <option value="Electronics">Электроника</option>
                                 </select> <br>
-                                <label for="change-detail">Заменить на</label>
-                                <select id="change-detail" class="res-selector" style="width: 30% !important;">
-                                    <option>Hello there!</option>
+
+                                <div id="carcForChange">
+                                    <label id="currCarc"> Текущий элемент: </label> <br>
+                                <label for="change-detail-carc">Заменить на</label>
+                                <select id="change-detail-carc" class="res-selector" style="width: 30% !important;">
+                                    <c:forEach items="${freeCarc}" var="fcarc">
+                                    <option value="${fcarc.id}">${fcarc.rearWing} ${fcarc.safetyArcs} ${fcarc.wings}</option>
+                                    </c:forEach>
+                                    <c:if test="${freeCarc.isEmpty()}">
+                                        <br>
+                                        Нет свободных деталей
+                                    </c:if>
                                 </select> <br>
-                                <input type="submit" class="res-selector" value="Подтвердить" style="width: 30% !important;">
+                                <input type="button" class="res-selector" value="Подтвердить" style="width: 30% !important;" onclick="change_carcase()">
+                                </div>
+
+                                <div id="chassForChange" hidden>
+                                    <label id="currChass"> Текущий элемент: </label> <br>
+                                    <label for="change-detail-chass">Заменить на</label>
+                                    <select id="change-detail-chass" class="res-selector" style="width: 30% !important;">
+                                        <c:forEach items="${freeChass}" var="fchass">
+                                        <option value="${fchass.id}">${fchass.model} (h:${fchass.height} w:${fchass.width})</option>
+                                        </c:forEach>
+                                        <c:if test="${freeChass.isEmpty()}">
+                                            <br>
+                                            Нет свободных деталей
+                                        </c:if>
+                                    </select> <br>
+                                    <input type="button" class="res-selector" value="Подтвердить" style="width: 30% !important;" onclick="change_chassis()">
+                                </div>
+
+                                <div id="engForChange" hidden>
+                                    <label id="currEng"> Текущий элемент: </label> <br>
+                                    <label for="change-detail-eng">Заменить на</label>
+                                    <select id="change-detail-eng" class="res-selector" style="width: 30% !important;">
+                                        <c:forEach items="${freeEng}" var="feng">
+                                        <option value="${feng.id}">${feng.model} ${feng.cyclinders} цил. ${feng.capacity} л.</option>
+                                        </c:forEach>
+                                        <c:if test="${freeEng.isEmpty()}">
+                                            <br>
+                                            Нет свободных деталей
+                                        </c:if>
+                                    </select> <br>
+                                    <input type="button" class="res-selector" value="Подтвердить" style="width: 30% !important;" onclick="change_engine()">
+                                </div>
+
+                                <div id="elecForChange" hidden>
+                                    <label id="currElec"> Текущий элемент: </label> <br>
+                                    <label for="change-detail-elec">Заменить на</label>
+                                    <select id="change-detail-elec" class="res-selector" style="width: 30% !important;">
+                                        <c:forEach items="${freeElec}" var="felec">
+                                        <option value="${felec.id}">${felec.telemetry} ${felec.controlSystem}</option>
+                                        </c:forEach>
+                                        <c:if test="${freeElec.isEmpty()}">
+                                            <br>
+                                            Нет свободных деталей
+                                        </c:if>
+                                    </select> <br>
+                                    <input type="button" class="res-selector" value="Подтвердить" style="width: 30% !important;" onclick="change_electronics()">
+                                </div>
+                                <label id="neok" hidden> Нет свободных деталей</label>
+
                             </form>
                             </sec:authorize>
                     </div>
@@ -554,3 +614,7 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script type="text/javascript" src="../scripts/GarageScript.js"> </script>
+</body>
+</html>

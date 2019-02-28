@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "chassis_storage")
 @Getter @Setter
-@ToString(callSuper = true) @EqualsAndHashCode(callSuper = true) @NoArgsConstructor
+@ToString @EqualsAndHashCode @NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ChassisStorage extends BaseStorage {
     @NotNull @Column(length = DBUtility.MODEL_LEN)

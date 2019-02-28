@@ -9,6 +9,7 @@ import com.rogo.inv.iadprojf1.entity.storage.EngineStorage;
 import com.rogo.inv.iadprojf1.repository.CarRepository;
 import com.rogo.inv.iadprojf1.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -56,4 +57,7 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public List<Object[]> getConditionTable(int car) { return repository.getConditionTable(car);}
+
+    @Override @Transactional
+    public int updCarcase(@Param("carc") CarcaseStorage carc, @Param("car") Integer car) { return repository.updCarcase(carc, car);}
 }

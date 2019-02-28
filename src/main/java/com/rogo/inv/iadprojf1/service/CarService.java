@@ -6,6 +6,7 @@ import com.rogo.inv.iadprojf1.entity.storage.CarcaseStorage;
 import com.rogo.inv.iadprojf1.entity.storage.ChassisStorage;
 import com.rogo.inv.iadprojf1.entity.storage.ElectronicsStorage;
 import com.rogo.inv.iadprojf1.entity.storage.EngineStorage;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -29,4 +30,6 @@ public interface CarService {
     //ElectronicsStorage findElectronicsStorageById(int id);
 
     List<Object[]> getConditionTable(int car);
+
+    int updCarcase(@Param("carc") CarcaseStorage carc, @Param("car") Integer car);
 }

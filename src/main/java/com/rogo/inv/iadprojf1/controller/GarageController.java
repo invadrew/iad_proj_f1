@@ -1,9 +1,6 @@
 package com.rogo.inv.iadprojf1.controller;
 
-import com.rogo.inv.iadprojf1.entity.Car;
-import com.rogo.inv.iadprojf1.entity.ComponentCondition;
-import com.rogo.inv.iadprojf1.entity.Team;
-import com.rogo.inv.iadprojf1.entity.User;
+import com.rogo.inv.iadprojf1.entity.*;
 import com.rogo.inv.iadprojf1.entity.storage.CarcaseStorage;
 import com.rogo.inv.iadprojf1.entity.storage.ChassisStorage;
 import com.rogo.inv.iadprojf1.entity.storage.ElectronicsStorage;
@@ -18,8 +15,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.rogo.inv.iadprojf1.entity.ComponentCondition.ANY;
@@ -47,6 +48,9 @@ public class GarageController {
 
     @Autowired
     private CarcaseStorageService carcaseStorageService;
+
+    @Autowired
+    private ComponentChangeService componentChangeService;
 
     @RequestMapping(value = "/garage", method = RequestMethod.GET)
     public String toGarage(ModelMap map, Authentication authentication) {
@@ -84,6 +88,45 @@ public class GarageController {
         map.addAttribute("enginesStorage", engineStorageService.findAllByTeam(team));
         map.addAttribute("chassisStorage", chassisStorageService.findAllByTeam(team));
         map.addAttribute("electronicsStorage", electronicsStorageService.findAllByTeam(team));
+
+        List<CarcaseStorage> teamCarc = carcaseStorageService.findAllByTeam(team);
+        List<ElectronicsStorage> teamElec = electronicsStorageService.findAllByTeam(team);
+        List<ChassisStorage> teamChass = chassisStorageService.findAllByTeam(team);
+        List<EngineStorage> teamEng = engineStorageService.findAllByTeam(team);
+
+        List<CarcaseStorage> freeCarc = new ArrayList<>();
+        List<ElectronicsStorage> freeElec = new ArrayList<>();
+        List<ChassisStorage> freeChass = new ArrayList<>();
+        List<EngineStorage> freeEng = new ArrayList<>();
+
+        for (CarcaseStorage carcase: teamCarc) {
+            if (!carcases.contains(carcase)) {
+                freeCarc.add(carcase);
+            }
+        }
+
+        for (ElectronicsStorage electr: teamElec) {
+            if (!electronics.contains(electr)) {
+                freeElec.add(electr);
+            }
+        }
+
+        for (ChassisStorage ch: teamChass) {
+            if (!chassis.contains(ch)) {
+                freeChass.add(ch);
+            }
+        }
+
+        for (EngineStorage eng: teamEng) {
+            if (!engines.contains(eng)) {
+                freeEng.add(eng);
+            }
+        }
+
+        map.addAttribute("freeCarc", freeCarc);
+        map.addAttribute("freeChass", freeChass);
+        map.addAttribute("freeEng", freeEng);
+        map.addAttribute("freeElec", freeElec);
 
         return "GaragePage";
     }
@@ -203,6 +246,74 @@ public class GarageController {
         }
 
         return filteredEngines;
+
+    }
+
+    @RequestMapping(value = "/garage/carcaseInfo", method = RequestMethod.GET)
+    @ResponseBody
+    public String getCarcaseInfo(@RequestParam Integer carId) {
+
+        CarcaseStorage carcaseStorage = carcaseStorageService.findById(carService.findById(carId).getCurrentCarcase().getId());
+
+        return  carcaseStorage.getRearWing() + " "  +  carcaseStorage.getSafetyArcs() +
+                " " + carcaseStorage.getWings();
+
+    }
+
+    @RequestMapping(value = "/garage/chassisInfo", method = RequestMethod.GET)
+    @ResponseBody
+    public Object[] getChassisInfo(@RequestParam Integer carId) {
+
+        ChassisStorage chassisStorage = chassisStorageService.findById(carService.findById(carId).getCurrentChassis().getId());
+
+        Object[] info = { chassisStorage.getModel(), chassisStorage.getHeight(), chassisStorage.getWidth() };
+
+        return info;
+
+    }
+
+    @RequestMapping(value = "/garage/engineInfo", method = RequestMethod.GET)
+    @ResponseBody
+    public Object[] getEngineInfo(@RequestParam Integer carId) {
+
+        EngineStorage engineStorage = engineStorageService.findById(carService.findById(carId).getCurrentEngine().getId());
+
+        Object[] info = { engineStorage.getModel(), engineStorage.getStroke(), engineStorage.getMass(), engineStorage.getCapacity(), engineStorage.getCyclinders() };
+
+        return info;
+
+    }
+
+    @RequestMapping(value = "/garage/electronicsInfo", method = RequestMethod.GET)
+    @ResponseBody
+    public Object[] getElectronicsInfo(@RequestParam Integer carId) {
+
+        ElectronicsStorage electronicsStorage = electronicsStorageService.findById(carService.findById(carId).getCurrentElectronics().getId());
+
+        Object[] info = { electronicsStorage.getTelemetry(), electronicsStorage.getControlSystem() };
+
+        return info;
+
+    }
+
+    @RequestMapping(value = "/garage/changeCarc", method = RequestMethod.POST)
+    @ResponseBody
+    public void changeCarc(HttpServletResponse response, HttpServletRequest request) {
+
+        Integer car = Integer.parseInt(request.getParameter("carId"));
+        Integer carcase = Integer.parseInt(request.getParameter("carcaseId"));
+
+        ComponentChange componentChange = new ComponentChange(carService.findById(car), null, carcaseStorageService.findById(carService.findById(car).getCurrentCarcase().getId()),
+                carcaseStorageService.findById(carcase), null, null, null, null,
+                null, null, null, new Date());
+
+        componentChangeService.save(componentChange);
+
+        Car carr = carService.findById(car);
+
+        carService.updCarcase(carcaseStorageService.findById(carcase),car);
+        carr.setCurrentCarcase(carcaseStorageService.findById(carcase));
+       // carService.save(carr);
 
     }
 

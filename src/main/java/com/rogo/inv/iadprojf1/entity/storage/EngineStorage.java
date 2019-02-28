@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "engine_storage")
 @Getter @Setter
-@ToString(callSuper = true) @EqualsAndHashCode(callSuper = true) @NoArgsConstructor
+@ToString @EqualsAndHashCode @NoArgsConstructor //(callSuper = true)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class EngineStorage extends BaseStorage {
     @NotNull @Column(length = DBUtility.MODEL_LEN)

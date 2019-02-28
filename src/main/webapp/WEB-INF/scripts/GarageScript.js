@@ -26,7 +26,7 @@ function chooseStore() {
 }
 
 function chooseChange() {
-
+    selectCompType();
     carsArea.hidden = true;
     storArea.hidden = true;
     filterArea.hidden = true;
@@ -315,5 +315,134 @@ function sendElectronicsData(event) {
 
         }
     });
+
+}
+
+function selectCompType() {
+
+    let carcChange = document.getElementById("carcForChange");
+    let chassChange = document.getElementById("chassForChange");
+    let engChange = document.getElementById("engForChange");
+    let elecChange = document.getElementById("elecForChange");
+
+    let carId = $('#car-select').val();
+
+    let typeSelector = document.getElementById("change-type-select");
+
+    switch (typeSelector.value) {
+
+        case "Carcase":
+            carcChange.hidden = false;
+            chassChange.hidden = true;
+            engChange.hidden = true;
+            elecChange.hidden = true;
+
+            $.ajax({
+                type: "GET",
+                url: "/garage/carcaseInfo",
+                data: {
+                    "carId" : carId
+                },
+                success: function (data) {
+                    $('#currCarc').html("Текущая комплектация: " + data);
+                }
+            });
+
+            break;
+
+        case "Chassis":
+            carcChange.hidden = true;
+            chassChange.hidden = false;
+            engChange.hidden = true;
+            elecChange.hidden = true;
+
+            $.ajax({
+                type: "GET",
+                url: "/garage/chassisInfo",
+                data: {
+                    "carId" : carId
+                },
+                success: function (data) {
+                    $('#currChass').html("Текущая комплектация: " + data[0] + " выс: " + data[1] + " шир: " + data[2]);
+                }
+            });
+
+            break;
+
+        case "Engine":
+            carcChange.hidden = true;
+            chassChange.hidden = true;
+            engChange.hidden = false;
+            elecChange.hidden = true;
+
+            $.ajax({
+                type: "GET",
+                url: "/garage/engineInfo",
+                data: {
+                    "carId" : carId
+                },
+                success: function (data) {
+                    $('#currEng').html("Текущая комплектация: " + data[0] + " цил: " + data[4] + " объем: " + data[3]);
+                }
+            });
+
+            break;
+
+        case "Electronics":
+            carcChange.hidden = true;
+            chassChange.hidden = true;
+            engChange.hidden = true;
+            elecChange.hidden = false;
+
+            $.ajax({
+                type: "GET",
+                url: "/garage/electronicsInfo",
+                data: {
+                    "carId" : carId
+                },
+                success: function (data) {
+                    $('#currElec').html("Текущая комплектация: телеметрия: " + data[0] + " контроль: " + data[1]);
+                }
+            });
+
+            break;
+
+    }
+
+}
+
+function change_carcase() {
+
+    let car = $('#car-select').val();
+    let carc = $('#change-detail-carc').val();
+
+    if (carc!=null) {
+
+        $.ajax({
+            type: "POST",
+            url: "/garage/changeCarc",
+            data: {
+                "carId": car,
+                "carcaseId": carc
+            },
+            success: function (data) {
+
+                location.reload();
+            }
+        });
+    } else {
+        document.getElementById("neok").hidden = false;
+    }
+}
+
+function change_chassis() {
+
+}
+
+function change_engine() {
+
+}
+
+function change_electronics() {
 
 }

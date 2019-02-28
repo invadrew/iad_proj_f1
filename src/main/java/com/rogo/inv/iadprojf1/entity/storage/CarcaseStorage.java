@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "carcase_storage")
 @Getter @Setter
-@ToString(callSuper = true) @EqualsAndHashCode(callSuper = true) @NoArgsConstructor
+@ToString @EqualsAndHashCode @NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class CarcaseStorage extends BaseStorage {
     @NotNull @Column(length = 25)
