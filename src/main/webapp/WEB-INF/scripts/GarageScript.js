@@ -437,12 +437,75 @@ function change_carcase() {
 
 function change_chassis() {
 
+    let car = $('#car-select').val();
+    let chass = $('#change-detail-chass').val();
+
+    if (chass!=null) {
+
+        $.ajax({
+            type: "POST",
+            url: "/garage/changeChass",
+            data: {
+                "carId": car,
+                "chassisId": chass
+            },
+            success: function (data) {
+
+                location.reload();
+            }
+        });
+    } else {
+        document.getElementById("neok").hidden = false;
+    }
+
 }
 
 function change_engine() {
 
+    let car = $('#car-select').val();
+    let eng = $('#change-detail-eng').val();
+
+    if (eng!=null) {
+
+        $.ajax({
+            type: "POST",
+            url: "/garage/changeEng",
+            data: {
+                "carId": car,
+                "engineId": eng
+            },
+            success: function (data) {
+
+                location.reload();
+            }
+        });
+    } else {
+        document.getElementById("neok").hidden = false;
+    }
+
 }
 
 function change_electronics() {
+
+    let car = $('#car-select').val();
+    let elec = $('#change-detail-elec').val();
+
+    if (elec!=null) {
+
+        $.ajax({
+            type: "POST",
+            url: "/garage/changeElectronics",
+            data: {
+                "carId": car,
+                "electronicsId": elec
+            },
+            success: function (data) {
+
+                location.reload();
+            }
+        });
+    } else {
+        document.getElementById("neok").hidden = false;
+    }
 
 }

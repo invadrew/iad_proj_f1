@@ -20,14 +20,6 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
 
     List<Car> findAllByTeam(Team team);
 
-//    CarcaseStorage findCarcaseStorageById(int id);
-
-   // ChassisStorage findChassisStorageById(int id);
-
-  //  EngineStorage findEngineStorageById(int id);
-
-    //ElectronicsStorage findElectronicsStorageById(int id);
-
     @Query(value = "SELECT c.id, cs.condition, en.condition, es.condition, ch.condition FROM cars c\n" +
             "  INNER JOIN carcase_storage cs ON (c.current_carcase_id = cs.id)\n" +
             "  INNER JOIN chassis_storage ch ON (c.current_chassis_id = ch.id)\n" +
@@ -39,5 +31,17 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
     @Modifying(clearAutomatically = true)
     @Query("UPDATE Car t SET t.currentCarcase = :carc WHERE t.id = :car")
     int updCarcase(@Param("carc") CarcaseStorage carc, @Param("car") Integer car);
+
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE Car t SET t.currentChassis = :chass WHERE t.id = :car")
+    int updChassis(@Param("chass") ChassisStorage chass, @Param("car") Integer car);
+
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE Car t SET t.currentEngine = :eng WHERE t.id = :car")
+    int updEngine(@Param("eng") EngineStorage eng, @Param("car") Integer car);
+
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE Car t SET t.currentElectronics = :elec WHERE t.id = :car")
+    int updElectronics(@Param("elec") ElectronicsStorage elec, @Param("car") Integer car);
 
 }

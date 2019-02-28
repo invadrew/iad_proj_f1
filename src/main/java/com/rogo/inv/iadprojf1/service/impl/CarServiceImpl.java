@@ -43,21 +43,18 @@ public class CarServiceImpl implements CarService {
     @Override
     public List<Car> findAllByTeam(Team team) { return repository.findAllByTeam(team); }
 
- //   @Override
-  //  public CarcaseStorage findCarcaseStorageById(int id) {return repository.findCarcaseStorageById(id);}
-
- //   @Override
-  //  public ChassisStorage findChassisStorageById(int id) { return repository.findChassisStorageById(id);}
-
-   // @Override
-   // public EngineStorage findEngineStorageById(int id) { return repository.findEngineStorageById(id);}
-
-    //@Override
-    //public ElectronicsStorage findElectronicsStorageById(int id) { return repository.findElectronicsStorageById(id);}
-
     @Override
     public List<Object[]> getConditionTable(int car) { return repository.getConditionTable(car);}
 
     @Override @Transactional
     public int updCarcase(@Param("carc") CarcaseStorage carc, @Param("car") Integer car) { return repository.updCarcase(carc, car);}
+
+    @Override @Transactional
+    public int updChassis(@Param("chass") ChassisStorage chass, @Param("car") Integer car) { return repository.updChassis(chass, car);}
+
+    @Override @Transactional
+    public int updEngine(@Param("eng") EngineStorage eng, @Param("car") Integer car) { return repository.updEngine(eng, car);}
+
+    @Override @Transactional
+    public int updElectronics(@Param("elec") ElectronicsStorage elec, @Param("car") Integer car) { return repository.updElectronics(elec, car);}
 }

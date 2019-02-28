@@ -317,6 +317,71 @@ public class GarageController {
 
     }
 
+    @RequestMapping(value = "/garage/changeChass", method = RequestMethod.POST)
+    @ResponseBody
+    public void changeChass(HttpServletResponse response, HttpServletRequest request) {
+
+        Integer car = Integer.parseInt(request.getParameter("carId"));
+        Integer chassis = Integer.parseInt(request.getParameter("chassisId"));
+
+        ComponentChange componentChange = new ComponentChange(carService.findById(car), null, null, null,
+                chassisStorageService.findById(carService.findById(car).getCurrentChassis().getId()), chassisStorageService.findById(chassis), null, null,
+                null, null, null, new Date());
+
+        componentChangeService.save(componentChange);
+
+        Car carr = carService.findById(car);
+
+        carService.updChassis(chassisStorageService.findById(chassis),car);
+        carr.setCurrentChassis(chassisStorageService.findById(chassis));
+        // carService.save(carr);
+
+    }
+
+    @RequestMapping(value = "/garage/changeEng", method = RequestMethod.POST)
+    @ResponseBody
+    public void changeEng(HttpServletResponse response, HttpServletRequest request) {
+
+        Integer car = Integer.parseInt(request.getParameter("carId"));
+        Integer engine = Integer.parseInt(request.getParameter("engineId"));
+
+        ComponentChange componentChange = new ComponentChange(carService.findById(car), null, null, null, null, null,
+                engineStorageService.findById(carService.findById(car).getCurrentEngine().getId()), engineStorageService.findById(engine),
+                null, null, null, new Date());
+
+        componentChangeService.save(componentChange);
+
+        Car carr = carService.findById(car);
+
+        carService.updEngine(engineStorageService.findById(engine),car);
+        carr.setCurrentEngine(engineStorageService.findById(engine));
+        // carService.save(carr);
+
+    }
+
+
+    @RequestMapping(value = "/garage/changeElectronics", method = RequestMethod.POST)
+    @ResponseBody
+    public void changeElec(HttpServletResponse response, HttpServletRequest request) {
+
+        Integer car = Integer.parseInt(request.getParameter("carId"));
+        Integer electronics = Integer.parseInt(request.getParameter("electronicsId"));
+
+        ComponentChange componentChange = new ComponentChange(carService.findById(car), null, null, null , null, null,
+                null, null,
+                electronicsStorageService.findById(carService.findById(car).getCurrentElectronics().getId()),
+                electronicsStorageService.findById(electronics), null, new Date());
+
+        componentChangeService.save(componentChange);
+
+        Car carr = carService.findById(car);
+
+        carService.updElectronics(electronicsStorageService.findById(electronics),car);
+        carr.setCurrentElectronics(electronicsStorageService.findById(electronics));
+        // carService.save(carr);
+
+    }
+
     private String getNamedCondition( @NotNull ComponentCondition condition) {
         String cond = "";
         switch (condition) {
