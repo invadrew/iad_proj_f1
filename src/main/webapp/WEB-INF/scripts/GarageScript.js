@@ -509,3 +509,36 @@ function change_electronics() {
     }
 
 }
+
+function confirmDisass(id) {
+
+    document.getElementById("car-destroyer" + id).hidden = true;
+    document.getElementById("really" + id).hidden = false;
+    document.getElementById("yes" + id).hidden = false;
+    document.getElementById("no" + id).hidden = false;
+
+}
+
+function disassCar(id) {
+
+    $.ajax({
+        type: "POST",
+        url: "/garage/disassemble",
+        data: {
+            "carId": id
+        },
+        success: function (data) {
+            location.reload();
+        }
+    });
+
+}
+
+function goBack(id) {
+
+    document.getElementById("car-destroyer" + id).hidden = false;
+    document.getElementById("really" + id).hidden = true;
+    document.getElementById("yes" + id).hidden = true;
+    document.getElementById("no" + id).hidden = true;
+
+}

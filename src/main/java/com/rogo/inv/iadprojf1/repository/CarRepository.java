@@ -1,5 +1,6 @@
 package com.rogo.inv.iadprojf1.repository;
 
+import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.Car;
 import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.storage.CarcaseStorage;
@@ -43,5 +44,9 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
     @Modifying(clearAutomatically = true)
     @Query("UPDATE Car t SET t.currentElectronics = :elec WHERE t.id = :car")
     int updElectronics(@Param("elec") ElectronicsStorage elec, @Param("car") Integer car);
+
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE Car t SET t.status = 'REFUSED', t.currentElectronics = NULL, t.currentEngine = NULL, t.currentChassis = NULL, t.currentCarcase = NULL WHERE t.id = :car")
+    int refuseCar( @Param("car") Integer car);
 
 }

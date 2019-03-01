@@ -38,7 +38,7 @@ public class TeamMember implements Serializable {
     private String surname;
 
     @NotNull
-    private boolean canBuy;
+    private Boolean canBuy;
 
     @ToString.Exclude
     @NotNull
@@ -60,7 +60,7 @@ public class TeamMember implements Serializable {
     /* ================================
      constructors
     ================================ */
-    public TeamMember(int userId, @NotNull User user, @NotNull String name, @NotNull String surname, @NotNull boolean canBuy, @NotNull Team team) {
+    public TeamMember(int userId, @NotNull User user, @NotNull String name, @NotNull String surname, @NotNull Boolean canBuy, @NotNull Team team) {
         this.userId = userId;
         this.user = user;
         this.name = name;

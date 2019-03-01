@@ -1,6 +1,12 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.rogo.inv.iadprojf1.entity.ComponentCondition" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%@ page import="org.springframework.security.core.Authentication" %>
+<%@ page import="com.rogo.inv.iadprojf1.entity.User" %>
+<%@ page import="org.springframework.beans.factory.annotation.Autowired" %>
+<%@ page import="com.rogo.inv.iadprojf1.service.TeamMemberService" %>
+<%@ page import="com.rogo.inv.iadprojf1.service.UserService" %>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -16,6 +22,14 @@
 <body>
 <div class="grid-container">
     <jsp:include page="Header.jsp"/>
+    <%!
+        @Autowired
+        private TeamMemberService teamMemberService;
+
+        @Autowired
+        private UserService userService;
+
+    %>
     <div class="TeamNameArea">
         <br>
         <center><label style="padding-top: 3px" ><b>${team.name}</b></label></center>
@@ -326,6 +340,20 @@
                             <c:if test="${!(car.isReady)}">
                                 <c:out value="Не готов к гонке"/>
                             </c:if>
+                            <sec:authorize access="hasAuthority('MECHANIC')">
+
+                                <c:if test="${canBuy}">
+                                <form>
+                                    <input type="hidden" value="${car.id}">
+                                    <input type="button" value="Разобрать болид" id="car-destroyer${car.id}" class="res-selector" style="width: 30% !important;" onclick="confirmDisass(${car.id})">
+                                    <br>
+                                    <label id="really${car.id}" hidden>Вы уверены?</label>
+                                    <br>
+                                    <input type="button" id="yes${car.id}" value="Да" class="res-selector" style="width: 10% !important; margin-right: 4%" hidden onclick="disassCar(${car.id})">
+                                    <input type="button" id="no${car.id}" value="Нет" class="res-selector" style="width: 10% !important; margin-left: 4%" hidden onclick="goBack(${car.id})">
+                                </form>
+                                </c:if>
+                            </sec:authorize>
                         </div>
                         <div class="DeatilsInfoArea">
                             <table class="infotable" border="1" style="text-align: left">

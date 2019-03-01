@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.rogo.inv.iadprojf1.entity.ComponentCondition.ANY;
+import static java.lang.Enum.valueOf;
 
 @Controller
 public class GarageController {
@@ -69,15 +70,19 @@ public class GarageController {
         List<EngineStorage> engines = new ArrayList<>();
         List<CarcaseStorage> carcases = new ArrayList<>();
         List<ElectronicsStorage> electronics = new ArrayList<>();
+        List<Car> carList = new ArrayList<>();
 
         for (Car car: cars) {
+
+            if (!car.getStatus().equals(AcceptStatus.REFUSED)) { carList.add(car); }
+
             chassis.add(car.getCurrentChassis());
             engines.add(car.getCurrentEngine());
             carcases.add(car.getCurrentCarcase());
             electronics.add(car.getCurrentElectronics());
         }
         
-        map.addAttribute("cars", cars);
+        map.addAttribute("cars", carList);
 
         map.addAttribute("chassis", chassis);
         map.addAttribute("engines",engines);
@@ -88,6 +93,8 @@ public class GarageController {
         map.addAttribute("enginesStorage", engineStorageService.findAllByTeam(team));
         map.addAttribute("chassisStorage", chassisStorageService.findAllByTeam(team));
         map.addAttribute("electronicsStorage", electronicsStorageService.findAllByTeam(team));
+
+        map.addAttribute("canBuy", teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getCanBuy());
 
         List<CarcaseStorage> teamCarc = carcaseStorageService.findAllByTeam(team);
         List<ElectronicsStorage> teamElec = electronicsStorageService.findAllByTeam(team);
@@ -379,6 +386,18 @@ public class GarageController {
         carService.updElectronics(electronicsStorageService.findById(electronics),car);
         carr.setCurrentElectronics(electronicsStorageService.findById(electronics));
         // carService.save(carr);
+
+    }
+
+    @RequestMapping(value = "/garage/disassemble", method = RequestMethod.POST)
+    @ResponseBody
+    public void carDisassemble(HttpServletRequest request, HttpServletResponse response) {
+
+        Integer car = Integer.parseInt(request.getParameter("carId"));
+
+        carService.refuseCar(car);
+        carService.findById(car).setStatus(AcceptStatus.REFUSED);
+
 
     }
 

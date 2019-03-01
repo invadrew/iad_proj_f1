@@ -1,4 +1,5 @@
 package com.rogo.inv.iadprojf1.service.impl;
+import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.Car;
 import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.message.Chat;
@@ -57,4 +58,7 @@ public class CarServiceImpl implements CarService {
 
     @Override @Transactional
     public int updElectronics(@Param("elec") ElectronicsStorage elec, @Param("car") Integer car) { return repository.updElectronics(elec, car);}
+
+    @Override @Transactional
+   public int refuseCar( @Param("car") Integer car) { return  repository.refuseCar(car); }
 }

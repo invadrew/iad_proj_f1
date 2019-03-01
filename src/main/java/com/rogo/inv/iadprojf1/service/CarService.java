@@ -1,5 +1,6 @@
 package com.rogo.inv.iadprojf1.service;
 
+import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.Car;
 import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.storage.CarcaseStorage;
@@ -30,4 +31,6 @@ public interface CarService {
     int updEngine(@Param("eng") EngineStorage eng, @Param("car") Integer car);
 
     int updElectronics(@Param("elec") ElectronicsStorage elec, @Param("car") Integer car);
+
+    int refuseCar( @Param("car") Integer car);
 }

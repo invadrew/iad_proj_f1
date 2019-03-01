@@ -50,22 +50,18 @@ public class Car {
     @NotNull
     private Boolean isReady;
 
-    @NotNull
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "current_carcase_id", unique = true)
     private CarcaseStorage currentCarcase;
 
-    @NotNull
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "current_engine_id", unique = true)
     private EngineStorage currentEngine;
 
-    @NotNull
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "current_chassis_id", unique = true)
     private ChassisStorage currentChassis;
 
-    @NotNull
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "current_electronics_id", unique = true)
     private ElectronicsStorage currentElectronics;
@@ -91,10 +87,14 @@ public class Car {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "car")
     private List<PitStopRepair> pitStopRepairs = new ArrayList<>();
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    protected AcceptStatus status;
+
     /* ================================
      constructors
     ================================ */
-    public Car(@NotNull String label, @NotNull String model, @NotNull @Min(1900) int creationYear, @NotNull Team team, @NotNull Photo photo, @NotNull Boolean isReady, @NotNull CarcaseStorage currentCarcase, @NotNull EngineStorage currentEngine, @NotNull ChassisStorage currentChassis, @NotNull ElectronicsStorage currentElectronics) {
+    public Car(@NotNull String label, @NotNull String model, @NotNull @Min(1900) int creationYear, @NotNull Team team, @NotNull Photo photo, @NotNull Boolean isReady, @NotNull CarcaseStorage currentCarcase, @NotNull EngineStorage currentEngine, @NotNull ChassisStorage currentChassis, @NotNull ElectronicsStorage currentElectronics, AcceptStatus status) {
         this.label = label;
         this.model = model;
         this.creationYear = creationYear;
@@ -105,5 +105,6 @@ public class Car {
         this.currentEngine = currentEngine;
         this.currentChassis = currentChassis;
         this.currentElectronics = currentElectronics;
+        this.status = status;
     }
 }
