@@ -76,12 +76,14 @@ public class GarageController {
 
         for (Car car: cars) {
 
-            if (!car.getStatus().equals(AcceptStatus.REFUSED)) { carList.add(car); }
+            if (car.getStatus().equals(AcceptStatus.ACCEPTED)) {
+                carList.add(car);
 
-            chassis.add(car.getCurrentChassis());
-            engines.add(car.getCurrentEngine());
-            carcases.add(car.getCurrentCarcase());
-            electronics.add(car.getCurrentElectronics());
+                chassis.add(car.getCurrentChassis());
+                engines.add(car.getCurrentEngine());
+                carcases.add(car.getCurrentCarcase());
+                electronics.add(car.getCurrentElectronics());
+            }
         }
         
         map.addAttribute("cars", carList);

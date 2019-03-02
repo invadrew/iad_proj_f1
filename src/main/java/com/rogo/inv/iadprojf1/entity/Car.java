@@ -24,6 +24,7 @@ import java.util.List;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Car {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
 
     @NotNull @Column(length = 25)
@@ -32,7 +33,7 @@ public class Car {
     @NotNull @Column(length = 25)
     private String model;
 
-    @NotNull @Min(1900)
+    @Min(1900)
     private int creationYear;
 
     @ToString.Exclude
@@ -42,7 +43,6 @@ public class Car {
     @JsonBackReference
     private Team team;
 
-    @NotNull
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "photo_id")
     private Photo photo;
@@ -87,14 +87,13 @@ public class Car {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "car")
     private List<PitStopRepair> pitStopRepairs = new ArrayList<>();
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     protected AcceptStatus status;
 
     /* ================================
      constructors
     ================================ */
-    public Car(@NotNull String label, @NotNull String model, @NotNull @Min(1900) int creationYear, @NotNull Team team, @NotNull Photo photo, @NotNull Boolean isReady, @NotNull CarcaseStorage currentCarcase, @NotNull EngineStorage currentEngine, @NotNull ChassisStorage currentChassis, @NotNull ElectronicsStorage currentElectronics, AcceptStatus status) {
+    public Car(@NotNull String label, @NotNull String model, @Min(1900) int creationYear, @NotNull Team team,  Photo photo, @NotNull Boolean isReady, @NotNull CarcaseStorage currentCarcase, @NotNull EngineStorage currentEngine, @NotNull ChassisStorage currentChassis, @NotNull ElectronicsStorage currentElectronics, AcceptStatus status) {
         this.label = label;
         this.model = model;
         this.creationYear = creationYear;

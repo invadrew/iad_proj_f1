@@ -17,7 +17,6 @@
         width: 20%;
     }
 </style>
-<script type="text/javascript" src="../scripts/AddDetailsScript.js"> </script>
 <div class="grid-container">
     <jsp:include page="Header.jsp"/>
     <div class="TeamNameArea">
@@ -36,25 +35,53 @@
                 <br>
                 <label for="carCarcSelect">Выберите каркас</label>
                 <select id="carCarcSelect" class="res-selector" >
-                    <option>hello there</option>
+                    <c:forEach items="${freeCarc}" var="cCarc">
+                    <option value="${cCarc.id}"> ${cCarc.rearWing} ${cCarc.safetyArcs} ${cCarc.wings} </option>
+                    </c:forEach>
+                    <c:if test="${freeCarc.isEmpty()}">
+                        <br>
+                        Нет свободных деталей
+                    </c:if>
                 </select>
                 <br>
                 <label for="carChassSelect">Выберите шасси</label>
                 <select id="carChassSelect"  class="res-selector">
-                    <option>hello there</option>
+                    <c:forEach items="${freeChass}" var="cChass">
+                    <option value="${cChass.id}"> ${cChass.model} (h:${cChass.height} w:${cChass.width}) </option>
+                    </c:forEach>
+                    <c:if test="${freeChass.isEmpty()}">
+                        <br>
+                        Нет свободных деталей
+                    </c:if>
                 </select>
                 <br>
                 <label for="carEngSelect">Выберите двигатель</label>
                 <select id="carEngSelect" class="res-selector">
-                    <option>hello there</option>
+                    <c:forEach items="${freeEng}" var="cEng">
+                    <option value="${cEng.id}"> ${cEng.model} ${cEng.cyclinders} цил. ${cEng.capacity} л. </option>
+                    </c:forEach>
+                    <c:if test="${freeEng.isEmpty()}">
+                        <br>
+                        Нет свободных деталей
+                    </c:if>
                 </select>
                 <br>
                 <label for="carElecSelect">Выберите электронику</label>
                 <select id="carElecSelect" class="res-selector">
-                    <option>hello there</option>
+                    <c:forEach items="${freeElec}" var="cElec">
+                    <option value="${cElec.id}"> ${cElec.telemetry} ${cElec.controlSystem} </option>
+                    </c:forEach>
+                    <c:if test="${freeElec.isEmpty()}">
+                        <br>
+                        Нет свободных деталей
+                    </c:if>
                 </select>
                 <br>
-                <input type="submit" value="Добавить" class="res-selector">
+                <input type="button" value="Добавить" class="res-selector" onclick="addCar()">
+                <br>
+                <label id="carOk" hidden> Готово </label>
+                <label id="carFail" hidden> Не хватает деталей </label>
+                <label id="carFailfields" hidden> Не все поля заполнены </label>
             </form>
         </div>
     </div>
@@ -161,3 +188,9 @@
 
 </div>
 </div>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script type="text/javascript" src="../scripts/AddDetailsScript.js"> </script>
+
+</body>
+</html>

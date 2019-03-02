@@ -365,7 +365,7 @@
                                 <tr>
                                     <td>Каркас</td>
                                     <td> Спойлер: ${carcases.get(cars.indexOf(car)).rearWing}.
-                                        Дуги безопасности: ${carcases.get(cars.indexOf(car)).safetyArcs} .
+                                        Дуги безопасности: ${carcases.get(cars.indexOf(car)).safetyArcs}.
                                         Крылья: ${carcases.get(cars.indexOf(car)).wings} </td>
                                     <td>
                                         <c:if test="${carcases.get(cars.indexOf(car)).condition.equals(ComponentCondition.PERFECT)}">Идеальное</c:if>
