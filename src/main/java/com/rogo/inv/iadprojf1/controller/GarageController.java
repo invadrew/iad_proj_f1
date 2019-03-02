@@ -18,13 +18,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import static com.rogo.inv.iadprojf1.entity.ComponentCondition.ANY;
-import static java.lang.Enum.valueOf;
+import static com.rogo.inv.iadprojf1.entity.ComponentCondition.PERFECT;
 
 @Controller
 public class GarageController {
@@ -52,6 +51,9 @@ public class GarageController {
 
     @Autowired
     private ComponentChangeService componentChangeService;
+
+    @Autowired
+    private TeamService teamService;
 
     @RequestMapping(value = "/garage", method = RequestMethod.GET)
     public String toGarage(ModelMap map, Authentication authentication) {
@@ -399,6 +401,107 @@ public class GarageController {
         carService.findById(car).setStatus(AcceptStatus.REFUSED);
 
 
+    }
+
+    @RequestMapping(value = "/garage/repairCarcase", method = RequestMethod.POST)
+    @ResponseBody
+    public String repairCarase(HttpServletResponse response, HttpServletRequest request, Authentication authentication) {
+
+        Team team = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam();
+        Integer car = Integer.parseInt(request.getParameter("carId"));
+        CarcaseStorage carcase = carcaseStorageService.findById(carService.findById(car).getCurrentCarcase().getId());
+
+        double price = conditionToRepairPrice(carcase.getCondition(), carcase.getPrice());
+
+        if (price > team.getBudget()) return "error";
+
+        teamService.updTeamBudget(team.getBudget() - price, team.getId());
+        team.setBudget(team.getBudget() - price);
+
+        carcaseStorageService.repairCarcase(carcase.getId());
+        carcase.setCondition(PERFECT);
+
+        return "ok";
+
+    }
+
+    @RequestMapping(value = "/garage/repairChassis", method = RequestMethod.POST)
+    @ResponseBody
+    public String repairChassis(HttpServletResponse response, HttpServletRequest request, Authentication authentication) {
+
+        Team team = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam();
+        Integer car = Integer.parseInt(request.getParameter("carId"));
+        ChassisStorage chassis = chassisStorageService.findById(carService.findById(car).getCurrentChassis().getId());
+
+        double price = conditionToRepairPrice(chassis.getCondition(), chassis.getPrice());
+
+        if (price > team.getBudget()) return "error";
+
+        teamService.updTeamBudget(team.getBudget() - price, team.getId());
+        team.setBudget(team.getBudget() - price);
+
+        chassisStorageService.repairChassis(chassis.getId());
+        chassis.setCondition(PERFECT);
+
+        return "ok";
+
+    }
+
+    @RequestMapping(value = "/garage/repairEngine", method = RequestMethod.POST)
+    @ResponseBody
+    public String repairEngine(HttpServletResponse response, HttpServletRequest request, Authentication authentication) {
+
+        Team team = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam();
+        Integer car = Integer.parseInt(request.getParameter("carId"));
+        EngineStorage engine = engineStorageService.findById(carService.findById(car).getCurrentEngine().getId());
+
+        double price = conditionToRepairPrice(engine.getCondition(), engine.getPrice());
+
+        if (price > team.getBudget()) return "error";
+
+        teamService.updTeamBudget(team.getBudget() - price, team.getId());
+        team.setBudget(team.getBudget() - price);
+
+        engineStorageService.repairEngine(engine.getId());
+        engine.setCondition(PERFECT);
+
+        return "ok";
+    }
+
+    @RequestMapping(value = "/garage/repairElectronics", method = RequestMethod.POST)
+    @ResponseBody
+    public String repairElectronics(HttpServletResponse response, HttpServletRequest request, Authentication authentication) {
+
+        Team team = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam();
+        Integer car = Integer.parseInt(request.getParameter("carId"));
+        ElectronicsStorage electronics = electronicsStorageService.findById(carService.findById(car).getCurrentElectronics().getId());
+
+        double price = conditionToRepairPrice(electronics.getCondition(), electronics.getPrice());
+
+        if (price > team.getBudget()) return "error";
+
+        teamService.updTeamBudget(team.getBudget() - price, team.getId());
+        team.setBudget(team.getBudget() - price);
+
+        electronicsStorageService.repairElectronics(electronics.getId());
+        electronics.setCondition(PERFECT);
+
+        return "ok";
+    }
+
+    private double conditionToRepairPrice(@NotNull ComponentCondition condition, double price) {
+        switch (condition) {
+            case AWFUL:
+                return Math.round(price/7);
+            case BAD:
+                return Math.round(price/8);
+            case NORMAL:
+                return Math.round(price/9);
+            case GOOD:
+                return Math.round(price/10);
+        }
+
+        return 0;
     }
 
     private String getNamedCondition( @NotNull ComponentCondition condition) {

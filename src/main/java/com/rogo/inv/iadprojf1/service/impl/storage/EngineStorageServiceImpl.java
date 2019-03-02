@@ -5,8 +5,10 @@ import com.rogo.inv.iadprojf1.entity.storage.EngineStorage;
 import com.rogo.inv.iadprojf1.repository.storageRepository.EngineStorageRepository;
 import com.rogo.inv.iadprojf1.service.EngineStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service("engineService")
@@ -36,4 +38,7 @@ public class EngineStorageServiceImpl implements EngineStorageService {
 
     @Override
     public List<EngineStorage> findAllByTeam(Team team) { return repository.findAllByTeam(team);}
+
+    @Override @Transactional
+    public int repairEngine( @Param("engine") Integer engine) { return repository.repairEngine(engine); }
 }

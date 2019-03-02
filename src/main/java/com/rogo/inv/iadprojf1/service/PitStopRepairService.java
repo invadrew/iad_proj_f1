@@ -1,5 +1,6 @@
 package com.rogo.inv.iadprojf1.service;
 
+import com.rogo.inv.iadprojf1.entity.Car;
 import com.rogo.inv.iadprojf1.entity.pitstop.PitStopRepair;
 
 import java.util.List;
@@ -12,4 +13,6 @@ public interface PitStopRepairService {
     void delete(PitStopRepair entity);
 
     PitStopRepair findById(int id);
+
+    List<PitStopRepair> findAllByCar(Car car);
 }

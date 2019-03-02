@@ -418,25 +418,91 @@
                         <sec:authorize access="hasAuthority('MECHANIC')">
                         <div class="RepairArea">
                             <center><h3>Ремонт</h3></center>
-                            <table class="infotable">
-                                <tr>
+                            <table class="infotable" style="text-align: left">
+                                <c:if test="${!carcases.get(cars.indexOf(car)).condition.equals(ComponentCondition.PERFECT)}">
+                                <tr id="ca${car.id}">
                                     <td>Корпус</td>
-                                    <td>Описание проблемы апавпавпва</td>
-                                    <td>Цена: 4223423</td>
-                                    <td><input type="button" value="Починить" class="res-selector"></td>
+                                    <td>Цена:
+                                        <c:if test="${carcases.get(cars.indexOf(car)).condition.equals(ComponentCondition.GOOD)}">
+                                            <fmt:formatNumber value="${carcases.get(cars.indexOf(car)).price / 10}" type="number" maxFractionDigits="0"/>
+                                        </c:if>
+                                        <c:if test="${carcases.get(cars.indexOf(car)).condition.equals(ComponentCondition.NORMAL)}">
+                                            <fmt:formatNumber value="${carcases.get(cars.indexOf(car)).price / 9}" type="number" maxFractionDigits="0"/>
+                                        </c:if>
+                                        <c:if test="${carcases.get(cars.indexOf(car)).condition.equals(ComponentCondition.BAD)}">
+                                            <fmt:formatNumber value="${carcases.get(cars.indexOf(car)).price / 8}" type="number" maxFractionDigits="0"/>
+                                        </c:if>
+                                        <c:if test="${carcases.get(cars.indexOf(car)).condition.equals(ComponentCondition.AWFUL)}">
+                                            <fmt:formatNumber value="${carcases.get(cars.indexOf(car)).price / 7}" type="number" maxFractionDigits="0"/>
+                                        </c:if>
+                                    </td>
+                                    <td><input type="button" value="Починить" class="res-selector" onclick="repairCarc(${car.id})"></td>
+                                    <td id="notEnoughMoneyCarc${car.id}" hidden> Недостаточно денег </td>
                                 </tr>
-                                <tr>
-                                    <td>Корпус</td>
-                                    <td>Описание проблемы апавпавпва</td>
-                                    <td>Цена 4223423</td>
-                                    <td><input type="button" value="Починить" class="res-selector"></td>
+                                </c:if>
+                                <c:if test="${!chassis.get(cars.indexOf(car)).condition.equals(ComponentCondition.PERFECT)}">
+                                <tr id="chs${car.id}">
+                                    <td>Шасси</td>
+                                    <td>Цена:
+                                        <c:if test="${chassis.get(cars.indexOf(car)).condition.equals(ComponentCondition.GOOD)}">
+                                            <fmt:formatNumber value="${chassis.get(cars.indexOf(car)).price / 10}" type="number" maxFractionDigits="0"/>
+                                        </c:if>
+                                        <c:if test="${chassis.get(cars.indexOf(car)).condition.equals(ComponentCondition.NORMAL)}">
+                                            <fmt:formatNumber value="${chassis.get(cars.indexOf(car)).price / 9}" type="number" maxFractionDigits="0"/>
+                                        </c:if>
+                                        <c:if test="${chassis.get(cars.indexOf(car)).condition.equals(ComponentCondition.BAD)}">
+                                            <fmt:formatNumber value="${chassis.get(cars.indexOf(car)).price / 8}" type="number" maxFractionDigits="0"/>
+                                        </c:if>
+                                        <c:if test="${chassis.get(cars.indexOf(car)).condition.equals(ComponentCondition.AWFUL)}">
+                                            <fmt:formatNumber value="${chassis.get(cars.indexOf(car)).price / 7}" type="number" maxFractionDigits="0"/>
+                                        </c:if>
+                                    </td>
+                                    <td><input type="button" value="Починить" class="res-selector" onclick="repairChass(${car.id})"></td>
+                                    <td id="notEnoughMoneyChass${car.id}" hidden> Недостаточно денег </td>
                                 </tr>
-                                <tr>
-                                    <td>Корпус</td>
-                                    <td>Описание проблемы апавпавпва</td>
-                                    <td>Цена 4223423</td>
-                                    <td><input type="button" value="Починить" class="res-selector"></td>
+                                </c:if>
+                                <c:if test="${!engines.get(cars.indexOf(car)).condition.equals(ComponentCondition.PERFECT)}">
+                                <tr id="en${car.id}">
+                                    <td>Двигатель</td>
+                                    <td>Цена:
+                                        <c:if test="${engines.get(cars.indexOf(car)).condition.equals(ComponentCondition.GOOD)}">
+                                            <fmt:formatNumber value="${engines.get(cars.indexOf(car)).price / 10}" type="number" maxFractionDigits="0"/>
+                                        </c:if>
+                                        <c:if test="${engines.get(cars.indexOf(car)).condition.equals(ComponentCondition.NORMAL)}">
+                                            <fmt:formatNumber value="${engines.get(cars.indexOf(car)).price / 9}" type="number" maxFractionDigits="0"/>
+                                        </c:if>
+                                        <c:if test="${engines.get(cars.indexOf(car)).condition.equals(ComponentCondition.BAD)}">
+                                            <fmt:formatNumber value="${engines.get(cars.indexOf(car)).price / 8}" type="number" maxFractionDigits="0"/>
+                                        </c:if>
+                                        <c:if test="${engines.get(cars.indexOf(car)).condition.equals(ComponentCondition.AWFUL)}">
+                                            <fmt:formatNumber value="${engines.get(cars.indexOf(car)).price / 7}" type="number" maxFractionDigits="0"/>
+                                        </c:if>
+                                    </td>
+                                    <td><input type="button" value="Починить" class="res-selector" onclick="repairEng(${car.id})"></td>
+                                    <td id="notEnoughMoneyEng${car.id}" hidden> Недостаточно денег </td>
                                 </tr>
+                                </c:if>
+                                <c:if test="${!electronics.get(cars.indexOf(car)).condition.equals(ComponentCondition.PERFECT)}">
+                                <tr id="el${car.id}">
+                                    <td>Электроника</td>
+                                    <td>Цена:
+                                        <c:if test="${electronics.get(cars.indexOf(car)).condition.equals(ComponentCondition.GOOD)}">
+                                            <fmt:formatNumber value="${electronics.get(cars.indexOf(car)).price / 10}" type="number" maxFractionDigits="0"/>
+                                        </c:if>
+                                        <c:if test="${electronics.get(cars.indexOf(car)).condition.equals(ComponentCondition.NORMAL)}">
+                                            <fmt:formatNumber value="${electronics.get(cars.indexOf(car)).price / 9}" type="number" maxFractionDigits="0"/>
+                                        </c:if>
+                                        <c:if test="${electronics.get(cars.indexOf(car)).condition.equals(ComponentCondition.BAD)}">
+                                            <fmt:formatNumber value="${electronics.get(cars.indexOf(car)).price / 8}" type="number" maxFractionDigits="0"/>
+                                        </c:if>
+                                        <c:if test="${electronics.get(cars.indexOf(car)).condition.equals(ComponentCondition.AWFUL)}">
+                                            <fmt:formatNumber value="${electronics.get(cars.indexOf(car)).price / 7}" type="number" maxFractionDigits="0"/>
+                                        </c:if>
+                                    </td>
+                                    <td><input type="button" value="Починить" class="res-selector" onclick="repairElec(${car.id})"></td>
+                                    <td id="notEnoughMoneyElec${car.id}" hidden> Недостаточно денег </td>
+                                </tr>
+                                </c:if>
                             </table>
                         </div>
                         </sec:authorize>

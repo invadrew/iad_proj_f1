@@ -33,7 +33,7 @@ public abstract class BaseStorage {
     protected ComponentCondition condition;
 
     @NotNull @Min(0)
-    protected long price;
+    protected double price;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -42,7 +42,7 @@ public abstract class BaseStorage {
     /* ================================
      constructors
     ================================ */
-    public BaseStorage(@NotNull Team team, @NotNull ComponentCondition condition, @NotNull @Min(0) long price, @NotNull AcceptStatus status) {
+    public BaseStorage(@NotNull Team team, @NotNull ComponentCondition condition, @NotNull @Min(0) double price, @NotNull AcceptStatus status) {
         this.team = team;
         this.condition = condition;
         this.price = price;

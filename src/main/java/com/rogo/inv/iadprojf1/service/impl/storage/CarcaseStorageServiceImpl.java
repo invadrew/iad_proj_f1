@@ -5,8 +5,10 @@ import com.rogo.inv.iadprojf1.entity.storage.ElectronicsStorage;
 import com.rogo.inv.iadprojf1.repository.storageRepository.CarcaseStorageRepository;
 import com.rogo.inv.iadprojf1.service.CarcaseStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service("carcaseService")
@@ -36,4 +38,7 @@ public class CarcaseStorageServiceImpl implements CarcaseStorageService {
 
     @Override
     public List<CarcaseStorage> findAllByTeam(Team team) { return repository.findAllByTeam(team);}
+
+    @Override @Transactional
+    public int repairCarcase( @Param("carcase") Integer carcase) { return  repository.repairCarcase(carcase); }
 }

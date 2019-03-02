@@ -5,8 +5,10 @@ import com.rogo.inv.iadprojf1.entity.storage.ElectronicsStorage;
 import com.rogo.inv.iadprojf1.repository.storageRepository.ChassisStorageRepository;
 import com.rogo.inv.iadprojf1.service.ChassisStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service("chassisService")
@@ -36,4 +38,7 @@ public class ChassisStorageServiceImpl implements ChassisStorageService {
 
     @Override
     public List<ChassisStorage> findAllByTeam(Team team) { return repository.findAllByTeam(team);}
+
+    @Override @Transactional
+    public int repairChassis( @Param("chassis") Integer chassis) { return repository.repairChassis(chassis); }
 }

@@ -4,8 +4,10 @@ import com.rogo.inv.iadprojf1.entity.storage.ElectronicsStorage;
 import com.rogo.inv.iadprojf1.repository.storageRepository.ElectronicsStorageRepository;
 import com.rogo.inv.iadprojf1.service.ElectronicsStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service("electronicsService")
@@ -35,4 +37,7 @@ public class ElectronicsStorageServiceImpl implements ElectronicsStorageService 
 
     @Override
     public List<ElectronicsStorage> findAllByTeam(Team team) { return repository.findAllByTeam(team);}
+
+    @Override @Transactional
+    public int repairElectronics( @Param("electronics") Integer electronics) { return repository.repairElectronics(electronics); }
 }

@@ -5,7 +5,7 @@ function sendMoney(id, sId) {
     let moneySp = $('#moneySp' + id).val();
     let spId = $('#spId' + sId).val();
 
-    let notEnoughMoney = document.getElementById("notEnough");
+    let notEnoughMoney = document.getElementById("notEnough" + id);
     let done = document.getElementById("done");
 
     notEnoughMoney.hidden = true;

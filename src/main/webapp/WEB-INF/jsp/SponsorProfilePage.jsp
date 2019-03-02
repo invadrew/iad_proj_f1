@@ -66,7 +66,7 @@
                             <input type="number" class="res-selector" id="moneySp${sponsoring[1]}" >
                             <input type="button" class="res-selector" value="Перевести" onclick="sendMoney(${sponsoring[1]}, ${sponsor.userId})">
                             <br>
-                            <label id="notEnough" hidden> Недостаточно денег </label>
+                            <label id="notEnough${sponsoring[1]}" hidden> Недостаточно денег </label>
                             <label id="done" hidden> Успешно </label>
                         </form>
                         </c:if>

@@ -542,3 +542,87 @@ function goBack(id) {
     document.getElementById("no" + id).hidden = true;
 
 }
+
+function repairCarc(id) {
+
+    let ca = document.getElementById("ca" + id);
+
+    $.ajax({
+        type: "POST",
+        url: "/garage/repairCarcase",
+        data: {
+            "carId": id
+        },
+        success: function (data) {
+            if (data === "ok") {
+            ca.hidden = true;
+            location.reload(); } else {
+                document.getElementById("notEnoughMoneyCarc" + id).hidden = false;
+            }
+        }
+    });
+
+}
+
+function repairChass(id) {
+
+    let chs = document.getElementById("chs" + id);
+
+    $.ajax({
+        type: "POST",
+        url: "/garage/repairChassis",
+        data: {
+            "carId": id
+        },
+        success: function (data) {
+            if (data === "ok") {
+            chs.hidden = true;
+            location.reload(); } else {
+                document.getElementById("notEnoughMoneyChass" + id).hidden = false;
+            }
+        }
+    });
+
+}
+
+function repairEng(id) {
+
+    let en = document.getElementById("en" + id);
+
+    $.ajax({
+        type: "POST",
+        url: "/garage/repairEngine",
+        data: {
+            "carId": id
+        },
+        success: function (data) {
+            if (data === "ok") {
+            en.hidden = true;
+            location.reload(); } else {
+                document.getElementById("notEnoughMoneyEng" + id).hidden = false;
+            }
+        }
+    });
+
+}
+
+function repairElec(id) {
+
+    let el = document.getElementById("el" + id);
+
+    $.ajax({
+        type: "POST",
+        url: "/garage/repairElectronics",
+        data: {
+            "carId": id
+        },
+        success: function (data) {
+            if (data === "ok") {
+            el.hidden = true;
+            location.reload(); } else {
+                document.getElementById("notEnoughMoneyElec" + id).hidden = false;
+            }
+        }
+    });
+
+}
