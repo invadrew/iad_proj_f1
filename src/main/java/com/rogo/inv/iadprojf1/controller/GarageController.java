@@ -93,10 +93,34 @@ public class GarageController {
         map.addAttribute("carcases", carcases);
         map.addAttribute("electronics", electronics);
 
-        map.addAttribute("carcaseStorage", carcaseStorageService.findAllByTeam(team));
-        map.addAttribute("enginesStorage", engineStorageService.findAllByTeam(team));
-        map.addAttribute("chassisStorage", chassisStorageService.findAllByTeam(team));
-        map.addAttribute("electronicsStorage", electronicsStorageService.findAllByTeam(team));
+        List<CarcaseStorage> acceptedCarc = new ArrayList<>();
+
+        for ( CarcaseStorage carc: carcaseStorageService.findAllByTeam(team) ) {
+            if (carc.getStatus().equals(AcceptStatus.ACCEPTED)) { acceptedCarc.add(carc); }
+        }
+
+        List<ChassisStorage> acceptedChass = new ArrayList<>();
+
+        for ( ChassisStorage chas: chassisStorageService.findAllByTeam(team) ) {
+            if (chas.getStatus().equals(AcceptStatus.ACCEPTED)) { acceptedChass.add(chas); }
+        }
+
+        List<EngineStorage> acceptedEn = new ArrayList<>();
+
+        for ( EngineStorage en: engineStorageService.findAllByTeam(team) ) {
+            if (en.getStatus().equals(AcceptStatus.ACCEPTED)) { acceptedEn.add(en); }
+        }
+
+        List<ElectronicsStorage> acceptedEl = new ArrayList<>();
+
+        for ( ElectronicsStorage el: electronicsStorageService.findAllByTeam(team) ) {
+            if (el.getStatus().equals(AcceptStatus.ACCEPTED)) { acceptedEl.add(el); }
+        }
+
+        map.addAttribute("carcaseStorage", acceptedCarc);
+        map.addAttribute("enginesStorage", acceptedEn);
+        map.addAttribute("chassisStorage", acceptedChass);
+        map.addAttribute("electronicsStorage", acceptedEl);
 
         map.addAttribute("canBuy", teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getCanBuy());
 
@@ -111,25 +135,25 @@ public class GarageController {
         List<EngineStorage> freeEng = new ArrayList<>();
 
         for (CarcaseStorage carcase: teamCarc) {
-            if (!carcases.contains(carcase)) {
+            if (!carcases.contains(carcase) && (carcase.getStatus().equals(AcceptStatus.ACCEPTED))) {
                 freeCarc.add(carcase);
             }
         }
 
         for (ElectronicsStorage electr: teamElec) {
-            if (!electronics.contains(electr)) {
+            if (!electronics.contains(electr) && (electr.getStatus().equals(AcceptStatus.ACCEPTED))) {
                 freeElec.add(electr);
             }
         }
 
         for (ChassisStorage ch: teamChass) {
-            if (!chassis.contains(ch)) {
+            if (!chassis.contains(ch) && (ch.getStatus().equals(AcceptStatus.ACCEPTED))) {
                 freeChass.add(ch);
             }
         }
 
         for (EngineStorage eng: teamEng) {
-            if (!engines.contains(eng)) {
+            if (!engines.contains(eng) && (eng.getStatus().equals(AcceptStatus.ACCEPTED))) {
                 freeEng.add(eng);
             }
         }

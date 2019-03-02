@@ -86,25 +86,25 @@ public class DetailAddController {
         List<EngineStorage> freeEng = new ArrayList<>();
 
         for (CarcaseStorage carcase: teamCarc) {
-            if (!carcases.contains(carcase)) {
+            if (!carcases.contains(carcase) && (carcase.getStatus().equals(AcceptStatus.ACCEPTED))) {
                 freeCarc.add(carcase);
             }
         }
 
         for (ElectronicsStorage electr: teamElec) {
-            if (!electronics.contains(electr)) {
+            if (!electronics.contains(electr) && (electr.getStatus().equals(AcceptStatus.ACCEPTED))) {
                 freeElec.add(electr);
             }
         }
 
         for (ChassisStorage ch: teamChass) {
-            if (!chassis.contains(ch)) {
+            if (!chassis.contains(ch) && (ch.getStatus().equals(AcceptStatus.ACCEPTED))) {
                 freeChass.add(ch);
             }
         }
 
         for (EngineStorage eng: teamEng) {
-            if (!engines.contains(eng)) {
+            if (!engines.contains(eng) && (eng.getStatus().equals(AcceptStatus.ACCEPTED))) {
                 freeEng.add(eng);
             }
         }
