@@ -28,7 +28,7 @@ public class ElectronicsStorage extends BaseStorage {
     /* ================================
      constructors
     ================================ */
-    public ElectronicsStorage(@NotNull Team team, @NotNull ComponentCondition condition, @NotNull @Min(0) long price, @NotNull AcceptStatus status, @NotNull String telemetry, @NotNull String controlSystem) {
+    public ElectronicsStorage(@NotNull Team team, @NotNull ComponentCondition condition, @NotNull @Min(0) double price, @NotNull AcceptStatus status, @NotNull String telemetry, @NotNull String controlSystem) {
         super(team, condition, price, status);
         this.telemetry = telemetry;
         this.controlSystem = controlSystem;

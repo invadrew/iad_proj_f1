@@ -35,7 +35,7 @@ public class EngineStorage extends BaseStorage {
     /* ================================
      constructors
     ================================ */
-    public EngineStorage(@NotNull Team team, @NotNull ComponentCondition condition, @NotNull @Min(0) long price, @NotNull AcceptStatus status, @NotNull String model, @NotNull @Min(1) int cyclinders, @NotNull @Min(1) float capacity, @NotNull @Min(1) float mass, @NotNull @Min(1) float stroke) {
+    public EngineStorage(@NotNull Team team, @NotNull ComponentCondition condition, @NotNull @Min(0) double price, @NotNull AcceptStatus status, @NotNull String model, @NotNull @Min(1) int cyclinders, @NotNull @Min(1) float capacity, @NotNull @Min(1) float mass, @NotNull @Min(1) float stroke) {
         super(team, condition, price, status);
         this.model = model;
         this.cyclinders = cyclinders;

@@ -184,4 +184,37 @@ public class DetailAddController {
         chassisStorageService.save(chassisStorage);
     }
 
+    @RequestMapping(value = "/add_detail/addEngine", method = RequestMethod.POST)
+    @ResponseBody
+    public void addEngine(HttpServletResponse response, HttpServletRequest request, Authentication authentication) {
+
+        String model = request.getParameter("model");
+        Integer cyclinders = Integer.parseInt(request.getParameter("cyclinders"));
+        Float stroke = Float.parseFloat(request.getParameter("stroke"));
+        Float mass = Float.parseFloat(request.getParameter("mass"));
+        Float capacity = Float.parseFloat(request.getParameter("capacity"));
+        Double price = Double.parseDouble(request.getParameter("engPrice"));
+
+        EngineStorage engineStorage = new EngineStorage(teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId()),
+                ComponentCondition.PERFECT, price, AcceptStatus.ON_REVIEW, model, cyclinders, capacity, mass, stroke);
+
+        engineStorageService.save(engineStorage);
+
+    }
+
+    @RequestMapping(value = "/add_detail/addElectronics", method = RequestMethod.POST)
+    @ResponseBody
+    public void addElectronics(HttpServletResponse response, HttpServletRequest request, Authentication authentication) {
+
+        String telemetry = request.getParameter("telemetry");
+        String controlSystem = request.getParameter("controlSystem");
+        Double price = Double.parseDouble(request.getParameter("elecPrice"));
+
+        ElectronicsStorage electronicsStorage = new ElectronicsStorage(teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId()),
+                ComponentCondition.PERFECT, price, AcceptStatus.ON_REVIEW, telemetry, controlSystem);
+
+        electronicsStorageService.save(electronicsStorage);
+
+    }
+
 }

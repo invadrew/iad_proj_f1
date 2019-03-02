@@ -157,21 +157,25 @@
                     <input type="text" id="engModel" class="res-selector">
                     <br>
                     <label for="cyclNum">Кол-во цилиндров</label>
-                    <input type="number" id="cyclNum" class="res-selector" min="1">
+                    <input type="number" id="cyclNum" class="res-selector" min="1" value="1">
                     <br>
                     <label for="capacity">Объём</label>
-                    <input type="number" id="capacity" class="res-selector" min="0">
+                    <input type="number" id="capacity" class="res-selector" min="1" value="1">
                     <br>
                     <label for="mass">Масса</label>
-                    <input type="number" id="mass" class="res-selector" min="1">
+                    <input type="number" id="mass" class="res-selector" min="1" value="1">
                     <br>
                     <label for="stroke">Ход поршня</label>
-                    <input type="number" id="stroke" class="res-selector" min="0">
+                    <input type="number" id="stroke" class="res-selector" min="1" value="1" >
                     <br>
                     <label for="engPrice">Цена</label>
                     <input type="number" id="engPrice" class="res-selector" min="0">
                     <br>
-                    <input type="submit" class="res-selector" value="Добавить">
+                    <input type="submit" class="res-selector" value="Добавить" onclick="addEngine()">
+                    <br>
+                    <label id="eng-not-all" hidden> Не все поля заполнены </label>
+                    <label id="eng-bad-money" hidden> Цена должна быть положительной </label>
+                    <label id="eng-ok" hidden> Готово </label>
                 </form>
             </div>
         </div>
@@ -189,7 +193,11 @@
                     <label for="elecPrice">Цена</label>
                     <input type="number" id="elecPrice" class="res-selector" min="0">
                     <br>
-                    <input type="submit" class="res-selector" value="Добавить">
+                    <input type="submit" class="res-selector" value="Добавить" onclick="addElectronics()">
+                    <br>
+                    <label id="elec-not-all" hidden> Не все поля заполнены </label>
+                    <label id="elec-bad-money" hidden> Цена должна быть положительной </label>
+                    <label id="elec-ok" hidden> Готово </label>
                 </form>
             </div>
         </div>

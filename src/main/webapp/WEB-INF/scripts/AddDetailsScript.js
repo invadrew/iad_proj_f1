@@ -51,8 +51,8 @@ function addCar() {
     let engine = $('#carEngSelect').val();
     let electronics = $('#carElecSelect').val();
 
-    if (label === "" || model === "") { document.getElementById("carFailfields").hidden = false; } else {
-        if (carcase == null || chassis == null || engine == null || electronics == null) {
+    if (label.trim() === "" || model.trim() === "") { document.getElementById("carFailfields").hidden = false; } else {
+        if (carcase.trim() === "" || chassis.trim() === "" || engine.trim() === "" || electronics.trim() === "" ) {
             document.getElementById("carFail").hidden = false;
         } else {
 
@@ -87,7 +87,7 @@ function addCarcase() {
     let safe_arcs = $('#safe-arcs').val();
     let carcPrice = $('#carcPrice').val();
 
-    if (material == null || rear_wing == null || wings == null || safe_arcs == null || carcPrice == null) {
+    if (material.trim() === ""  || rear_wing.trim() === ""  || wings.trim() === ""  || safe_arcs.trim() === ""  || carcPrice.trim() === "" ) {
      document.getElementById("carc-not-all").hidden = false; } else {
         if (carcPrice < 0) { document.getElementById("carc-bad-money").hidden = false; } else {
 
@@ -119,7 +119,7 @@ function addChassis() {
     let height = $('#chHeight').val();
     let chassPrice = $('#chasPrice').val();
 
-    if (model == null || width == null || height == null || chassPrice == null ) {
+    if (model.trim() === ""  || width.trim() === ""  || height.trim() === ""  || chassPrice.trim() === ""  ) {
         document.getElementById("chass-not-all").hidden = false; } else {
         if (chassPrice < 0) { document.getElementById("chass-bad-money").hidden = false;  } else {
 
@@ -138,6 +138,68 @@ function addChassis() {
             });
 
         }
+    }
+}
+
+function addEngine() {
+
+    let model = $('#engModel').val();
+    let cyclinders = $('#cyclNum').val();
+    let capacity = $('#capacity').val();
+    let mass = $('#mass').val();
+    let stroke = $('#stroke').val();
+    let engPrice = $('#engPrice').val();
+
+    if (model.trim() === "" || cyclinders.trim() === "" || capacity.trim() === ""  || mass.trim() === ""  || stroke.trim() === ""  || engPrice.trim() === "" ) {
+        document.getElementById("eng-not-all").hidden = false; } else {
+        if (engPrice < 0) { document.getElementById("eng-bad-money").hidden = false } else {
+
+            $.ajax({
+                type: "POST",
+                url: "/add_detail/addEngine",
+                data: {
+                    "model" : model,
+                    "cyclinders" : cyclinders,
+                    "capacity" : capacity,
+                    "mass" : mass,
+                    "stroke" : stroke,
+                    "engPrice" : engPrice
+                },
+                success: function (data) {
+                    document.getElementById("eng-ok").hidden = false;
+                }
+            });
+
+        }
+    }
+}
+
+
+function addElectronics() {
+
+    let telemetry = $('#telemetry').val();
+    let controlSystem = $('#contrModel').val();
+    let elecPrice = $('#elecPrice').val();
+
+    if (telemetry.trim() === "" || controlSystem.trim() === "" || elecPrice.trim() === "") {
+        document.getElementById("elec-not-all").hidden = false; } else {
+        if (elecPrice < 0) { document.getElementById("elec-bad-money").hidden = false } else {
+
+            $.ajax({
+                type: "POST",
+                url: "/add_detail/addElectronics",
+                data: {
+                    "telemetry" : telemetry,
+                    "controlSystem" : controlSystem,
+                    "elecPrice" : elecPrice
+                },
+                success: function (data) {
+                    document.getElementById("elec-ok").hidden = false;
+                }
+            });
+
+        }
+
     }
 
 }
