@@ -28,7 +28,7 @@ public class ChassisStorage extends BaseStorage {
     /* ================================
      constructors
     ================================ */
-    public ChassisStorage(@NotNull Team team, @NotNull ComponentCondition condition, @NotNull @Min(0) long price, @NotNull AcceptStatus status, @NotNull String model, @NotNull @Min(1) float height, @NotNull @Min(1) float width) {
+    public ChassisStorage(@NotNull Team team, @NotNull ComponentCondition condition, @NotNull @Min(0) double price, @NotNull AcceptStatus status, @NotNull String model, @NotNull @Min(1) float height, @NotNull @Min(1) float width) {
         super(team, condition, price, status);
         this.model = model;
         this.height = height;

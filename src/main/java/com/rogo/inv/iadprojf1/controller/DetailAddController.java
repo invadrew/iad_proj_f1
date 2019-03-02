@@ -1,9 +1,6 @@
 package com.rogo.inv.iadprojf1.controller;
 
-import com.rogo.inv.iadprojf1.entity.AcceptStatus;
-import com.rogo.inv.iadprojf1.entity.Car;
-import com.rogo.inv.iadprojf1.entity.Team;
-import com.rogo.inv.iadprojf1.entity.User;
+import com.rogo.inv.iadprojf1.entity.*;
 import com.rogo.inv.iadprojf1.entity.storage.CarcaseStorage;
 import com.rogo.inv.iadprojf1.entity.storage.ChassisStorage;
 import com.rogo.inv.iadprojf1.entity.storage.ElectronicsStorage;
@@ -151,6 +148,40 @@ public class DetailAddController {
 
         carService.save(car);
 
+    }
+
+    @RequestMapping(value = "/add_detail/addCarcase", method = RequestMethod.POST)
+    @ResponseBody
+    public void addCarcase(HttpServletResponse response, HttpServletRequest request, Authentication authentication) {
+
+        String material = request.getParameter("material");
+        String rearWing = request.getParameter("rear_wing");
+        String wings = request.getParameter("wings");
+        String safeArcs = request.getParameter("safe_arcs");
+        Double price = Double.parseDouble(request.getParameter("carcPrice"));
+
+        CarcaseStorage carcaseStorage = new CarcaseStorage(teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId()),
+                ComponentCondition.PERFECT, price, AcceptStatus.ON_REVIEW, material, rearWing, safeArcs, wings);
+
+        carcaseStorageService.save(carcaseStorage);
+
+    }
+
+
+    @RequestMapping(value = "/add_detail/addChassis", method = RequestMethod.POST)
+    @ResponseBody
+    public void addChassis(HttpServletResponse response, HttpServletRequest request, Authentication authentication) {
+
+        String model = request.getParameter("model");
+        Float height = Float.parseFloat(request.getParameter("height"));
+        Float width = Float.parseFloat(request.getParameter("width"));
+        Double price = Double.parseDouble(request.getParameter("chassPrice"));
+
+        ChassisStorage chassisStorage = new ChassisStorage(teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId()),
+                ComponentCondition.PERFECT, price, AcceptStatus.ON_REVIEW, model, height, width);
+
+
+        chassisStorageService.save(chassisStorage);
     }
 
 }

@@ -34,7 +34,7 @@ public class CarcaseStorage extends BaseStorage {
     /* ================================
      constructors
     ================================ */
-    public CarcaseStorage(@NotNull Team team, @NotNull ComponentCondition condition, @NotNull @Min(0) long price, @NotNull AcceptStatus status, @NotNull String material, @NotNull String rearWing, @NotNull String safetyArcs, @NotNull String wings) {
+    public CarcaseStorage(@NotNull Team team, @NotNull ComponentCondition condition, @NotNull @Min(0) double price, @NotNull AcceptStatus status, @NotNull String material, @NotNull String rearWing, @NotNull String safetyArcs, @NotNull String wings) {
         super(team, condition, price, status);
         this.material = material;
         this.rearWing = rearWing;

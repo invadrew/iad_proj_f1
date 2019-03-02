@@ -115,7 +115,11 @@
                     <label for="carcPrice">Цена</label>
                     <input type="number" id="carcPrice" class="res-selector" min="0">
                     <br>
-                    <input type="submit" class="res-selector" value="Добавить">
+                    <input type="submit" class="res-selector" value="Добавить" onclick="addCarcase()">
+                    <br>
+                    <label id="carc-not-all" hidden> Не все поля заполнены </label>
+                    <label id="carc-bad-money" hidden> Цена должна быть положительной </label>
+                    <label id="carc-ok" hidden> Готово </label>
                 </form>
             </div>
         </div>
@@ -128,15 +132,19 @@
                     <input type="text" id="chModel" class="res-selector">
                     <br>
                     <label for="chHeight">Высота</label>
-                    <input type="number" id="chHeight" class="res-selector" min="100" max="500">
+                    <input type="number" id="chHeight" class="res-selector" value="100" min="100" max="500">
                     <br>
                     <label for="chWidth">Ширина</label>
-                    <input type="number" id="chWidth" class="res-selector" min="100" max="500">
+                    <input type="number" id="chWidth" class="res-selector" value="100" min="100" max="500">
                     <br>
                     <label for="chasPrice">Цена</label>
                     <input type="number" id="chasPrice" class="res-selector" min="0">
                     <br>
-                    <input type="submit" class="res-selector" value="Добавить">
+                    <input type="submit" class="res-selector" value="Добавить" onclick="addChassis()">
+                    <br>
+                    <label id="chass-not-all" hidden> Не все поля заполнены </label>
+                    <label id="chass-bad-money" hidden> Цена должна быть положительной </label>
+                    <label id="chass-ok" hidden> Готово </label>
                 </form>
             </div>
         </div>
