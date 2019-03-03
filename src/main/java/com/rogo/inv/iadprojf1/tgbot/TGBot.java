@@ -1,11 +1,8 @@
 package com.rogo.inv.iadprojf1.tgbot;
 
+import com.rogo.inv.iadprojf1.service.ConstrCupResultService;
+import com.rogo.inv.iadprojf1.service.RaceService;
 import com.rogo.inv.iadprojf1.service.WorldCupResultService;
-import de.vandermeer.asciitable.AsciiTable;
-import de.vandermeer.asciitable.CWC_LongestLine;
-import de.vandermeer.asciithemes.a7.A7_Grids;;
-import net.steppschuh.markdowngenerator.table.Table;
-import net.steppschuh.markdowngenerator.table.TableRow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -15,7 +12,6 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,20 +25,83 @@ public class TGBot extends TelegramLongPollingBot {
     @Value("${telegram.bot.token}")
     private String TOKEN;
 
+    /* ================================
+     Output constants
+    ================================ */
+
+    private final static String HELP_INFO = "Команды бота\n" +
+            "/worldcup <сезон> <<место_от> <место_до>>- вывод таблицы лидеров кубка мира в данном сезоне\n" +
+            "/constrcup <сезон> <<место_от> <место_до>>- вывод таблицы лидеров кубка конструкторов в данном сезоне\n" +
+            "/schedule - вывод ближайшей гонки\n" +
+            "/help команды бота\n";
+
+    private final static String START_INFO = "Добро пожаловать в нашего бота!\n" +
+            "При помощи него вы можете получить актуальную информацию о ближайщих событиях и рейтинге команд\n" +
+            HELP_INFO;
+
+    private final static String UNKNOWN_INFO = "Неизвестная команда, введите /help для вывода возможных команд.";
+
+    /* ================================
+     Services decloration
+    ================================ */
+
     @Autowired
     private WorldCupResultService worldCupResultService;
 
+    @Autowired
+    private ConstrCupResultService constrCupResultService;
+
+    @Autowired
+    private RaceService raceService;
+
+    /* ================================
+     Overrided methods from TelegramLongPollingBot
+    ================================ */
+
     @Override
     public void onUpdateReceived(Update update) {
-        String outString = printWorldCupRating(2017, 0, 10);
         if (update.hasMessage()) {
+            String outStr;
+            String mess =  update.getMessage().getText().replaceAll(" +", " ");
+            String[] tokens = mess.split(" ");
+            switch (tokens[0]) {
+                case "/start":
+                    outStr = START_INFO;
+                    break;
+                case "/help":
+                    outStr = HELP_INFO;
+                    break;
+                case "/worldcup":
+                    if (tokens.length > 3) {
+                        outStr = printWorldCupRating(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]));
+                    } else if (tokens.length > 1) {
+                        outStr = printWorldCupRating(Integer.parseInt(tokens[1]), 0, 10);
+                    } else {
+                        outStr = printWorldCupRating(Calendar.getInstance().get(Calendar.YEAR), 0, 10);
+                    }
+                    break;
+                case "/constrcup":
+                    if (tokens.length > 3) {
+                        outStr = printConstrCupRating(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]));
+                    } else if (tokens.length > 1) {
+                        outStr = printConstrCupRating(Integer.parseInt(tokens[1]), 0, 10);
+                    } else {
+                        outStr = printConstrCupRating(Calendar.getInstance().get(Calendar.YEAR), 0, 10);
+                    }
+                    break;
+                case "/schedule":
+                    outStr = printCurrentEvent();
+                    break;
+                default:
+                    outStr = UNKNOWN_INFO;
+            }
+
             SendMessage message = new SendMessage()
                     .enableMarkdown(true)
-                    .setParseMode("HTML")
                     .setChatId(update.getMessage().getChatId())
-                    .setText(outString);
+                    .setText(outStr);
             try {
-                execute(message); // Call method to send the message
+                execute(message);
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
@@ -59,7 +118,11 @@ public class TGBot extends TelegramLongPollingBot {
         return TOKEN;
     }
 
-    public List<Object[]> getTopTeams(int season, int from, int to) {
+    /* ================================
+     fetch data from DB
+    ================================ */
+
+    private List<Object[]> getTopTeams(int season, int from, int to) {
         return worldCupResultService.getResTable(season).stream()
                 .sorted((o1, o2) -> (Integer) o1[0] - (Integer) o2[0])
                 .filter(o -> ((Integer) o[0]) < to)
@@ -67,26 +130,57 @@ public class TGBot extends TelegramLongPollingBot {
                 .collect(Collectors.toList());
     }
 
-    public String printWorldCupRating(int season, int from, int to) {
-        Table table = new Table();
-        table.setAlignments(Arrays.asList(Table.ALIGN_LEFT, Table.ALIGN_LEFT, Table.ALIGN_LEFT, Table.ALIGN_LEFT));
+    private List<Object[]> getTopConstr(int season, int from, int to) {
+        return constrCupResultService.getConstrCupResultTable(season).stream()
+                .sorted((o1, o2) -> (Integer) o1[0] - (Integer) o2[0])
+                .filter(o -> ((Integer) o[0]) < to)
+                .filter(o -> ((Integer) o[0]) >= from)
+                .collect(Collectors.toList());
+    }
 
-        List<TableRow> rows = new ArrayList<>();
+    /* ================================
+     formatted output
+    ================================ */
 
-        TableRow<String> header = new TableRow<>();
-        header.setColumns(Arrays.asList("Place", "Pilot Surname", "Pilot Name", "Team"));
+    private String printWorldCupRating(int season, int from, int to) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Результаты кубка мира ").append(season).append(" года.\n");
+        stringBuilder.append("Место | Фамилия пилота | Имя пилота | Команда\n");
+        stringBuilder.append(getTopTeams(season, from, to).stream()
+                .map(objects ->
+                        Arrays.stream(objects)
+                                .limit(4)
+                                .map(Object::toString)
+                                .reduce((s, s2) -> s + ", " + s2).orElse("")
+                )
+                .reduce((s, s2) -> s + "\n" + s2).orElse("")
+        );
+        return stringBuilder.toString();
+    }
 
-        rows.add(header);
+    private String printConstrCupRating(int season, int from, int to) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Результаты кубка конструкторов ").append(season).append(" года.\n");
+        stringBuilder.append("Место | Команда\n");
+        stringBuilder.append(getTopConstr(season, from, to).stream()
+                .map(objects ->
+                        Arrays.stream(objects)
+                                .limit(2)
+                                .map(Object::toString)
+                                .reduce((s, s2) -> s + ", " + s2).orElse("")
+                )
+                .reduce((s, s2) -> s + "\n" + s2).orElse("")
+        );
+        return stringBuilder.toString();
+    }
 
-        getTopTeams(season, from, to).forEach(o -> {
-            TableRow<String> row = new TableRow<>();
-            row.setColumns(Arrays.asList(o[0].toString(), o[1].toString(), o[2].toString(), o[3].toString()));
-            rows.add(row);
-        });
-
-        table.setRows(rows);
-
-        System.out.println(table.serialize());
-        return table.serialize();
+    private String printCurrentEvent() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Место | Фамилия пилота | Имя пилота | Команда\n");
+        stringBuilder.append(Arrays.stream(raceService.getCurrentEvent())
+                .map(Object::toString)
+                .reduce((s, s2) -> s + ", " + s2).orElse("")
+        );
+        return stringBuilder.toString();
     }
 }
