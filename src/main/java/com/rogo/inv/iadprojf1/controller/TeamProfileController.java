@@ -64,61 +64,75 @@ public class TeamProfileController {
 
         map.addAttribute("team", team);
 
-        Object gSP = teamService.getSeasPoints(seasonService.findTopByOrderByYearDesc().getYear(), team.getId());
-        if (gSP == null) {gSP = "ещё нет данных за сезон";}
-        map.addAttribute("seasonPoints", gSP);
+        if (team != null) {
 
-        Object gBP = teamService.getBestPlace(team.getId());
-        if (gBP == null) {gBP = "ещё нет кубков";}
-        map.addAttribute("bestPlace",gBP);
+            Object gSP = teamService.getSeasPoints(seasonService.findTopByOrderByYearDesc().getYear(), team.getId());
+            if (gSP == null) {
+                gSP = "ещё нет данных за сезон";
+            }
+            map.addAttribute("seasonPoints", gSP);
 
-        Object racersCount = teamService.getRacersCount(team.getId());
-        if (racersCount == null) {racersCount = "ни одного гонщика";}
-        map.addAttribute("racers",racersCount);
+            Object gBP = teamService.getBestPlace(team.getId());
+            if (gBP == null) {
+                gBP = "ещё нет кубков";
+            }
+            map.addAttribute("bestPlace", gBP);
 
-        Object mechanicCount = teamService.getMechanicsCount(team.getId());
-        if (mechanicCount == null) {mechanicCount = "ни одного механика";}
-        map.addAttribute("mechanics",mechanicCount);
+            Object racersCount = teamService.getRacersCount(team.getId());
+            if (racersCount == null) {
+                racersCount = "ни одного гонщика";
+            }
+            map.addAttribute("racers", racersCount);
 
-        Object constrCount = teamService.getConstrsCount(team.getId());
-        if (constrCount == null) {constrCount = "ни одного конструктора";}
-        map.addAttribute("constrs",constrCount);
+            Object mechanicCount = teamService.getMechanicsCount(team.getId());
+            if (mechanicCount == null) {
+                mechanicCount = "ни одного механика";
+            }
+            map.addAttribute("mechanics", mechanicCount);
 
-        Object manCount = teamService.getManagersCount(team.getId());
-        if (manCount == null) {manCount = "ни одного менеджера";}
-        map.addAttribute("managers",manCount);
+            Object constrCount = teamService.getConstrsCount(team.getId());
+            if (constrCount == null) {
+                constrCount = "ни одного конструктора";
+            }
+            map.addAttribute("constrs", constrCount);
 
-       map.addAttribute("bestRacer",teamService.bestRacer(team.getId()));
+            Object manCount = teamService.getManagersCount(team.getId());
+            if (manCount == null) {
+                manCount = "ни одного менеджера";
+            }
+            map.addAttribute("managers", manCount);
 
-       map.addAttribute("sponsors", sponsorService.getTeamSponsorsList(team.getId()));
+            map.addAttribute("bestRacer", teamService.bestRacer(team.getId()));
 
-       List<Object[]> memb = teamService.getTeamTable(team.getId());
+            map.addAttribute("sponsors", sponsorService.getTeamSponsorsList(team.getId()));
 
-       for (int i=0; i<memb.size(); i++) {
-           switch (memb.get(i)[2].toString()) {
-               case "RACER": {
-                   memb.get(i)[2] = "Гонщик";
-                   break;
-               }
-               case "MECHANIC": {
-                   memb.get(i)[2] = "Механик";
-                   break;
-               }
-               case "CONSTRUCTOR": {
-                   memb.get(i)[2] = "Конструктор";
-                   break;
-               }
-               case "MANAGER": {
-                   memb.get(i)[2] = "Менеджер";
-                   break;
-               }
-           }
-       }
+            List<Object[]> memb = teamService.getTeamTable(team.getId());
 
-       map.addAttribute("members", memb);
+            for (int i = 0; i < memb.size(); i++) {
+                switch (memb.get(i)[2].toString()) {
+                    case "RACER": {
+                        memb.get(i)[2] = "Гонщик";
+                        break;
+                    }
+                    case "MECHANIC": {
+                        memb.get(i)[2] = "Механик";
+                        break;
+                    }
+                    case "CONSTRUCTOR": {
+                        memb.get(i)[2] = "Конструктор";
+                        break;
+                    }
+                    case "MANAGER": {
+                        memb.get(i)[2] = "Менеджер";
+                        break;
+                    }
+                }
+            }
 
-       map.addAttribute("achiv", constrCupResultService.getProfileAchievs(team.getId()));
+            map.addAttribute("members", memb);
 
+            map.addAttribute("achiv", constrCupResultService.getProfileAchievs(team.getId()));
+        }
         return "TeamProfilePage";
 
     }

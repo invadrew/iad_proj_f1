@@ -31,4 +31,7 @@ public class PilotingServiceImpl implements PilotingService {
     public Piloting findById(int id) {
         return repository.findById(id);
     }
+
+    @Override
+    public Piloting findByCarIdAndRacerId(int car, int racer) { return repository.findByCarIdAndRacerId(car, racer); }
 }

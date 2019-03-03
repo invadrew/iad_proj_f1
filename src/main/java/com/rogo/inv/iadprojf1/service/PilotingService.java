@@ -12,4 +12,6 @@ public interface PilotingService {
     void delete(Piloting entity);
 
     Piloting findById(int id);
+
+    Piloting findByCarIdAndRacerId(int car, int racer);
 }

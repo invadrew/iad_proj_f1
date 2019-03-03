@@ -44,31 +44,43 @@
                     <form>
                         <label for="firstPilotreg">Первый пилот:</label>
                         <select class="res-selector" id="firstPilotreg">
+                            <option value="-"> - </option>
                             <c:forEach items="${racers}" var="racer">
                                 <option value="${racer[0]}"> <c:out value="${racer[1]} ${racer[2]}"/> </option>
                             </c:forEach>
                         </select>
+                        <br>
                         <label for="firstCarreg">Болид:</label>
                         <select class="res-selector" id="firstCarreg">
+                            <option value="-"> - </option>
                             <c:forEach items="${cars}" var="car">
                                 <option value="${car.id}"> <c:out value="${car.label} ${car.model}"/> </option>
                             </c:forEach>
                         </select>
                         <br>
+                        <br>
                         <label for="secPilotreg">Второй пилот:</label>
                         <select class="res-selector" id="secPilotreg">
+                            <option value="-"> - </option>
                             <c:forEach items="${racers}" var="racer">
                                 <option value="${racer[0]}"> <c:out value="${racer[1]} ${racer[2]}"/> </option>
                             </c:forEach>
                         </select>
+                        <br>
                         <label for="secCarreg">Болид:</label>
                         <select class="res-selector" id="secCarreg">
+                            <option value="-"> - </option>
                             <c:forEach items="${cars}" var="car">
                                 <option value="${car.id}"> <c:out value="${car.label} ${car.model}"/> </option>
                             </c:forEach>
                         </select>
                         <br> <br>
-                        <center><input type="submit" class="res-selector" value="Зарегистрироваться"></center>
+                        <center><input type="button" class="res-selector" value="Зарегистрироваться" onclick="registrate(${currRace[0][6]}, ${team.id})"></center>
+                        <br>
+                        <label id="ok" hidden> Готово </label>
+                        <label id="empty-err" hidden> Заполните полностью хотя бы одну заявку </label>
+                        <label id="pil-err" hidden> Пилоты должны быть разными </label>
+                        <label id="car-err" hidden> Болиды должны быть разными </label>
                     </form>
                     </sec:authorize>
                     <sec:authorize access="hasAnyAuthority('RACER','MECHANIC','CONSTRUCTOR','SPONSOR','ADMIN')">
@@ -122,5 +134,7 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script type="text/javascript" src="../scripts/RaceRegistrationScript.js"> </script>
 </body>
 </html>

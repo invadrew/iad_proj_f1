@@ -38,12 +38,10 @@ public class RaceRegistration {
     @JoinColumn(name = "first_car")
     private Car firstCar;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "second_pilot")
     private TeamMember secondPilot;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "second_car")
     private Car secondCar;
@@ -56,7 +54,7 @@ public class RaceRegistration {
      constructors
     ================================ */
 
-    public RaceRegistration(@NotNull Team team, @NotNull Race race, @NotNull TeamMember firstPilot, @NotNull Car firstCar, @NotNull TeamMember secondPilot, @NotNull Car secondCar, @NotNull AcceptStatus status) {
+    public RaceRegistration(@NotNull Team team, @NotNull Race race, @NotNull TeamMember firstPilot, @NotNull Car firstCar, TeamMember secondPilot, Car secondCar, @NotNull AcceptStatus status) {
         this.team = team;
         this.race = race;
         this.firstPilot = firstPilot;
