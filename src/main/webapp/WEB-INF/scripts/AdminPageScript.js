@@ -85,8 +85,26 @@ function addUser() {
 
         case ("Admin"):
 
+            if (login.trim() === "" || pass.trim() === "") {
+                document.getElementById("error").hidden = false;
+            } else {
 
+                $.ajax({
+                    type : "POST",
+                    url : "/admin/regAdmin",
+                    data : {
+                        "login" :  login,
+                        "passw" : pass
+                    },
+                    success:  function (data) {
+                        if (data === "ok") {
+                            document.getElementById("reg-ready").hidden = false; } else {
+                            document.getElementById("busy").hidden = false;
+                        }
+                    }
+                });
 
+            }
             break;
 
         default:

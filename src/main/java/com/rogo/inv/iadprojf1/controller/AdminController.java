@@ -55,4 +55,23 @@ public class AdminController {
         return "ok";
     }
 
+    @RequestMapping(value = "/admin/regAdmin", method = RequestMethod.POST)
+    @ResponseBody
+    public String regAdmin(HttpServletResponse response, HttpServletRequest request) {
+
+        String login = request.getParameter("login");
+        String password = request.getParameter("passw");
+
+        User ifExists = userService.findByLogin(login);
+
+        if (ifExists != null) { return "exists"; }
+
+        Md4PasswordEncoder passwordEncoder = new Md4PasswordEncoder();
+        User user = new User(login, passwordEncoder.encode(password), User.Spec.ADMIN, null, AcceptStatus.ACCEPTED, null);
+        userService.save(user);
+
+        return "ok";
+
+    }
+
 }
