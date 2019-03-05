@@ -91,6 +91,15 @@ public class RaceRegController {
 
         }
 
+        Integer teamCount = 0;
+            if (raceRegistrationService.canReg((int) r[6]) != null) { teamCount = raceRegistrationService.canReg((int) r[6]); }
+
+        if (teamCount < raceService.findById((int) r[6]).getMaxParticipants()/2) {
+            map.addAttribute("isOverflow", false);
+        } else {
+            map.addAttribute("isOverflow", true);
+        }
+
         return "RaceRegistrationPage";
     }
 

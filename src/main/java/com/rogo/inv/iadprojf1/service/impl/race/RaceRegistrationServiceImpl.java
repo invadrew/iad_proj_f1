@@ -37,4 +37,7 @@ public class RaceRegistrationServiceImpl implements RaceRegistrationService {
 
     @Override
     public List<Object[]> getRegistrationTable(int race) { return repository.getRegistrationTable(race); }
+
+    @Override
+    public Integer canReg(int race) { return repository.canReg(race); }
 }

@@ -34,7 +34,7 @@
                 <div class="infotab">
                     <center><h3>Принять участие</h3></center>
                     <sec:authorize access="hasAuthority('MANAGER')">
-                        <c:if test="${!ifReg}">
+                        <c:if test="${!ifReg && !isOverflow}">
                         <c:url value="/team" var="uUrl">
                             <c:param name="id" value="${team.id}"/>
                         </c:url>
@@ -86,6 +86,9 @@
                     </c:if>
                         <c:if test="${ifReg}">
                             Вы уже отправили заявку на гонку
+                        </c:if>
+                        <c:if test="${isOverflow}">
+                            Достигнуто максимальное количество команд
                         </c:if>
                     </sec:authorize>
                     <sec:authorize access="hasAnyAuthority('RACER','MECHANIC','CONSTRUCTOR','SPONSOR','ADMIN')">

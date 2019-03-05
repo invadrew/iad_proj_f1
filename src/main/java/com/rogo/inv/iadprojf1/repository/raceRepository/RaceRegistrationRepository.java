@@ -29,4 +29,8 @@ public interface RaceRegistrationRepository extends JpaRepository<RaceRegistrati
             "WHERE ((race.status = 'ACCEPTED') AND (race.race_id = ?1));", nativeQuery = true)
     List<Object[]> getRegistrationTable(int race);
 
+    @Query(value = "SELECT COUNT(*) FROM race_registration AS registration \n" +
+            "WHERE registration.race_id = ?1", nativeQuery = true)
+    Integer canReg(int race);
+
 }

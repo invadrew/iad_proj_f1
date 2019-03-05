@@ -16,4 +16,6 @@ public interface RaceRegistrationService {
     RaceRegistration findById(Team team, Race race);
 
     List<Object[]> getRegistrationTable(int race);
+
+    Integer canReg(int race);
 }
