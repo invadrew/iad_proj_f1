@@ -31,7 +31,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public Team findById(int id) {
+    public synchronized Team findById(int id) {
         return repository.findById(id);
     }
 

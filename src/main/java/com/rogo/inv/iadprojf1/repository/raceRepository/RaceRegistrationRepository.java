@@ -1,5 +1,7 @@
 package com.rogo.inv.iadprojf1.repository.raceRepository;
 
+import com.rogo.inv.iadprojf1.entity.Team;
+import com.rogo.inv.iadprojf1.entity.race.Race;
 import com.rogo.inv.iadprojf1.entity.race.RaceRegistration;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,7 +14,7 @@ import java.util.List;
 public interface RaceRegistrationRepository extends JpaRepository<RaceRegistration, Integer> {
 
     @Query(value = "select r from RaceRegistration r where r.team = ?1 and r.race = ?2")
-    RaceRegistration findById(@Param("team") int team, @Param("race") int race);
+    RaceRegistration findById(@Param("team") Team team, @Param("race") Race race);
 
     @Query(value = "SELECT racer.NAME rc, racer.surname, team.NAME AS tean_name, car.label, car.model, racer.user_id, team.id FROM race_registration race\n" +
             "INNER JOIN team_members racer ON (race.first_pilot = racer.user_id)\n" +

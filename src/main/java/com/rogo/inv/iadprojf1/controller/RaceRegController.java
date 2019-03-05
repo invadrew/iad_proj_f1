@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.persistence.criteria.CriteriaBuilder;
+import javax.annotation.concurrent.ThreadSafe;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
+@ThreadSafe
 public class RaceRegController {
 
     @Autowired
@@ -63,6 +64,8 @@ public class RaceRegController {
         List<Object[]> currRace = raceService.getCurrentEvent();
         map.addAttribute("currRace", currRace);
 
+        Object[] r = currRace.get(0);
+
         List<Object[]> regTable = raceRegistrationService.getRegistrationTable(raceService.findTopByOrderByDateTimeDesc().getId());
         map.addAttribute("regTable", regTable);
 
@@ -78,13 +81,22 @@ public class RaceRegController {
             List<Car> cars = carService.findAllByTeam(team);
             map.addAttribute("cars", cars);
 
+            RaceRegistration registration = raceRegistrationService.findById(team, raceService.findById((int) r[6]));
+
+            if (registration != null) {
+                map.addAttribute("ifReg", true);
+            } else {
+                map.addAttribute("ifReg", false);
+            }
+
         }
+
         return "RaceRegistrationPage";
     }
 
     @RequestMapping(value = "/race-reg/registration", method = RequestMethod.POST)
     @ResponseBody
-    public void registrate(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+    public synchronized void registrate(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
 
         String firstP = request.getParameter("firstP");
         String secondP = request.getParameter("secondP");
@@ -117,9 +129,9 @@ public class RaceRegController {
         if (secondPId != null) { teamMemberS = teamMemberService.findByUserId(secondPId); }
 
         RaceRegistration raceRegistration = new RaceRegistration(teamService.findById(teamId), raceService.findById(raceId),
-               teamMemberF, firstCar, teamMemberS, secondCar, AcceptStatus.ACCEPTED );
-
+                teamMemberF, firstCar, teamMemberS, secondCar, AcceptStatus.ACCEPTED);
         raceRegistrationService.save(raceRegistration);
+
 
            try { Piloting firstPiloting = pilotingService.findByCarIdAndRacerId(firstCId, firstPId);
             if (firstPiloting == null) {

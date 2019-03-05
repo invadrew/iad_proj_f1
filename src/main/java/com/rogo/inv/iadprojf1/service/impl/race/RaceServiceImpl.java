@@ -28,7 +28,7 @@ public class RaceServiceImpl implements RaceService {
     }
 
     @Override
-    public Race findById(int id) {
+    public synchronized Race findById(int id) {
         return repository.findById(id);
     }
 

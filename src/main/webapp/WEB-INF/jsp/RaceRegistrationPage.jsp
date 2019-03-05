@@ -34,6 +34,7 @@
                 <div class="infotab">
                     <center><h3>Принять участие</h3></center>
                     <sec:authorize access="hasAuthority('MANAGER')">
+                        <c:if test="${!ifReg}">
                         <c:url value="/team" var="uUrl">
                             <c:param name="id" value="${team.id}"/>
                         </c:url>
@@ -82,6 +83,10 @@
                         <label id="pil-err" hidden> Пилоты должны быть разными </label>
                         <label id="car-err" hidden> Болиды должны быть разными </label>
                     </form>
+                    </c:if>
+                        <c:if test="${ifReg}">
+                            Вы уже отправили заявку на гонку
+                        </c:if>
                     </sec:authorize>
                     <sec:authorize access="hasAnyAuthority('RACER','MECHANIC','CONSTRUCTOR','SPONSOR','ADMIN')">
                         Только менеджеры регестритруют команды

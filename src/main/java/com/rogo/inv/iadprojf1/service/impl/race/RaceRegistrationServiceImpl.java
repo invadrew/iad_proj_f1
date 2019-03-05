@@ -1,4 +1,6 @@
 package com.rogo.inv.iadprojf1.service.impl.race;
+import com.rogo.inv.iadprojf1.entity.Team;
+import com.rogo.inv.iadprojf1.entity.race.Race;
 import com.rogo.inv.iadprojf1.entity.race.RaceRegistration;
 import com.rogo.inv.iadprojf1.repository.raceRepository.RaceRegistrationRepository;
 import com.rogo.inv.iadprojf1.service.RaceRegistrationService;
@@ -29,7 +31,7 @@ public class RaceRegistrationServiceImpl implements RaceRegistrationService {
     }
 
     @Override
-    public RaceRegistration findById(int team, int race) {
+    public RaceRegistration findById(Team team, Race race) {
         return repository.findById(team, race);
     }
 
