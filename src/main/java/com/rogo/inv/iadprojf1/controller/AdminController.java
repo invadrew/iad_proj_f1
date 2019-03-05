@@ -3,8 +3,10 @@ package com.rogo.inv.iadprojf1.controller;
 
 import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.Sponsor;
+import com.rogo.inv.iadprojf1.entity.TeamMember;
 import com.rogo.inv.iadprojf1.entity.User;
 import com.rogo.inv.iadprojf1.service.SponsorService;
+import com.rogo.inv.iadprojf1.service.TeamMemberService;
 import com.rogo.inv.iadprojf1.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.Md4PasswordEncoder;
@@ -25,6 +27,9 @@ public class AdminController {
 
     @Autowired
     private SponsorService sponsorService;
+
+    @Autowired
+    private TeamMemberService teamMemberService;
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String toAdminPanel() {
@@ -73,5 +78,46 @@ public class AdminController {
         return "ok";
 
     }
+
+    @RequestMapping(value = "/admin/regTeamMember", method = RequestMethod.POST)
+    @ResponseBody
+    public String regTeamMember(HttpServletRequest request, HttpServletResponse response) {
+
+        String login = request.getParameter("login");
+        String password = request.getParameter("passw");
+        String name = request.getParameter("name");
+        String surname = request.getParameter("surname");
+        String type = request.getParameter("type");
+
+        User ifExists = userService.findByLogin(login);
+        if (ifExists != null) { return "exists"; }
+
+        User.Spec spec = User.Spec.RACER;
+        switch (type) {
+            case "Racer":
+                spec = User.Spec.RACER;
+                break;
+            case "Mechanic":
+                spec = User.Spec.MECHANIC;
+                break;
+            case "Constructor":
+                spec = User.Spec.CONSTRUCTOR;
+                break;
+            case "Manager":
+                spec = User.Spec.MANAGER;
+                break;
+        }
+
+        Md4PasswordEncoder passwordEncoder = new Md4PasswordEncoder();
+        User user = new User(login, passwordEncoder.encode(password), spec, null, AcceptStatus.ACCEPTED, null);
+        userService.save(user);
+
+        TeamMember teamMember = new TeamMember(user.getId(), user, name, surname, false, null);
+        teamMemberService.save(teamMember);
+
+        return "ok";
+
+    }
+
 
 }

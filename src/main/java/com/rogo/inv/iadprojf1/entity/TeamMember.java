@@ -41,7 +41,6 @@ public class TeamMember implements Serializable {
     private Boolean canBuy;
 
     @ToString.Exclude
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "team_id")
     @JsonBackReference
@@ -60,7 +59,7 @@ public class TeamMember implements Serializable {
     /* ================================
      constructors
     ================================ */
-    public TeamMember(int userId, @NotNull User user, @NotNull String name, @NotNull String surname, @NotNull Boolean canBuy, @NotNull Team team) {
+    public TeamMember(int userId, @NotNull User user, @NotNull String name, @NotNull String surname, @NotNull Boolean canBuy, Team team) {
         this.userId = userId;
         this.user = user;
         this.name = name;

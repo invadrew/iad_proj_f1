@@ -47,9 +47,14 @@ function fieldsHandler() {
 
 function addUser() {
 
+    document.getElementById("reg-ready").hidden = true;
+    document.getElementById("error").hidden = true;
+    document.getElementById("busy").hidden = true;
+
     let uType = $('#role-selector').val();
     let login = $('#new-login').val();
     let pass = $('#new-pass').val();
+    let roles = ["Mechanic","Racer","Sponsor","Manager"];
 
     switch (uType) {
         case ("Sponsor"):
@@ -64,21 +69,22 @@ function addUser() {
             } else {
 
                 $.ajax({
-                    type : "POST",
-                    url : "/admin/regSponsor",
-                    data : {
-                        "login" :  login,
-                        "passw" : pass,
-                        "name" : nazv,
-                        "budget" : budget
+                    type: "POST",
+                    url: "/admin/regSponsor",
+                    data: {
+                        "login": login,
+                        "passw": pass,
+                        "name": nazv,
+                        "budget": budget
                     },
-                    success:  function (data) {
+                    success: function (data) {
                         if (data === "ok") {
-                        document.getElementById("reg-ready").hidden = false; } else {
+                            document.getElementById("reg-ready").hidden = false;
+                        } else {
                             document.getElementById("busy").hidden = false;
                         }
                     }
-                    });
+                });
             }
 
             break;
@@ -90,11 +96,42 @@ function addUser() {
             } else {
 
                 $.ajax({
+                    type: "POST",
+                    url: "/admin/regAdmin",
+                    data: {
+                        "login": login,
+                        "passw": pass
+                    },
+                    success: function (data) {
+                        if (data === "ok") {
+                            document.getElementById("reg-ready").hidden = false;
+                        } else {
+                            document.getElementById("busy").hidden = false;
+                        }
+                    }
+                });
+
+            }
+            break;
+    }
+        if (roles.includes(uType)) {
+
+            let memberName = $('#new-name').val();
+            let memberSurname = $('#new-sur').val();
+
+            if ((login.trim() === "") || (pass.trim() === "") || (memberName.trim() === "") || (memberSurname.trim() === "")) {
+                document.getElementById("error").hidden = false;
+            } else {
+
+                $.ajax({
                     type : "POST",
-                    url : "/admin/regAdmin",
+                    url : "/admin/regTeamMember",
                     data : {
-                        "login" :  login,
-                        "passw" : pass
+                        "login" : login,
+                        "passw" : pass,
+                        "name" : memberName,
+                        "surname" : memberSurname,
+                        "type" : uType
                     },
                     success:  function (data) {
                         if (data === "ok") {
@@ -105,11 +142,6 @@ function addUser() {
                 });
 
             }
-            break;
-
-        default:
-
-            break;
     }
 
 }
