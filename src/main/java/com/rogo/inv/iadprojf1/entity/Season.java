@@ -32,4 +32,9 @@ public class Season {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "season")
     private List<Championship> championships = new ArrayList<>();
+
+    public Season(int year) {
+        this.year = year;
+    }
+
 }

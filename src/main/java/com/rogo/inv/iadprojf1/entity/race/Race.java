@@ -26,7 +26,6 @@ public class Race {
     @JoinColumn(name = "champ_id")
     private Championship champ;
 
-    @NotNull
     private LocalTime duration;
 
     @NotNull
@@ -62,7 +61,7 @@ public class Race {
     /* ================================
      constructors
     ================================ */
-    public Race(@NotNull Championship champ, @NotNull LocalTime duration, @NotNull LocalDateTime dateTime, @NotNull @Min(1) int laps, @NotNull @Min(1) int maxParticipants, @NotNull String track) {
+    public Race(@NotNull Championship champ, LocalTime duration, @NotNull LocalDateTime dateTime, @NotNull @Min(1) int laps, @NotNull @Min(1) int maxParticipants, @NotNull String track) {
         this.champ = champ;
         this.duration = duration;
         this.dateTime = dateTime;

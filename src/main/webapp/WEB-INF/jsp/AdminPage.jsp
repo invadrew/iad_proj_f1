@@ -49,25 +49,30 @@
             </div>
             <div class="infotab">
                 <center><h3>Объявление гонки</h3></center>
-                Текущий сезон: 2019
+                Текущий сезон: ${currSeason.year}
                 <br><br>
                 <form>
-                    <label for="race-date">Дата Гонки</label>
-                    <input type="date" class="res-selector" id="race-date">
-                    <label for="race-time">Время Гонки</label>
-                    <input type="time" class="res-selector" id="race-time">
+                    <label for="race-date">Дата и время гонки</label>
+                    <input type="datetime-local" class="res-selector" id="race-date">
                     <br>
                     <label for="champ">Чемпионат</label>
                     <input type="text" id="champ" class="res-selector">
                     <label for="track">Трасса</label>
                     <input type="text" id="track" class="res-selector">
                     <br>
-                    <label for="race-num">Максимум участников</label>
-                    <input type="number" min="2" id="race-num" class="res-selector" style="width: 100px">
+                    <label for="race-num"> Кругов </label>
+                    <input type="number" min="1" id="race-num" class="res-selector" value="1" style="width: 100px">
                     <label for="team-num">Максимум команд</label>
-                    <input type="number" min="2" id="team-num" class="res-selector" style="width: 100px">
+                    <input type="number" min="2" id="team-num" class="res-selector" value="2" style="width: 100px">
                     <br>
-                    <input type="submit" class="res-selector" value="Объявить">
+                    <label for="country">Страна</label>
+                    <input type="text" id="country" class="res-selector">
+                    <br>
+                    <input type="button" class="res-selector" value="Объявить" onclick="addRace()">
+                    <br>
+                    <label id="race-ready" hidden> Готово </label>
+                    <label id="race-error" hidden> Не все поля заполнены </label>
+                    <label id="too-early" hidden> Выбранная дата неактуальна </label>
                 </form>
             </div>
         </div>

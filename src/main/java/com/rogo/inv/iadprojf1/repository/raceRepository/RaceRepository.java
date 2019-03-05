@@ -16,6 +16,10 @@ public interface RaceRepository extends JpaRepository<Race, Integer> {
             "ORDER BY race.date_time DESC LIMIT 1;", nativeQuery = true)
     List<Object[]> getCurrentEvent();
 
+    @Query (value = "SELECT stage_num FROM championships AS ch \n" +
+            "WHERE ch.season_id = ?1 ORDER BY stage_num DESC LIMIT 1", nativeQuery = true)
+    Integer getStageNum(int year);
+
     Race findTopByOrderByDateTimeDesc();
 
 }

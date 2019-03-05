@@ -1,23 +1,24 @@
 package com.rogo.inv.iadprojf1.controller;
 
 
-import com.rogo.inv.iadprojf1.entity.AcceptStatus;
-import com.rogo.inv.iadprojf1.entity.Sponsor;
-import com.rogo.inv.iadprojf1.entity.TeamMember;
-import com.rogo.inv.iadprojf1.entity.User;
-import com.rogo.inv.iadprojf1.service.SponsorService;
-import com.rogo.inv.iadprojf1.service.TeamMemberService;
-import com.rogo.inv.iadprojf1.service.UserService;
+import com.rogo.inv.iadprojf1.entity.*;
+import com.rogo.inv.iadprojf1.entity.cup.Championship;
+import com.rogo.inv.iadprojf1.entity.race.Race;
+import com.rogo.inv.iadprojf1.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.Md4PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 
 @Controller
 public class AdminController {
@@ -31,8 +32,21 @@ public class AdminController {
     @Autowired
     private TeamMemberService teamMemberService;
 
+    @Autowired
+    private SeasonService seasonService;
+
+    @Autowired
+    private RaceService raceService;
+
+    @Autowired
+    private ChampionshipService championshipService;
+
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public String toAdminPanel() {
+    public String toAdminPanel(ModelMap map) {
+
+        Season currSeas = seasonService.findTopByOrderByYearDesc();
+        map.addAttribute("currSeason", currSeas);
+
         return "AdminPage";
     }
 
@@ -116,6 +130,41 @@ public class AdminController {
         teamMemberService.save(teamMember);
 
         return "ok";
+
+    }
+
+    @RequestMapping(value = "/admin/addRace", method = RequestMethod.POST)
+    @ResponseBody
+    public void addRace(HttpServletResponse response, HttpServletRequest request) {
+
+        String dateTime = request.getParameter("date");
+        String champ = request.getParameter("champ");
+        String track = request.getParameter("track");
+        Integer laps = Integer.parseInt(request.getParameter("raceNum"));
+        Integer teamNum = Integer.parseInt(request.getParameter("teamNum")) * 2;
+        String country = request.getParameter("country");
+
+        LocalDateTime raceDate = LocalDateTime.parse(dateTime);
+        Season year;
+
+        Season ifExistsYear = seasonService.findByYear(raceDate.getYear());
+        if (ifExistsYear == null) {
+            year = new Season(raceDate.getYear());
+            seasonService.save(year);
+        } else {
+            year = ifExistsYear;
+        }
+
+        Integer stage;
+        try {
+         stage = raceService.getStageNum(year.getYear()) + 1; } catch (NullPointerException x) {
+            stage = 1;
+        }
+
+        Championship championship = new Championship(year, champ, country, stage);
+        championshipService.save(championship);
+        Race race = new Race(championship, null, raceDate, laps, teamNum, track);
+        raceService.save(race);
 
     }
 

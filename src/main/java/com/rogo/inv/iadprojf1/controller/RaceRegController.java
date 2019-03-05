@@ -129,7 +129,7 @@ public class RaceRegController {
         if (secondPId != null) { teamMemberS = teamMemberService.findByUserId(secondPId); }
 
         RaceRegistration raceRegistration = new RaceRegistration(teamService.findById(teamId), raceService.findById(raceId),
-                teamMemberF, firstCar, teamMemberS, secondCar, AcceptStatus.ACCEPTED);
+                teamMemberF, firstCar, teamMemberS, secondCar, AcceptStatus.ACCEPTED); // TODO make status ON_REVIEW
         raceRegistrationService.save(raceRegistration);
 
 

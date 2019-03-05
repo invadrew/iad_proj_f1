@@ -145,3 +145,46 @@ function addUser() {
     }
 
 }
+
+function addRace() {
+
+    let date = $('#race-date').val();
+    let champ = $('#champ').val();
+    let track = $('#track').val();
+    let raceNum = $('#race-num').val();
+    let teamNum = $('#team-num').val();
+    let country = $('#country').val();
+
+    let now = new Date();
+    let currDate = new Date(date);
+
+    document.getElementById("race-ready").hidden = true;
+    document.getElementById("race-error").hidden = true;
+    document.getElementById("too-early").hidden = true;
+
+    if (!date || !champ || !track || !raceNum || !teamNum || !country) {
+        document.getElementById("race-error").hidden = false;
+    } else {
+
+        if ((currDate < now)) {
+            document.getElementById("too-early").hidden = false;
+        } else {
+
+            $.ajax({
+                type: "POST",
+                url: "/admin/addRace",
+                data: {
+                    "date": date,
+                    "champ": champ,
+                    "track": track,
+                    "raceNum": raceNum,
+                    "teamNum": teamNum,
+                    "country" : country
+                },
+                success: function (data) {
+                    document.getElementById("race-ready").hidden = false;
+                }
+            });
+        }
+    }
+}

@@ -37,4 +37,7 @@ public class RaceServiceImpl implements RaceService {
 
     @Override
     public  Race findTopByOrderByDateTimeDesc() { return repository.findTopByOrderByDateTimeDesc();}
+
+    @Override
+    public Integer getStageNum(int year) { return repository.getStageNum(year); }
 }

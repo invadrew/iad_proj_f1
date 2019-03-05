@@ -16,4 +16,6 @@ public interface RaceService {
     List<Object[]> getCurrentEvent();
 
     Race findTopByOrderByDateTimeDesc();
+
+    Integer getStageNum(int year);
 }
