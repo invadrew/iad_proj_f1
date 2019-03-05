@@ -8,7 +8,6 @@
     <title>Панель администратора</title>
 </head>
 <body>
-<script type="text/javascript" src="../scripts/AdminPageScript.js"> </script>
 <div class="grid-container">
   <jsp:include page="Header.jsp"/>
     <div class="MainArea">
@@ -23,7 +22,7 @@
                     <br>
                     <label for="role-selector">Тип пользователя</label>
                     <select id="role-selector" class="res-selector" style="margin-top: 1%; margin-bottom: 1%" onchange="fieldsHandler()">
-                        <option value="Racer">Гонщик</option>
+                        <option value="Racer" selected>Гонщик</option>
                         <option value="Mechanic">Механик</option>
                         <option value="Manager">Менеджер</option>
                         <option value="Constructor">Конструктор</option>
@@ -38,7 +37,14 @@
                     <label for="new-nazv" id="new-nazv-id" hidden>Название</label>
                     <input type="text" id="new-nazv" class="res-selector" hidden>
                     <br>
-                    <input type="submit" class="res-selector" style="margin: 2%" value="Добавить">
+                    <label for="new-budg" id="new-budg-id" hidden>Бюджет</label>
+                    <input type="number" value="0" min="0" id="new-budg" class="res-selector" hidden>
+                    <br>
+                    <input type="button" class="res-selector" style="margin: 2%" value="Добавить" onclick="addUser()">
+                    <br>
+                    <label id="error" hidden> Не все поля заполнены </label>
+                    <label id="busy" hidden> Логин уже существует </label>
+                    <label id="reg-ready" hidden> Готово </label>
                 </form>
             </div>
             <div class="infotab">
@@ -67,5 +73,7 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="../scripts/AdminPageScript.js"> </script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 </body>
 </html>
