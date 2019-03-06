@@ -75,6 +75,14 @@
                     <label id="too-early" hidden> Выбранная дата неактуальна </label>
                 </form>
             </div>
+            <div class="infotab">
+                <center><h3>Запросы на создание команд</h3></center>
+                <!-- TODO: handling request to create new team-->
+            </div>
+            <div class="infotab">
+                <center><h3>Запросы на регистрацию в гонке</h3></center>
+                <!-- TODO: form to accept or refuse race registration request-->
+            </div>
         </div>
     </div>
 </div>

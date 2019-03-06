@@ -1,3 +1,11 @@
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%@ page import="org.springframework.security.core.Authentication" %>
+<%@ page import="org.springframework.beans.factory.annotation.Autowired" %>
+<%@ page import="com.rogo.inv.iadprojf1.service.UserService" %>
+<%@ page import="com.rogo.inv.iadprojf1.entity.TeamMember" %>
+<%@ page import="com.rogo.inv.iadprojf1.service.TeamMemberService" %>
+<%@ page import="com.rogo.inv.iadprojf1.entity.Team" %>
+<%@ page import="com.rogo.inv.iadprojf1.service.TeamService" %>
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -11,6 +19,30 @@
     <title>Профиль пользователя</title>
 </head>
 <body>
+<%!
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private TeamMemberService teamMemberService;
+
+    @Autowired
+    private TeamService teamService;
+%>
+<c:set var="thisUserTeamName" value="${team}"/>
+<% Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    String name = authentication.getName();
+    pageContext.setAttribute("currName", name);
+
+    TeamMember teamMember = teamMemberService.findByUserId(userService.findByLogin(name).getId());
+    Team team = teamMember.getTeam();
+    pageContext.setAttribute("currUserTeam", team.getId());
+    pageContext.setAttribute("ifCanBuy", teamMember.getCanBuy());
+
+    Team profileOwnerTeam = teamService.findByName(pageContext.getAttribute("thisUserTeamName").toString());
+    pageContext.setAttribute("profileOwnerTeam", profileOwnerTeam);
+
+%>
 <div class="grid-container">
    <jsp:include page="Header.jsp"/>
     <div class="MainArea">
@@ -41,7 +73,12 @@
                 <br> <br>
                 Должность: ${spec}
                 <c:if test="${!(user.spec.toString().equals('RACER'))}">
-                <br> <br> <br>
+                <br>
+                    <c:if test="${!currName.equals(user.login) && user.spec.toString().equals('MANAGER') && profileOwnerTeam.equals(null)}">
+                        <!-- TODO: button to invite usr to team-->
+                    </c:if>
+                    <br>
+                    <br>
                     <i>Статистика пользователя совпадает с командной</i>
                 </c:if>
             </div>
@@ -65,6 +102,46 @@
                         <tr><td>Выиграно кубков мира - ${cupsWon}</td></tr>
                         <tr><td>Участвовал в ${champCount} чемпионатах</td></tr>
                     </table>
+                </div>
+            </div>
+            </c:if>
+            <c:if test="${currName.equals(user.login)}">
+            <div class="inside_block_wrapper">
+                <div class="infotab" >
+                    <center><h3>Мои действия</h3></center>
+                    
+                    <c:if test="${user.spec.toString().equals('MANAGER')}">
+                        <h4>Создание команды</h4>
+                        <c:if test="${currUserTeam != null}">
+                            У вас уже есть своя команда
+                        </c:if>
+                        <c:if test="${currUserTeam == null}">
+                            <!-- TODO: add form to create team-->
+                        </c:if>
+                        <h4>Выдача прав на покупку</h4>
+                        <!-- TODO: giving buy ability -->
+                        <h4>Состояние регистрации команды в гонке</h4>
+                        <!-- TODO: registration info-->
+                        <h4>Запросы на вступление в команду</h4>
+                        <!-- TODO: team join requests-->
+                        <h4>Запросы на добавление деталей/болидов</h4>
+                        <!-- TODO: confirm mechanics and constructors actions -->
+                        <h4>Новости</h4>
+                        <!-- TODO: here will be all results of different requests-->
+                    </c:if>
+                    
+                    <c:if test="${user.spec.toString().equals('MECHANIC') || user.spec.toString().equals('CONSTRUCTOR')}">
+                        <h4>Право на добавление деталей/болидов</h4>
+                        <c:if test="${ifCanBuy}">
+                            У вас есть право на управление комплектующими без подтверждения
+                        </c:if>
+                        <c:if test="${!ifCanBuy}">
+                            <!-- TODO: send request to get buy ability-->
+                        </c:if>
+                        <h4>Новости</h4>
+                        <!-- TODO: here will be all results of different requests-->
+                    </c:if>
+
                 </div>
             </div>
             </c:if>
