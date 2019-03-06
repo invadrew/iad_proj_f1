@@ -1,4 +1,5 @@
 package com.rogo.inv.iadprojf1.service.impl;
+import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.User;
 import com.rogo.inv.iadprojf1.repository.TeamRepository;
@@ -64,5 +65,8 @@ public class TeamServiceImpl implements TeamService {
 
     @Override @Transactional
     public int updTeamBudget(@Param("budg") Double budg, @Param("tId") Integer tId) {return repository.updTeamBudget(budg, tId);}
+
+    @Override
+    public  List<Team> getAllByStatus(AcceptStatus status) { return repository.getAllByStatus(status);}
 
 }

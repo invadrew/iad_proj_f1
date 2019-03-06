@@ -1,6 +1,7 @@
 package com.rogo.inv.iadprojf1.service;
 
 
+import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.User;
 import org.springframework.data.repository.query.Param;
@@ -35,5 +36,7 @@ public interface TeamService {
     List<Object[]> bestRacer(int team);
 
     int updTeamBudget(@Param("budg") Double budg, @Param("tId") Integer tId);
+
+    List<Team> getAllByStatus(AcceptStatus status);
 
 }

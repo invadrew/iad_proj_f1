@@ -188,3 +188,23 @@ function addRace() {
         }
     }
 }
+
+function handleTeamRequest(team, status, sender) {
+
+    let comment = $('#tComment' + team).val();
+
+    $.ajax({
+        type: "POST",
+        url: "/admin/handleTeamRequest",
+        data: {
+            "comment" : comment,
+            "status" : status,
+            "teamid" : team,
+            "senderid" : sender
+        },
+        success: function (data) {
+            document.getElementById("tRow"+ team).hidden = true;
+        }
+    });
+
+}

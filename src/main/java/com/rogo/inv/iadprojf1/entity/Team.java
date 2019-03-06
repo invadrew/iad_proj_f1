@@ -39,6 +39,10 @@ public class Team {
 
     private String comments;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "sender")
+    private User sender;
+
     @ToString.Exclude
     @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
@@ -99,6 +103,8 @@ public class Team {
             mappedBy = "team")
     private List<PitStopPlace> pitStopPlaces = new ArrayList<>();
 
+
+
     /* ================================
      constructors
     ================================ */
@@ -107,5 +113,13 @@ public class Team {
         this.budget = budget;
         this.status = status;
         this.comments = comments;
+    }
+
+    public Team(@NotNull String name, @NotNull @Min(0) double budget, @NotNull AcceptStatus status, String comments, User sender) {
+        this.name = name;
+        this.budget = budget;
+        this.status = status;
+        this.comments = comments;
+        this.sender = sender;
     }
 }

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -77,7 +78,18 @@
             </div>
             <div class="infotab">
                 <center><h3>Запросы на создание команд</h3></center>
-                <!-- TODO: handling request to create new team-->
+                <table class="infotable" style="text-align: center; margin: 3%;">
+                <c:forEach items="${teamsOnReview}" var="team">
+                    <tr id="tRow${team[0]}">
+                        <td>${team[1]}</td>
+                        <td><input placeholder="Комментарий" type="text" id="tComment${team[0]}" class="res-selector"></td>
+                        <td><input type="button" value="Принять" id="tAccept${team[0]}" class="res-selector"
+                                   onclick="handleTeamRequest(${team[0]},true,${team[5]})"/></td>
+                        <td><input type="button" value="Отказать" id="tRefuse${team[0]}" class="res-selector"
+                                   onclick="handleTeamRequest(${team[0]},false, ${team[5]})"/></td>
+                    </tr>
+                </c:forEach>
+                </table>
             </div>
             <div class="infotab">
                 <center><h3>Запросы на регистрацию в гонке</h3></center>

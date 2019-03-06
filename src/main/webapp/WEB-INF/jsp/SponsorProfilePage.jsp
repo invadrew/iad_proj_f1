@@ -1,5 +1,4 @@
 <%@ page import="org.springframework.security.core.Authentication" %>
-<%@ page import="java.security.Principal" %>
 <%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8"%>

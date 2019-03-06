@@ -1,5 +1,6 @@
 package com.rogo.inv.iadprojf1.repository;
 
+import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -14,6 +15,8 @@ public interface TeamRepository extends JpaRepository<Team, Integer> {
     Team findById(int id);
 
     Team findByName(String name);
+
+    List<Team> getAllByStatus(AcceptStatus status);
 
     @Query(value = "SELECT tm.NAME, tm.surname, u.spec, u.id FROM team_members tm\n" +
             "   INNER JOIN users u ON (u.id = tm.user_id)\n" +

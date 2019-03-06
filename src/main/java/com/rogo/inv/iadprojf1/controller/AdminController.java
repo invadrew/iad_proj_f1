@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class AdminController {
@@ -41,11 +43,24 @@ public class AdminController {
     @Autowired
     private ChampionshipService championshipService;
 
+    @Autowired
+    private TeamService teamService;
+
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String toAdminPanel(ModelMap map) {
 
         Season currSeas = seasonService.findTopByOrderByYearDesc();
         map.addAttribute("currSeason", currSeas);
+
+        List<Team> onReviewTeams = teamService.getAllByStatus(AcceptStatus.ON_REVIEW);
+        List<Object[]> revTeams = new ArrayList<>();
+
+        for (Team team:onReviewTeams) {
+            Object[] tezmObj = {team.getId(), team.getName(), team.getBudget(), team.getStatus(), team.getComments(), userService.findById(team.getSender().getId()).getId()};
+            revTeams.add(tezmObj);
+        }
+
+        map.addAttribute("teamsOnReview",revTeams);
 
         return "AdminPage";
     }
@@ -126,9 +141,16 @@ public class AdminController {
         User user = new User(login, passwordEncoder.encode(password), spec, null, AcceptStatus.ACCEPTED, null);
         userService.save(user);
 
-        TeamMember teamMember = new TeamMember(user.getId(), user, name, surname, false, null);
-        teamMemberService.save(teamMember);
+        if (spec.equals(User.Spec.MANAGER)) {
 
+            TeamMember teamMember = new TeamMember(user.getId(), user, name, surname, true, null);
+            teamMemberService.save(teamMember);
+
+        } else {
+
+            TeamMember teamMember = new TeamMember(user.getId(), user, name, surname, false, null);
+            teamMemberService.save(teamMember);
+        }
         return "ok";
 
     }
@@ -168,5 +190,36 @@ public class AdminController {
 
     }
 
+    @RequestMapping(value = "/admin/handleTeamRequest", method = RequestMethod.POST)
+    @ResponseBody
+    public void handleTeam(HttpServletResponse response, HttpServletRequest request) {
+
+        String comment = request.getParameter("comment");
+        Boolean status = Boolean.parseBoolean(request.getParameter("status"));
+        Integer teamId = Integer.parseInt(request.getParameter("teamid"));
+        Integer senderId = Integer.parseInt(request.getParameter("senderid"));
+
+        if (status) {
+
+            Team team = teamService.findById(teamId);
+            team.setStatus(AcceptStatus.ACCEPTED);
+            team.setComments(comment);
+            teamService.save(team);
+
+            TeamMember teamMember = teamMemberService.findByUserId(senderId);
+            teamMember.setTeam(team);
+            teamMember.setCanBuy(Boolean.TRUE);
+            teamMemberService.save(teamMember);
+
+        } else {
+
+            Team team = teamService.findById(teamId);
+            team.setStatus(AcceptStatus.REFUSED);
+            team.setComments(comment);
+            teamService.save(team);
+
+        }
+
+    }
 
 }
