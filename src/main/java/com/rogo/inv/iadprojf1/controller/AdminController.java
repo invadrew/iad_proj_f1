@@ -4,7 +4,9 @@ package com.rogo.inv.iadprojf1.controller;
 import com.rogo.inv.iadprojf1.entity.*;
 import com.rogo.inv.iadprojf1.entity.cup.Championship;
 import com.rogo.inv.iadprojf1.entity.race.Race;
+import com.rogo.inv.iadprojf1.entity.race.RaceRegistration;
 import com.rogo.inv.iadprojf1.service.*;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.Md4PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,9 +19,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -46,6 +51,9 @@ public class AdminController {
     @Autowired
     private TeamService teamService;
 
+    @Autowired
+    private RaceRegistrationService raceRegistrationService;
+
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String toAdminPanel(ModelMap map) {
 
@@ -61,6 +69,34 @@ public class AdminController {
         }
 
         map.addAttribute("teamsOnReview",revTeams);
+
+        Race currentRace = raceService.findTopByOrderByDateTimeDesc();
+        List<RaceRegistration> allRegs = raceRegistrationService.findAllByRace(currentRace);
+        List<Object[]> regsOnReview = new ArrayList<>();
+
+        for (RaceRegistration registration:allRegs) {
+
+            if (registration.getStatus().equals(AcceptStatus.ON_REVIEW)) {
+
+                String secondName; Integer secondId;
+                try {
+                    secondName = registration.getSecondPilot().getName() + " " + registration.getSecondPilot().getSurname();
+                    secondId = registration.getSecondPilot().getUserId();
+                } catch (NullPointerException x) {
+                    secondId = null;
+                    secondName = null;
+                }
+
+                Object[] regInfo = { registration.getRace().getId(), registration.getTeam().getId(), registration.getRace().getDateTime(), registration.getRace().getChamp().getName(),
+                registration.getRace().getChamp().getSeason().getYear(), registration.getTeam().getName(),
+                        registration.getFirstPilot().getName() + " " + registration.getFirstPilot().getSurname(), secondName ,
+                registration.getFirstPilot().getUserId(), secondId};
+                regsOnReview.add(regInfo);
+            }
+
+        }
+
+        map.addAttribute("regsOnReview", regsOnReview);
 
         return "AdminPage";
     }
@@ -157,7 +193,7 @@ public class AdminController {
 
     @RequestMapping(value = "/admin/addRace", method = RequestMethod.POST)
     @ResponseBody
-    public void addRace(HttpServletResponse response, HttpServletRequest request) {
+    public void addRace(HttpServletResponse response, HttpServletRequest request) throws ParseException {
 
         String dateTime = request.getParameter("date");
         String champ = request.getParameter("champ");
@@ -167,6 +203,8 @@ public class AdminController {
         String country = request.getParameter("country");
 
         LocalDateTime raceDate = LocalDateTime.parse(dateTime);
+        Date rDate = Date.from(raceDate.atZone(ZoneId.systemDefault()).toInstant());
+       // Date raceDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(dateTime);
         Season year;
 
         Season ifExistsYear = seasonService.findByYear(raceDate.getYear());
@@ -185,7 +223,7 @@ public class AdminController {
 
         Championship championship = new Championship(year, champ, country, stage);
         championshipService.save(championship);
-        Race race = new Race(championship, null, raceDate, laps, teamNum, track);
+        Race race = new Race(championship, null, rDate, laps, teamNum, track);
         raceService.save(race);
 
     }
@@ -217,6 +255,33 @@ public class AdminController {
             team.setStatus(AcceptStatus.REFUSED);
             team.setComments(comment);
             teamService.save(team);
+
+        }
+
+    }
+
+    @RequestMapping(value = "/admin/handleRaceRequest", method = RequestMethod.POST)
+    @ResponseBody
+    public void handleRace(HttpServletRequest request, HttpServletResponse response) {
+
+        String comment = request.getParameter("comment");
+        Boolean status = Boolean.parseBoolean(request.getParameter("status"));
+        Integer teamId = Integer.parseInt(request.getParameter("team"));
+        Integer raceId = Integer.parseInt(request.getParameter("race"));
+
+        if (status) {
+
+            RaceRegistration registration = raceRegistrationService.findById(teamService.findById(teamId),raceService.findById(raceId));
+            registration.setStatus(AcceptStatus.ACCEPTED);
+            registration.setComment(comment);
+            raceRegistrationService.updRegRequest(AcceptStatus.ACCEPTED,comment,raceService.findById(raceId), teamService.findById(teamId));
+
+        } else {
+
+            RaceRegistration registration = raceRegistrationService.findById(teamService.findById(teamId),raceService.findById(raceId));
+            registration.setStatus(AcceptStatus.REFUSED);
+            registration.setComment(comment);
+            raceRegistrationService.updRegRequest(AcceptStatus.REFUSED,comment,raceService.findById(raceId), teamService.findById(teamId));
 
         }
 

@@ -11,13 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.concurrent.ThreadSafe;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
-@ThreadSafe
 public class RaceRegController {
 
     @Autowired
@@ -105,7 +103,7 @@ public class RaceRegController {
 
     @RequestMapping(value = "/race-reg/registration", method = RequestMethod.POST)
     @ResponseBody
-    public synchronized void registrate(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+    public void registrate(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
 
         String firstP = request.getParameter("firstP");
         String secondP = request.getParameter("secondP");
@@ -137,11 +135,6 @@ public class RaceRegController {
         TeamMember teamMemberS = null;
         if (secondPId != null) { teamMemberS = teamMemberService.findByUserId(secondPId); }
 
-        RaceRegistration raceRegistration = new RaceRegistration(teamService.findById(teamId), raceService.findById(raceId),
-                teamMemberF, firstCar, teamMemberS, secondCar, AcceptStatus.ACCEPTED); // TODO make status ON_REVIEW
-        raceRegistrationService.save(raceRegistration);
-
-
            try { Piloting firstPiloting = pilotingService.findByCarIdAndRacerId(firstCId, firstPId);
             if (firstPiloting == null) {
                 Piloting newPiloting = new Piloting(firstCar, userService.findById(firstPId));
@@ -154,6 +147,13 @@ public class RaceRegController {
             }
         } catch (NullPointerException x) { }
 
+        RaceRegistration raceRegistration = new RaceRegistration(teamService.findById(teamId), raceService.findById(raceId),
+                teamMemberF, firstCar, teamMemberS, secondCar, AcceptStatus.ACCEPTED);
+        if (secondPId!= null && secondCId!= null) {
+            raceRegistrationService.addNewRegRecord(teamId, raceId, firstPId, firstCId, secondPId, secondCId);
+        } else {
+            raceRegistrationService.addNewRegRecordOne(teamId,raceId,firstPId,firstCId);
+        }
     }
 
 }

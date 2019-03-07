@@ -208,3 +208,23 @@ function handleTeamRequest(team, status, sender) {
     });
 
 }
+
+function handleRaceRegRequest(race, team, status) {
+
+    let comment = $('#rComment' + race + team).val();
+
+    $.ajax({
+        type: "POST",
+        url: "/admin/handleRaceRequest",
+        data: {
+            "comment" : comment,
+            "race" : race,
+            "team" : team,
+            "status" : status
+        },
+        success: function (data) {
+            document.getElementById("regRow"+ race + team).hidden = true;
+        }
+    });
+
+}

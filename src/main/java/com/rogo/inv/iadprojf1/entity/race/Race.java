@@ -11,6 +11,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "races")
@@ -29,7 +30,7 @@ public class Race {
     private LocalTime duration;
 
     @NotNull
-    private LocalDateTime dateTime;
+    private Date dateTime;
 
     @NotNull @Min(1)
     private int laps;
@@ -61,7 +62,7 @@ public class Race {
     /* ================================
      constructors
     ================================ */
-    public Race(@NotNull Championship champ, LocalTime duration, @NotNull LocalDateTime dateTime, @NotNull @Min(1) int laps, @NotNull @Min(1) int maxParticipants, @NotNull String track) {
+    public Race(@NotNull Championship champ, LocalTime duration, @NotNull Date dateTime, @NotNull @Min(1) int laps, @NotNull @Min(1) int maxParticipants, @NotNull String track) {
         this.champ = champ;
         this.duration = duration;
         this.dateTime = dateTime;

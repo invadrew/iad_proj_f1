@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -93,7 +94,55 @@
             </div>
             <div class="infotab">
                 <center><h3>Запросы на регистрацию в гонке</h3></center>
-                <!-- TODO: form to accept or refuse race registration request-->
+                    <table class="infotable" style="text-align: center; margin: 3%;" border="1">
+                        <c:if test="${!regsOnReview.isEmpty()}">
+                        <tr>
+                            <th>Сезон</th>
+                            <th>Чемпионат</th>
+                            <th>Дата гонки</th>
+                            <th>Команда</th>
+                            <th>Первый пилот</th>
+                            <th>Второй пилот</th>
+                            <th>Комментарий</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </c:if>
+                        <c:forEach items="${regsOnReview}" var="reg">
+                            <tr id="regRow${reg[0]}${reg[1]}">
+                                <td>${reg[4]}</td>
+                                <td>${reg[3]}</td>
+                                <td><fmt:formatDate value="${reg[2]}" pattern="dd-MM-yyyy HH:mm:ss"/></td>
+                                <td>
+                                    <c:url value="/team" var="uUrl">
+                                        <c:param name="id" value="${reg[1]}"/>
+                                    </c:url>
+                                    <a class="redirHref" href="${uUrl}">
+                                        ${reg[5]}
+                                    </a>
+                                </td>
+                                <td>
+                                    <c:url value="/profile" var="uUrl">
+                                        <c:param name="id" value="${reg[8]}"/>
+                                    </c:url>
+                                    <a class="redirHref" href="${uUrl}">
+                                        ${reg[6]}
+                                    </a>
+                                </td>
+                                <td>
+                                    <c:url value="/profile" var="uUrl">
+                                        <c:param name="id" value="${reg[9]}"/>
+                                    </c:url>
+                                    <a class="redirHref" href="${uUrl}">
+                                        ${reg[7]}
+                                    </a>
+                                </td>
+                                <td><input type="text" placeholder="Комментарий" id="rComment${reg[0]}${reg[1]}" class="res-selector"/></td>
+                                <td><input type="button" class="res-selector" value="Подтвердить" onclick="handleRaceRegRequest(${reg[0]},${reg[1]},true)"></td>
+                                <td><input type="button" class="res-selector" value="Отказать" onclick="handleRaceRegRequest(${reg[0]},${reg[1]},false)"></td>
+                            </tr>
+                        </c:forEach>
+                    </table>
             </div>
         </div>
     </div>

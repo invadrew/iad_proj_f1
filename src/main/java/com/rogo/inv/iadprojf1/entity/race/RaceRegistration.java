@@ -50,6 +50,8 @@ public class RaceRegistration {
     @Enumerated(EnumType.STRING)
     private AcceptStatus status;
 
+    private String comment;
+
     /* ================================
      constructors
     ================================ */

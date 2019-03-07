@@ -1,13 +1,16 @@
 package com.rogo.inv.iadprojf1.repository.raceRepository;
 
+import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.race.Race;
 import com.rogo.inv.iadprojf1.entity.race.RaceRegistration;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -33,4 +36,23 @@ public interface RaceRegistrationRepository extends JpaRepository<RaceRegistrati
             "WHERE registration.race_id = ?1", nativeQuery = true)
     Integer canReg(int race);
 
+    List<RaceRegistration> findAllByRace(Race race);
+
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO race_registration(team_id, race_id, first_pilot, first_car, second_pilot, second_car, status) VALUES \n" +
+            "( :team, :race, :firstP, :firstC, :secondP, :secondC, 'ON_REVIEW' )", nativeQuery = true)
+    int addNewRegRecord(@Param("team") Integer team, @Param("race") Integer race, @Param("firstP") Integer firstP, @Param("firstC") Integer firstC,
+                        @Param("secondP") Integer secondP, @Param("secondC") Integer secondC );
+
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO race_registration(team_id, race_id, first_pilot, first_car, second_pilot, second_car, status) VALUES \n" +
+            "( :team, :race, :firstP, :firstC, null , null ,'ON_REVIEW' )", nativeQuery = true)
+    int addNewRegRecordOne(@Param("team") Integer team, @Param("race") Integer race, @Param("firstP") Integer firstP, @Param("firstC") Integer firstC);
+
+
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE RaceRegistration reg SET reg.status = :status, reg.comment = :comment WHERE reg.race = :race AND reg.team = :team")
+    int updRegRequest(@Param("status") AcceptStatus status, @Param("comment") String comment, @Param("race") Race race, @Param("team") Team team);
 }
