@@ -39,4 +39,6 @@ public interface TeamService {
 
     List<Team> getAllByStatus(AcceptStatus status);
 
+    List<Team> getAllBySender(User sender);
+
 }

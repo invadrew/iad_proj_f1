@@ -4,6 +4,8 @@ import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.TeamMember;
 import com.rogo.inv.iadprojf1.entity.User;
+import com.rogo.inv.iadprojf1.entity.race.Race;
+import com.rogo.inv.iadprojf1.entity.race.RaceRegistration;
 import com.rogo.inv.iadprojf1.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -42,6 +45,12 @@ public class ProfileController {
 
     @Autowired
     private TeamService teamService;
+
+    @Autowired
+    private RaceService raceService;
+
+    @Autowired
+    private RaceRegistrationService raceRegistrationService;
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public String toProfile(ModelMap map, Authentication authentication, @Param("id") Integer id) {
@@ -186,6 +195,68 @@ public class ProfileController {
 
         map.addAttribute("currUserId", userService.findByLogin(authentication.getName()).getId());
 
+     if (id == null && userService.findByLogin(authentication.getName()).getSpec().equals(User.Spec.MANAGER)) {
+
+         try {
+             Race currRace = raceService.findTopByOrderByDateTimeDesc();
+             RaceRegistration raceRegistration = raceRegistrationService.findById(teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId()),
+                     currRace);
+
+             if ((raceRegistration) != null) {
+
+                 if (raceRegistration.getStatus().equals(AcceptStatus.ACCEPTED)) {
+                     map.addAttribute("currRaceRegStatus", "Заявка принята. Комментарий: " + raceRegistration.getComment());
+                 }
+
+                 if (raceRegistration.getStatus().equals(AcceptStatus.ON_REVIEW)) {
+                     map.addAttribute("currRaceRegStatus", "Заявка ещё на рассмотрении");
+                 }
+
+                 if (raceRegistration.getStatus().equals(AcceptStatus.REFUSED)) {
+                     map.addAttribute("currRaceRegStatus", "Заявка отклонена. Комментарий: " + raceRegistration.getComment());
+                 }
+
+
+             } else {
+                 map.addAttribute("currRaceRegStatus", null);
+             }
+         } catch (NullPointerException c) {
+             map.addAttribute("currRaceRegStatus", null);
+         }
+
+         List<Team> offeredTeams = teamService.getAllBySender(userService.findByLogin(authentication.getName()));
+         List<Object[]> acceptedNames = new ArrayList<>();
+         List<Object[]> refusedTeams = new ArrayList<>();
+
+         for (Team teamName: offeredTeams) {
+
+             Object[] teamNameInfo = { teamName.getName(), teamName.getComments() };
+
+             if (teamName.getStatus().equals(AcceptStatus.ACCEPTED)) {
+                 acceptedNames.add(teamNameInfo);
+             }
+
+             if (teamName.getStatus().equals(AcceptStatus.REFUSED)) {
+                refusedTeams.add(teamNameInfo);
+             }
+
+         }
+
+         map.addAttribute("acceptedNames", acceptedNames);
+         map.addAttribute("refusedNames", refusedTeams);
+
+         try {
+
+             List<Object[]> toBeGivenBuy = teamMemberService.getAllConstrAndMech(
+                     teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId()).getId());
+
+             map.addAttribute("constrsAndMechs", toBeGivenBuy);
+
+         }  catch (NullPointerException ex) {
+
+         }
+     }
+
         return "UserProfilePage";
     }
 
@@ -202,6 +273,17 @@ public class ProfileController {
         teamService.save(team);
 
         return "ok";
+    }
+
+    @RequestMapping(value = "/profile/givePermission", method = RequestMethod.POST)
+    @ResponseBody
+    public void givePermission(HttpServletRequest request) {
+
+        Integer userId = Integer.parseInt(request.getParameter("user"));
+        TeamMember candidate = teamMemberService.findByUserId(userId);
+        candidate.setCanBuy(true);
+        teamMemberService.save(candidate);
+
     }
 
 }

@@ -29,3 +29,20 @@ function sendTeamRequest(id) {
     }
 
 }
+
+function giveBuyAbility() {
+
+    let user = $('#chooseToGiveBuy').val();
+
+    $.ajax({
+        type: "POST",
+        url: "/profile/givePermission",
+        data: {
+            "user" : user
+        },
+        success: function (data) {
+            location.reload();
+        }
+
+    });
+}

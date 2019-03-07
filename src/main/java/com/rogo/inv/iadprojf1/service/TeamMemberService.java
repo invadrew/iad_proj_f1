@@ -38,4 +38,6 @@ public interface TeamMemberService {
     List<Object[]> getBestTrackTime(int user);
 
     List<Object[]> getAllRacers(int team);
+
+    List<Object[]> getAllConstrAndMech(int team);
 }

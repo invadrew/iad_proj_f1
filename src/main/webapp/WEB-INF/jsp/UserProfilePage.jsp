@@ -96,15 +96,38 @@
                             </form>
                         </c:if>
                         <h3>Выдача прав на покупку</h3>
-                        <!-- TODO: giving buy ability -->
+                        <c:if test="${constrsAndMechs.isEmpty()}">
+                            В команде сейчас нет механиков и конструкторов без права на покупку
+                        </c:if>
+                        <c:if test="${!constrsAndMechs.isEmpty()}">
+                        <label for="chooseToGiveBuy">Выберите конструктора или механика</label>
+                        <select id="chooseToGiveBuy" class="res-selector">
+                            <c:forEach items="${constrsAndMechs}" var="candidate">
+                                <option value="${candidate[0]}"> ${candidate[1]} ${candidate[2]} </option>
+                            </c:forEach>
+                        </select>
+                        <input type="button" class="res-selector" value="Выдать" onclick="giveBuyAbility()">
+                        </c:if>
                         <h3>Состояние регистрации команды в гонке</h3>
-                        <!-- TODO: registration info-->
+                        <c:if test="${currRaceRegStatus == null}">
+                            Вы ещё не посылали заявку на гонку
+                        </c:if>
+                        <c:if test="${currRaceRegStatus != null}">
+                            <c:out value="${currRaceRegStatus}"/>
+                        </c:if>
                         <h3>Запросы на вступление в команду</h3>
                         <!-- TODO: team join requests-->
                         <h3>Запросы на добавление деталей/болидов</h3>
                         <!-- TODO: confirm mechanics and constructors actions -->
                         <h3>Новости</h3>
-                        <!-- TODO: here will be all results of different requests-->
+                        <c:forEach items="${acceptedNames}" var="accepted">
+                            Было принято название команды ${accepted[0]}. Комментарий: ${accepted[1]}
+                            <br>
+                        </c:forEach>
+                        <c:forEach items="${refusedNames}" var="refused">
+                            Было отклонено название команды ${refused[0]}. Комментарий ${refused[1]}
+                            <br>
+                        </c:forEach>
                     </c:if>
                     
                     <c:if test="${user.spec.toString().equals('MECHANIC') || user.spec.toString().equals('CONSTRUCTOR')}">

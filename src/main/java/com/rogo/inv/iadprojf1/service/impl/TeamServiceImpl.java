@@ -69,4 +69,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public  List<Team> getAllByStatus(AcceptStatus status) { return repository.getAllByStatus(status);}
 
+    @Override
+    public List<Team> getAllBySender(User sender) { return repository.getAllBySender(sender); }
+
 }

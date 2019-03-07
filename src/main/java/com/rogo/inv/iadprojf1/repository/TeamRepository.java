@@ -2,6 +2,7 @@ package com.rogo.inv.iadprojf1.repository;
 
 import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.Team;
+import com.rogo.inv.iadprojf1.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -58,5 +59,7 @@ public interface TeamRepository extends JpaRepository<Team, Integer> {
     @Modifying(clearAutomatically = true)
     @Query("UPDATE Team t SET t.budget = :budg WHERE t.id = :tId")
     int updTeamBudget(@Param("budg") Double budg, @Param("tId") Integer tId);
+
+    List<Team> getAllBySender(User sender);
 
 }

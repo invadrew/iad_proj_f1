@@ -67,4 +67,7 @@ public class TeamMemberServiceImpl implements TeamMemberService {
 
     @Override
     public List<Object[]> getAllRacers(int team) { return repository.getAllRacers(team);}
+
+    @Override
+    public  List<Object[]> getAllConstrAndMech(int team) { return repository.getAllConstrAndMech(team); }
 }
