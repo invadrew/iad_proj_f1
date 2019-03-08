@@ -46,3 +46,39 @@ function giveBuyAbility() {
 
     });
 }
+
+function requestBuyAbility() {
+
+    let name = $('#askButton').val();
+
+    $.ajax({
+        type: "POST",
+        url: "/profile/askPermission",
+        data: {
+            "name" : name
+        },
+        success: function (data) {
+            document.getElementById("bpreqSent").hidden = false;
+        }
+
+    });
+
+}
+
+function confirmBuyAbility(id, status) {
+
+    $.ajax({
+        type: "POST",
+        url: "/profile/confirmPermission",
+        data: {
+            "id" : id,
+            "status" : status
+        },
+        success: function (data) {
+            document.getElementById("bpRow"+ id).hidden = true;
+            location.reload();
+        }
+
+    });
+
+}

@@ -185,7 +185,10 @@ public class ProfileController {
          Team teamCurr = teamMember.getTeam();
          map.addAttribute("currUserSpec",userService.findByLogin(authentication.getName()).getSpec());
          map.addAttribute("currUserTeam", teamCurr.getId());
-         map.addAttribute("ifCanBuy", teamMember.getCanBuy());
+         if (userService.findById(teamMemberService.findByUserId(teamMember.getUserId()).getUserId()).getStatus().equals(AcceptStatus.ON_REVIEW)) {
+             map.addAttribute("ifCanBuy", null);
+         } else {
+         map.addAttribute("ifCanBuy", teamMember.getCanBuy()); }
 
     } catch (NullPointerException x) {
          map.addAttribute("currUserSpec", null);
@@ -252,12 +255,69 @@ public class ProfileController {
 
              map.addAttribute("constrsAndMechs", toBeGivenBuy);
 
+             List<Object[]> requestsToGiveBuyInfo = new ArrayList<>();
+
+             for (Object[] mem: toBeGivenBuy) {
+                 if (mem[3].equals("ON_REVIEW")) {
+                     requestsToGiveBuyInfo.add(mem);
+                 }
+             }
+
+             map.addAttribute("constrsAndMechsRev", requestsToGiveBuyInfo);
+
          }  catch (NullPointerException ex) {
 
          }
      }
 
+       if (id == null && (userService.findByLogin(authentication.getName()).getSpec().equals(User.Spec.MECHANIC) || (
+                userService.findByLogin(authentication.getName()).getSpec().equals(User.Spec.CONSTRUCTOR)
+                ))) {
+
+            User mechOrConU = userService.findByLogin(authentication.getName());
+            TeamMember mechOrConTm = teamMemberService.findByUserId(mechOrConU.getId());
+
+           if (mechOrConU.getStatus().equals(AcceptStatus.ON_REVIEW)) {
+               map.addAttribute("bpStatus", "Заявка на покупку ещё на рассмотрении");
+           } else
+
+           if (mechOrConU.getStatus().equals(AcceptStatus.REFUSED)) {
+               map.addAttribute("bpStatus", "Заявка на покупку отклонена");
+           } else
+          {  map.addAttribute("bpStatus",null); }
+
+        }
+
         return "UserProfilePage";
+    }
+
+    @RequestMapping(value = "/profile/confirmPermission", method = RequestMethod.POST)
+    @ResponseBody
+    public void confPerm(HttpServletRequest request) {
+
+        Integer id = Integer.parseInt(request.getParameter("id"));
+        Boolean status = Boolean.parseBoolean(request.getParameter("status"));
+
+        User user = userService.findById(id);
+
+        if (status) { user.setStatus(AcceptStatus.ACCEPTED); teamMemberService.findByUserId(id).setCanBuy(true);}
+        else { user.setStatus(AcceptStatus.REFUSED); teamMemberService.findByUserId(id).setCanBuy(false);}
+
+        userService.save(user);
+
+    }
+
+    @RequestMapping(value = "/profile/askPermission", method = RequestMethod.POST)
+    @ResponseBody
+    public void askPerm(HttpServletRequest request) {
+
+        String name = request.getParameter("name");
+        User user = userService.findByLogin(name);
+
+        user.setStatus(AcceptStatus.ON_REVIEW);
+
+        userService.save(user);
+
     }
 
     @RequestMapping(value = "/profile/addTeam", method = RequestMethod.POST)

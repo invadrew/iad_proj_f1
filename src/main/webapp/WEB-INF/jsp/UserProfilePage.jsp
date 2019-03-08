@@ -119,6 +119,16 @@
                         <!-- TODO: team join requests-->
                         <h3>Запросы на добавление деталей/болидов</h3>
                         <!-- TODO: confirm mechanics and constructors actions -->
+                        <h3>Запросы на получение права на покупку</h3>
+                        <table class="infotable" style="text-align: center; margin: 3%;">
+                        <c:forEach items="${constrsAndMechsRev}" var="rev">
+                            <tr id="bpRow${rev[0]}">
+                                <td>${rev[1]} ${rev[2]}</td>
+                                <td><input type="button" value="Подтвердить" class="res-selector" onclick="confirmBuyAbility(${rev[0]}, true)"/></td>
+                                <td><input type="button" value="Отказать" class="res-selector" onclick="confirmBuyAbility(${rev[0]}, false)"/></td>
+                            </tr>
+                        </c:forEach>
+                        </table>
                         <h3>Новости</h3>
                         <c:forEach items="${acceptedNames}" var="accepted">
                             Было принято название команды ${accepted[0]}. Комментарий: ${accepted[1]}
@@ -136,10 +146,19 @@
                             У вас есть право на управление комплектующими без подтверждения
                         </c:if>
                         <c:if test="${!ifCanBuy}">
-                            <!-- TODO: send request to get buy ability-->
+                            <form>
+                                <input type="hidden" value="${user.login}" id="askButton"/>
+                            <input type="button" value="Запросить право на покупку" class="res-selector" onclick="requestBuyAbility()" />
+                            <label id="bpreqSent" hidden>Готово</label>
+                            </form>
                         </c:if>
                         <h3>Новости</h3>
-                        <!-- TODO: here will be all results of different requests-->
+                        <c:if test="${ifCanBuy}">
+                            Вам было выдано право на покупку.
+                        </c:if>
+                        <c:if test="${!ifCanBuy}">
+                            ${bpStatus}
+                        </c:if>
                     </c:if>
 
                 </div>
