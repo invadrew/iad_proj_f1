@@ -23,8 +23,8 @@ public interface TeamMemberRepository extends JpaRepository<TeamMember, Integer>
             "  WHERE ((tm.team_id = ?1) AND (u.spec = 'RACER'));", nativeQuery = true)
     List<Object[]> getAllRacers(int team);
 
-    @Query(value = "SELECT user_id, NAME, surname, status FROM team_members tm\n" +
-            "  INNER JOIN users u ON (tm.user_id = u.id)\n" +
+    @Query(value = "SELECT user_id, NAME, surname, u.buy_status, u.comments FROM team_members tm\n" +
+            "  INNER JOIN users AS u ON (tm.user_id = u.id)\n" +
             "  WHERE ((tm.team_id = ?1) AND ((u.spec = 'CONSTRUCTOR') OR (u.spec = 'MECHANIC')) AND (tm.can_buy = FALSE ));", nativeQuery = true)
     List<Object[]> getAllConstrAndMech(int team);
 

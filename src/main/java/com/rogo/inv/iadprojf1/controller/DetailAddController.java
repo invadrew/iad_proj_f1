@@ -130,12 +130,19 @@ public class DetailAddController {
         Integer engine = Integer.parseInt(request.getParameter("engine"));
         Integer electronics = Integer.parseInt(request.getParameter("electronics"));
 
+        User currConstrU = userService.findByLogin(authentication.getName());
+        TeamMember currConstrTm = teamMemberService.findByUserId(currConstrU.getId());
+        AcceptStatus status;
+
+        if (currConstrTm.getCanBuy()) { status = AcceptStatus.ACCEPTED; } else { status = AcceptStatus.ON_REVIEW; }
+
         Car car = new Car(label,model, Calendar.getInstance().get(Calendar.YEAR),
                 teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId()),
                 null, Boolean.TRUE, carcaseStorageService.findById(carcase), engineStorageService.findById(engine), chassisStorageService.findById(chassis),
-                electronicsStorageService.findById(electronics), AcceptStatus.ACCEPTED);
+                electronicsStorageService.findById(electronics), status, currConstrU);
 
-        car.setStatus(AcceptStatus.ACCEPTED);
+        car.setStatus(status);
+        car.setSender(currConstrU);
         car.setCurrentElectronics(electronicsStorageService.findById(electronics));
         car.setCurrentCarcase(carcaseStorageService.findById(carcase));
         car.setCurrentChassis(chassisStorageService.findById(chassis));
@@ -160,8 +167,14 @@ public class DetailAddController {
         String safeArcs = request.getParameter("safe_arcs");
         Double price = Double.parseDouble(request.getParameter("carcPrice"));
 
+        User currConstrU = userService.findByLogin(authentication.getName());
+        TeamMember currConstrTm = teamMemberService.findByUserId(currConstrU.getId());
+        AcceptStatus status;
+
+        if (currConstrTm.getCanBuy()) { status = AcceptStatus.ACCEPTED; } else { status = AcceptStatus.ON_REVIEW; }
+
         CarcaseStorage carcaseStorage = new CarcaseStorage(teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId()),
-                ComponentCondition.PERFECT, price, AcceptStatus.ON_REVIEW, material, rearWing, safeArcs, wings);
+                ComponentCondition.PERFECT, price, status, currConstrU, material, rearWing, safeArcs, wings);
 
         carcaseStorageService.save(carcaseStorage);
 
@@ -177,8 +190,14 @@ public class DetailAddController {
         Float width = Float.parseFloat(request.getParameter("width"));
         Double price = Double.parseDouble(request.getParameter("chassPrice"));
 
+        User currConstrU = userService.findByLogin(authentication.getName());
+        TeamMember currConstrTm = teamMemberService.findByUserId(currConstrU.getId());
+        AcceptStatus status;
+
+        if (currConstrTm.getCanBuy()) { status = AcceptStatus.ACCEPTED; } else { status = AcceptStatus.ON_REVIEW; }
+
         ChassisStorage chassisStorage = new ChassisStorage(teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId()),
-                ComponentCondition.PERFECT, price, AcceptStatus.ON_REVIEW, model, height, width);
+                ComponentCondition.PERFECT, price, status, currConstrU, model, height, width);
 
 
         chassisStorageService.save(chassisStorage);
@@ -195,8 +214,14 @@ public class DetailAddController {
         Float capacity = Float.parseFloat(request.getParameter("capacity"));
         Double price = Double.parseDouble(request.getParameter("engPrice"));
 
+        User currConstrU = userService.findByLogin(authentication.getName());
+        TeamMember currConstrTm = teamMemberService.findByUserId(currConstrU.getId());
+        AcceptStatus status;
+
+        if (currConstrTm.getCanBuy()) { status = AcceptStatus.ACCEPTED; } else { status = AcceptStatus.ON_REVIEW; }
+
         EngineStorage engineStorage = new EngineStorage(teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId()),
-                ComponentCondition.PERFECT, price, AcceptStatus.ON_REVIEW, model, cyclinders, capacity, mass, stroke);
+                ComponentCondition.PERFECT, price, status, currConstrU, model, cyclinders, capacity, mass, stroke);
 
         engineStorageService.save(engineStorage);
 
@@ -210,8 +235,14 @@ public class DetailAddController {
         String controlSystem = request.getParameter("controlSystem");
         Double price = Double.parseDouble(request.getParameter("elecPrice"));
 
+        User currConstrU = userService.findByLogin(authentication.getName());
+        TeamMember currConstrTm = teamMemberService.findByUserId(currConstrU.getId());
+        AcceptStatus status;
+
+        if (currConstrTm.getCanBuy()) { status = AcceptStatus.ACCEPTED; } else { status = AcceptStatus.ON_REVIEW; }
+
         ElectronicsStorage electronicsStorage = new ElectronicsStorage(teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId()),
-                ComponentCondition.PERFECT, price, AcceptStatus.ON_REVIEW, telemetry, controlSystem);
+                ComponentCondition.PERFECT, price, status, currConstrU, telemetry, controlSystem);
 
         electronicsStorageService.save(electronicsStorage);
 

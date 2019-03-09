@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.ComponentCondition;
+import com.rogo.inv.iadprojf1.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -39,6 +40,10 @@ public abstract class BaseStorage {
     @Enumerated(EnumType.STRING)
     protected AcceptStatus status;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "sender")
+    private User sender;
+
     /* ================================
      constructors
     ================================ */
@@ -47,5 +52,13 @@ public abstract class BaseStorage {
         this.condition = condition;
         this.price = price;
         this.status = status;
+    }
+
+    public BaseStorage(@NotNull Team team, @NotNull ComponentCondition condition, @NotNull @Min(0) double price, @NotNull AcceptStatus status, User sender) {
+        this.team = team;
+        this.condition = condition;
+        this.price = price;
+        this.status = status;
+        this.sender = sender;
     }
 }

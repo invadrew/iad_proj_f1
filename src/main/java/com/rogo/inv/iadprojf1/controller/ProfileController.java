@@ -185,14 +185,14 @@ public class ProfileController {
          Team teamCurr = teamMember.getTeam();
          map.addAttribute("currUserSpec",userService.findByLogin(authentication.getName()).getSpec());
          map.addAttribute("currUserTeam", teamCurr.getId());
-         if (userService.findById(teamMemberService.findByUserId(teamMember.getUserId()).getUserId()).getStatus().equals(AcceptStatus.ON_REVIEW)) {
+         if (userService.findById(teamMemberService.findByUserId(teamMember.getUserId()).getUserId()).getBuyStatus().equals(AcceptStatus.ON_REVIEW)) {
              map.addAttribute("ifCanBuy", null);
          } else {
          map.addAttribute("ifCanBuy", teamMember.getCanBuy()); }
 
     } catch (NullPointerException x) {
          map.addAttribute("currUserSpec", null);
-         map.addAttribute("currUserTeam", null);
+        // map.addAttribute("currUserTeam", null);
          map.addAttribute("ifCanBuy", null);
      }
 
@@ -277,14 +277,26 @@ public class ProfileController {
             User mechOrConU = userService.findByLogin(authentication.getName());
             TeamMember mechOrConTm = teamMemberService.findByUserId(mechOrConU.getId());
 
-           if (mechOrConU.getStatus().equals(AcceptStatus.ON_REVIEW)) {
+            try {
+
+           if (mechOrConU.getBuyStatus().equals(AcceptStatus.ON_REVIEW)) {
                map.addAttribute("bpStatus", "Заявка на покупку ещё на рассмотрении");
            } else
 
-           if (mechOrConU.getStatus().equals(AcceptStatus.REFUSED)) {
-               map.addAttribute("bpStatus", "Заявка на покупку отклонена");
+           if (mechOrConU.getBuyStatus().equals(AcceptStatus.REFUSED)) {
+               if (mechOrConU.getComments() != null)
+               map.addAttribute("bpStatus", "Заявка на покупку отклонена. Комментарий: " + mechOrConU.getComments());
+               if (mechOrConU.getComments() == null)
+                   map.addAttribute("bpStatus", "Заявка на покупку отклонена");
            } else
-          {  map.addAttribute("bpStatus",null); }
+           if (mechOrConU.getBuyStatus().equals(AcceptStatus.ACCEPTED)) {
+               if (mechOrConU.getComments() != null)
+               map.addAttribute("bpStatus", "Заявка на покупку одобрена. Комментарий: " + mechOrConU.getComments());
+               if (mechOrConU.getComments() == null)
+                   map.addAttribute("bpStatus", "Заявка на покупку одобрена");
+           } else { map.addAttribute("bpStatus",null); }
+            }
+           catch (NullPointerException c) { map.addAttribute("bpStatus",null); }
 
         }
 
@@ -297,11 +309,12 @@ public class ProfileController {
 
         Integer id = Integer.parseInt(request.getParameter("id"));
         Boolean status = Boolean.parseBoolean(request.getParameter("status"));
+        String comment = request.getParameter("comment");
 
         User user = userService.findById(id);
-
-        if (status) { user.setStatus(AcceptStatus.ACCEPTED); teamMemberService.findByUserId(id).setCanBuy(true);}
-        else { user.setStatus(AcceptStatus.REFUSED); teamMemberService.findByUserId(id).setCanBuy(false);}
+        user.setComments(comment);
+        if (status) { user.setBuyStatus(AcceptStatus.ACCEPTED); teamMemberService.findByUserId(id).setCanBuy(true);}
+        else { user.setBuyStatus(AcceptStatus.REFUSED); teamMemberService.findByUserId(id).setCanBuy(false);}
 
         userService.save(user);
 
@@ -312,9 +325,11 @@ public class ProfileController {
     public void askPerm(HttpServletRequest request) {
 
         String name = request.getParameter("name");
+        String comment = request.getParameter("comment");
         User user = userService.findByLogin(name);
 
-        user.setStatus(AcceptStatus.ON_REVIEW);
+        user.setComments(comment);
+        user.setBuyStatus(AcceptStatus.ON_REVIEW);
 
         userService.save(user);
 

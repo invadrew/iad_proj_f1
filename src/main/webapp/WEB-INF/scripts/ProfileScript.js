@@ -50,12 +50,14 @@ function giveBuyAbility() {
 function requestBuyAbility() {
 
     let name = $('#askButton').val();
+    let comm = $('#bpComm').val();
 
     $.ajax({
         type: "POST",
         url: "/profile/askPermission",
         data: {
-            "name" : name
+            "name" : name,
+            "comment" : comm
         },
         success: function (data) {
             document.getElementById("bpreqSent").hidden = false;
@@ -67,11 +69,14 @@ function requestBuyAbility() {
 
 function confirmBuyAbility(id, status) {
 
+    let comment = $('#bpSComm' + id).val();
+
     $.ajax({
         type: "POST",
         url: "/profile/confirmPermission",
         data: {
             "id" : id,
+            "comment" : comment,
             "status" : status
         },
         success: function (data) {

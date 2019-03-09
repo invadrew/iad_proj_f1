@@ -180,7 +180,7 @@ public class GarageController {
                     (carc.getRearWing().equals(rearWing) || (rearWing.equals("any"))) &&
                     (carc.getSafetyArcs().equals(safetyArcs) || (safetyArcs.equals("any")))
             && (carc.getWings().equals(wings) || (wings.equals("any")))
-                    && (carc.getCondition().equals(condition) || (condition.equals(ANY)))) {
+                    && (carc.getCondition().equals(condition) || (condition.equals(ANY))) && (carc.getStatus().equals(AcceptStatus.ACCEPTED))) {
 
                 String cond = getNamedCondition(carc.getCondition());
 
@@ -204,7 +204,7 @@ public class GarageController {
         for (ElectronicsStorage elec: teamElectronics) {
             if ((elec.getTelemetry().equals(telemetry) || telemetry.equals("any")) &&
                     (elec.getControlSystem().equals(controlSystem) || controlSystem.equals("any"))
-                    && (elec.getCondition().equals(condition) || (condition.equals(ANY)))) {
+                    && (elec.getCondition().equals(condition) || (condition.equals(ANY)))  && (elec.getStatus().equals(AcceptStatus.ACCEPTED))) {
 
                 String elCond = getNamedCondition(elec.getCondition());
 
@@ -234,7 +234,7 @@ public class GarageController {
             if ((ch.getModel().equals(model) || model.equals("any")) &&
                     ( (ch.getWidth() >= widthFrom) && (ch.getWidth() <= widthTo) )
                     && ((ch.getHeight() >= heightFrom) && (ch.getHeight() <= heightTo))
-                    && (ch.getCondition().equals(condition) || (condition.equals(ANY)))) {
+                    && (ch.getCondition().equals(condition) || (condition.equals(ANY)))  && (ch.getStatus().equals(AcceptStatus.ACCEPTED))) {
 
                 String cond = getNamedCondition(ch.getCondition());
 
@@ -270,7 +270,7 @@ public class GarageController {
                     && ((eng.getCapacity() >= capFrom) && (eng.getCapacity() <= capTo))
                     && ((eng.getMass() >= massFrom) && (eng.getMass() <= massTo))
                     && ((eng.getStroke() >= strokeFrom) && (eng.getStroke() <= strokeTo))
-                    && (eng.getCondition().equals(condition) || (condition.equals(ANY)))) {
+                    && (eng.getCondition().equals(condition) || (condition.equals(ANY)))  && (eng.getStatus().equals(AcceptStatus.ACCEPTED))) {
 
                 String cond = getNamedCondition(eng.getCondition());
 

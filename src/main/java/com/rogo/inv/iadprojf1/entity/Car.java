@@ -90,6 +90,10 @@ public class Car {
     @Enumerated(EnumType.STRING)
     protected AcceptStatus status;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "sender")
+    private User sender;
+
     /* ================================
      constructors
     ================================ */
@@ -105,5 +109,20 @@ public class Car {
         this.currentChassis = currentChassis;
         this.currentElectronics = currentElectronics;
         this.status = status;
+    }
+
+    public Car(@NotNull String label, @NotNull String model, @Min(1900) int creationYear, @NotNull Team team,  Photo photo, @NotNull Boolean isReady, @NotNull CarcaseStorage currentCarcase, @NotNull EngineStorage currentEngine, @NotNull ChassisStorage currentChassis, @NotNull ElectronicsStorage currentElectronics, AcceptStatus status, User sender) {
+        this.label = label;
+        this.model = model;
+        this.creationYear = creationYear;
+        this.team = team;
+        this.photo = photo;
+        this.isReady = isReady;
+        this.currentCarcase = currentCarcase;
+        this.currentEngine = currentEngine;
+        this.currentChassis = currentChassis;
+        this.currentElectronics = currentElectronics;
+        this.status = status;
+        this.sender = sender;
     }
 }

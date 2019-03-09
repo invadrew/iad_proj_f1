@@ -6,6 +6,7 @@ import com.rogo.inv.iadprojf1.DBUtility;
 import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.ComponentCondition;
+import com.rogo.inv.iadprojf1.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -37,6 +38,15 @@ public class EngineStorage extends BaseStorage {
     ================================ */
     public EngineStorage(@NotNull Team team, @NotNull ComponentCondition condition, @NotNull @Min(0) double price, @NotNull AcceptStatus status, @NotNull String model, @NotNull @Min(1) int cyclinders, @NotNull @Min(1) float capacity, @NotNull @Min(1) float mass, @NotNull @Min(1) float stroke) {
         super(team, condition, price, status);
+        this.model = model;
+        this.cyclinders = cyclinders;
+        this.capacity = capacity;
+        this.mass = mass;
+        this.stroke = stroke;
+    }
+
+    public EngineStorage(@NotNull Team team, @NotNull ComponentCondition condition, @NotNull @Min(0) double price, @NotNull AcceptStatus status, User sender, @NotNull String model, @NotNull @Min(1) int cyclinders, @NotNull @Min(1) float capacity, @NotNull @Min(1) float mass, @NotNull @Min(1) float stroke) {
+        super(team, condition, price, status, sender);
         this.model = model;
         this.cyclinders = cyclinders;
         this.capacity = capacity;

@@ -5,6 +5,7 @@ import com.rogo.inv.iadprojf1.DBUtility;
 import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.ComponentCondition;
+import com.rogo.inv.iadprojf1.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -34,4 +35,12 @@ public class ChassisStorage extends BaseStorage {
         this.height = height;
         this.width = width;
     }
+
+    public ChassisStorage(@NotNull Team team, @NotNull ComponentCondition condition, @NotNull @Min(0) double price, @NotNull AcceptStatus status, User sender, @NotNull String model, @NotNull @Min(1) float height, @NotNull @Min(1) float width) {
+        super(team, condition, price, status, sender);
+        this.model = model;
+        this.height = height;
+        this.width = width;
+    }
+
 }

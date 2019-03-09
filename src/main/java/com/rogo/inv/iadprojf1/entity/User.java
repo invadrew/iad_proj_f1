@@ -37,6 +37,10 @@ public class User {
 
     private String comments;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "buy_status")
+    private AcceptStatus buyStatus;
+
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -58,6 +62,17 @@ public class User {
         this.status = status;
         this.comments = comments;
     }
+
+    public User(@NotNull String login, @NotNull String password, @NotNull Spec spec, Photo photo, @NotNull AcceptStatus status, String comments, AcceptStatus buyStatus) {
+        this.login = login;
+        this.password = password;
+        this.spec = spec;
+        this.photo = photo;
+        this.status = status;
+        this.comments = comments;
+        this.buyStatus = buyStatus;
+    }
+
     /* ================================
      enums
     ================================ */

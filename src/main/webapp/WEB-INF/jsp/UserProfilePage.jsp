@@ -96,6 +96,7 @@
                             </form>
                         </c:if>
                         <h3>Выдача прав на покупку</h3>
+                        <c:if test="${currUserTeam != null}">
                         <c:if test="${constrsAndMechs.isEmpty()}">
                             В команде сейчас нет механиков и конструкторов без права на покупку
                         </c:if>
@@ -107,6 +108,10 @@
                             </c:forEach>
                         </select>
                         <input type="button" class="res-selector" value="Выдать" onclick="giveBuyAbility()">
+                        </c:if>
+                        </c:if>
+                        <c:if test="${currUserTeam == null}">
+                            У вас пока нет команды
                         </c:if>
                         <h3>Состояние регистрации команды в гонке</h3>
                         <c:if test="${currRaceRegStatus == null}">
@@ -120,10 +125,12 @@
                         <h3>Запросы на добавление деталей/болидов</h3>
                         <!-- TODO: confirm mechanics and constructors actions -->
                         <h3>Запросы на получение права на покупку</h3>
-                        <table class="infotable" style="text-align: center; margin: 3%;">
+                        <table class="infotable" style="text-align: center; margin: 3%;" border="1">
                         <c:forEach items="${constrsAndMechsRev}" var="rev">
                             <tr id="bpRow${rev[0]}">
                                 <td>${rev[1]} ${rev[2]}</td>
+                                <td>Комментарий пользователя: ${rev[4]}</td>
+                                <td><input type="text" placeholder="Ваш комментарий" class="res-selector" id="bpSComm${rev[0]}"></td>
                                 <td><input type="button" value="Подтвердить" class="res-selector" onclick="confirmBuyAbility(${rev[0]}, true)"/></td>
                                 <td><input type="button" value="Отказать" class="res-selector" onclick="confirmBuyAbility(${rev[0]}, false)"/></td>
                             </tr>
@@ -148,17 +155,13 @@
                         <c:if test="${!ifCanBuy}">
                             <form>
                                 <input type="hidden" value="${user.login}" id="askButton"/>
+                                <input type="text" placeholder="Комментарий" class="res-selector" id="bpComm"/>
                             <input type="button" value="Запросить право на покупку" class="res-selector" onclick="requestBuyAbility()" />
                             <label id="bpreqSent" hidden>Готово</label>
                             </form>
                         </c:if>
                         <h3>Новости</h3>
-                        <c:if test="${ifCanBuy}">
-                            Вам было выдано право на покупку.
-                        </c:if>
-                        <c:if test="${!ifCanBuy}">
                             ${bpStatus}
-                        </c:if>
                     </c:if>
 
                 </div>
