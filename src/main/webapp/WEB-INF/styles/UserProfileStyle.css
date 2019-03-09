@@ -22,6 +22,10 @@ html, body, .grid-container { height: 100%; margin: 0;   background-color: #2f27
     grid-area: MainArea;
 }
 
+h3 {
+    text-decoration: underline;
+}
+
 .UserPhotoArea { grid-area: UserPhotoArea; }
 
 .UserInfoArea { grid-area: UserInfoArea; }

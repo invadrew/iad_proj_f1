@@ -3,6 +3,7 @@ package com.rogo.inv.iadprojf1.service;
 import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.Car;
 import com.rogo.inv.iadprojf1.entity.Team;
+import com.rogo.inv.iadprojf1.entity.User;
 import com.rogo.inv.iadprojf1.entity.storage.CarcaseStorage;
 import com.rogo.inv.iadprojf1.entity.storage.ChassisStorage;
 import com.rogo.inv.iadprojf1.entity.storage.ElectronicsStorage;
@@ -33,4 +34,8 @@ public interface CarService {
     int updElectronics(@Param("elec") ElectronicsStorage elec, @Param("car") Integer car);
 
     int refuseCar( @Param("car") Integer car);
+
+    List<Car> findAllByTeamAndStatus(Team team, AcceptStatus status);
+
+    List<Car> findAllBySender(User sender);
 }

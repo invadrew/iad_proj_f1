@@ -1,5 +1,7 @@
 package com.rogo.inv.iadprojf1.service.impl.storage;
+import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.Team;
+import com.rogo.inv.iadprojf1.entity.User;
 import com.rogo.inv.iadprojf1.entity.storage.CarcaseStorage;
 import com.rogo.inv.iadprojf1.entity.storage.ElectronicsStorage;
 import com.rogo.inv.iadprojf1.repository.storageRepository.CarcaseStorageRepository;
@@ -41,4 +43,10 @@ public class CarcaseStorageServiceImpl implements CarcaseStorageService {
 
     @Override @Transactional
     public int repairCarcase( @Param("carcase") Integer carcase) { return  repository.repairCarcase(carcase); }
+
+    @Override
+    public List<CarcaseStorage> findAllByTeamAndStatus(Team team, AcceptStatus status) { return repository.findAllByTeamAndStatus(team, status); }
+
+    @Override
+    public List<CarcaseStorage> findAllBySender(User sender) { return repository.findAllBySender(sender); }
 }

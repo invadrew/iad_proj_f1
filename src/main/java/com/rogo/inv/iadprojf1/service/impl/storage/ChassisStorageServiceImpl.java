@@ -1,5 +1,7 @@
 package com.rogo.inv.iadprojf1.service.impl.storage;
+import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.Team;
+import com.rogo.inv.iadprojf1.entity.User;
 import com.rogo.inv.iadprojf1.entity.storage.ChassisStorage;
 import com.rogo.inv.iadprojf1.entity.storage.ElectronicsStorage;
 import com.rogo.inv.iadprojf1.repository.storageRepository.ChassisStorageRepository;
@@ -41,4 +43,10 @@ public class ChassisStorageServiceImpl implements ChassisStorageService {
 
     @Override @Transactional
     public int repairChassis( @Param("chassis") Integer chassis) { return repository.repairChassis(chassis); }
+
+    @Override
+    public List<ChassisStorage> findAllByTeamAndStatus(Team team, AcceptStatus status) { return  repository.findAllByTeamAndStatus(team, status); }
+
+    @Override
+    public List<ChassisStorage> findAllBySender(User sender) { return repository.findAllBySender(sender); }
 }

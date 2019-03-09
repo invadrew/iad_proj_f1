@@ -44,6 +44,9 @@ public abstract class BaseStorage {
     @JoinColumn(name = "sender")
     private User sender;
 
+    @Column(name = "comment")
+    private String comment;
+
     /* ================================
      constructors
     ================================ */

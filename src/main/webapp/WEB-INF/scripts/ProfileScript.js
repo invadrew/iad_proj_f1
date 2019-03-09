@@ -87,3 +87,23 @@ function confirmBuyAbility(id, status) {
     });
 
 }
+
+function confirmCar(id, status) {
+
+    let comment = $('#carComm' + id).val();
+
+    $.ajax({
+        type: "POST",
+        url: "/profile/confirmCar",
+        data: {
+            "id" : id,
+            "comment" : comment,
+            "status" : status
+        },
+        success: function (data) {
+            location.reload();
+        }
+
+    });
+
+}

@@ -123,7 +123,42 @@
                         <h3>Запросы на вступление в команду</h3>
                         <!-- TODO: team join requests-->
                         <h3>Запросы на добавление деталей/болидов</h3>
-                        <!-- TODO: confirm mechanics and constructors actions -->
+                            <h4>Болиды</h4>
+                                <c:forEach items="${carsToConfirm}" var="car">
+                                    <div id="carBlock${car.id}">
+                                    ${car.label} ${car.model}
+                                    <br>
+                                    Каркас: ${carsCarc.get(carsToConfirm.indexOf(car)).rearWing}-${carsCarc.get(carsToConfirm.indexOf(car)).safetyArcs}-
+                                     ${carsCarc.get(carsToConfirm.indexOf(car)).wings} ,
+                                     Шасси: ${carsChass.get(carsToConfirm.indexOf(car)).model} (h:${carsChass.get(carsToConfirm.indexOf(car)).height},w:${carsChass.get(carsToConfirm.indexOf(car)).width})
+                                    <br>
+                                    Двигатель: ${carsEng.get(carsToConfirm.indexOf(car)).model} ${{carsEng.get(carsToConfirm.indexOf(car)).cyclinders}} цил.
+                                    ${carsEng.get(carsToConfirm.indexOf(car)).capacity} л. ,
+                                     Электроника: ${carsElec.get(carsToConfirm.indexOf(car)).telemetry} сист. контроля: ${carsElec.get(carsToConfirm.indexOf(car)).controlSystem}
+                                    <br>
+                                    <input type="text" placeholder="Комментарий" class="res-selector" id="carComm${car.id}"/>
+                                    <input type="button" class="res-selector" value="Принять" onclick="confirmCar(${car.id}, true)">
+                                    <input type="button" class="res-selector" value="Отказать" onclick="confirmCar(${car.id}, false)">
+                                        <label hidden id="notEnoughCar${car.id}">Недостаточно денег</label>
+                                    <br>
+                                    </div>
+                                </c:forEach>
+                            <h4>Каркасы</h4>
+                                 <c:forEach items="${carcToConfirm}" var="carc">
+
+                                </c:forEach>
+                            <h4>Шасси</h4>
+                                <c:forEach items="${chassToConfirm}" var="chass">
+
+                                </c:forEach>
+                            <h4>Двигатели</h4>
+                                <c:forEach items="${engToConfirm}" var="eng">
+
+                                </c:forEach>
+                            <h4>Электроника</h4>
+                                <c:forEach items="${elecToConfirm}" var="elec">
+
+                                </c:forEach>
                         <h3>Запросы на получение права на покупку</h3>
                         <table class="infotable" style="text-align: center; margin: 3%;" border="1">
                         <c:forEach items="${constrsAndMechsRev}" var="rev">
@@ -162,6 +197,11 @@
                         </c:if>
                         <h3>Новости</h3>
                             ${bpStatus}
+                        <br>
+                        <c:forEach items="${carsSt}" var="info">
+                            ${info}
+                            <br>
+                        </c:forEach>
                     </c:if>
 
                 </div>

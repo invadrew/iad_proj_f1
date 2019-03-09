@@ -2,6 +2,7 @@ package com.rogo.inv.iadprojf1.service.impl;
 import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.Car;
 import com.rogo.inv.iadprojf1.entity.Team;
+import com.rogo.inv.iadprojf1.entity.User;
 import com.rogo.inv.iadprojf1.entity.message.Chat;
 import com.rogo.inv.iadprojf1.entity.storage.CarcaseStorage;
 import com.rogo.inv.iadprojf1.entity.storage.ChassisStorage;
@@ -61,4 +62,10 @@ public class CarServiceImpl implements CarService {
 
     @Override @Transactional
    public int refuseCar( @Param("car") Integer car) { return  repository.refuseCar(car); }
+
+   @Override
+    public List<Car> findAllByTeamAndStatus(Team team, AcceptStatus status) { return repository.findAllByTeamAndStatus(team, status); }
+
+    @Override
+    public List<Car> findAllBySender(User sender) { return repository.findAllBySender(sender); }
 }

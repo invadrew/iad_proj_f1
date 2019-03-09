@@ -1,11 +1,12 @@
 package com.rogo.inv.iadprojf1.controller;
 
-import com.rogo.inv.iadprojf1.entity.AcceptStatus;
-import com.rogo.inv.iadprojf1.entity.Team;
-import com.rogo.inv.iadprojf1.entity.TeamMember;
-import com.rogo.inv.iadprojf1.entity.User;
+import com.rogo.inv.iadprojf1.entity.*;
 import com.rogo.inv.iadprojf1.entity.race.Race;
 import com.rogo.inv.iadprojf1.entity.race.RaceRegistration;
+import com.rogo.inv.iadprojf1.entity.storage.CarcaseStorage;
+import com.rogo.inv.iadprojf1.entity.storage.ChassisStorage;
+import com.rogo.inv.iadprojf1.entity.storage.ElectronicsStorage;
+import com.rogo.inv.iadprojf1.entity.storage.EngineStorage;
 import com.rogo.inv.iadprojf1.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -51,6 +52,21 @@ public class ProfileController {
 
     @Autowired
     private RaceRegistrationService raceRegistrationService;
+
+    @Autowired
+    private CarcaseStorageService carcaseStorageService;
+
+    @Autowired
+    private ChassisStorageService chassisStorageService;
+
+    @Autowired
+    private EngineStorageService engineStorageService;
+
+    @Autowired
+    private ElectronicsStorageService electronicsStorageService;
+
+    @Autowired
+    private CarService carService;
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public String toProfile(ModelMap map, Authentication authentication, @Param("id") Integer id) {
@@ -268,6 +284,52 @@ public class ProfileController {
          }  catch (NullPointerException ex) {
 
          }
+
+         try {
+
+             List<Car> carsToConfirm = carService.findAllByTeamAndStatus(
+                     teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId()),AcceptStatus.ON_REVIEW);
+             map.addAttribute("carsToConfirm", carsToConfirm);
+
+             map.addAttribute("budget", teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId()).getBudget());
+
+             List<ChassisStorage> chassis = new ArrayList<>();
+             List<EngineStorage> engines = new ArrayList<>();
+             List<CarcaseStorage> carcases = new ArrayList<>();
+             List<ElectronicsStorage> electronics = new ArrayList<>();
+
+             for (Car car: carsToConfirm) {
+                 chassis.add(car.getCurrentChassis());
+                 engines.add(car.getCurrentEngine());
+                 carcases.add(car.getCurrentCarcase());
+                 electronics.add(car.getCurrentElectronics());
+             }
+
+             map.addAttribute("carsCarc", carcases);
+             map.addAttribute("carsChass", chassis);
+             map.addAttribute("carsEng", engines);
+             map.addAttribute("carsElec", electronics);
+
+             List<CarcaseStorage> carcToConfirm = carcaseStorageService.findAllByTeamAndStatus(
+                     teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId()),AcceptStatus.ON_REVIEW);
+             map.addAttribute("carcToConfirm", carcToConfirm);
+
+             List<ChassisStorage> chassToConfirm = chassisStorageService.findAllByTeamAndStatus(
+                     teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId()),AcceptStatus.ON_REVIEW);
+             map.addAttribute("chassToConfirm", chassToConfirm);
+
+             List<EngineStorage> engToConfirm = engineStorageService.findAllByTeamAndStatus(
+                     teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId()),AcceptStatus.ON_REVIEW);
+             map.addAttribute("engToConfirm", engToConfirm);
+
+             List<ElectronicsStorage> elecToConfirm = electronicsStorageService.findAllByTeamAndStatus(
+                     teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId()),AcceptStatus.ON_REVIEW);
+             map.addAttribute("elecToConfirm", elecToConfirm);
+
+         } catch (NullPointerException n) {
+
+         }
+
      }
 
        if (id == null && (userService.findByLogin(authentication.getName()).getSpec().equals(User.Spec.MECHANIC) || (
@@ -297,6 +359,32 @@ public class ProfileController {
            } else { map.addAttribute("bpStatus",null); }
             }
            catch (NullPointerException c) { map.addAttribute("bpStatus",null); }
+
+           try {
+
+               List<Car> myCars = carService.findAllBySender(userService.findByLogin(authentication.getName()));
+               List<String> myCarsConfirmInfo = new ArrayList<>();
+
+               for (Car car : myCars) {
+                   String info = "Болид " + car.getLabel() + " " + car.getModel() + " всё ещё на рассмотрении";
+                   if (car.getStatus().equals(AcceptStatus.ACCEPTED)) {
+                       if (car.getComment() != null) {
+                           info = "Болид " + car.getLabel() + " " + car.getModel() + " одобрен. Комментарий: " + car.getComment(); } else {
+                           info = "Болид " + car.getLabel() + " " + car.getModel() + " одобрен.";
+                       }
+                   }
+                   if (car.getStatus().equals(AcceptStatus.REFUSED)) {
+                       if (car.getComment() != null) {
+                           info = "Болид " + car.getLabel() + " " + car.getModel() + " не одобрен. Комментарий: " + car.getComment(); } else {
+                           info = "Болид " + car.getLabel() + " " + car.getModel() + " не одобрен.";
+                       }
+                   }
+                   myCarsConfirmInfo.add(info);
+               }
+
+               map.addAttribute("carsSt",myCarsConfirmInfo);
+
+           } catch (NullPointerException p) { map.addAttribute("carsSt", null); }
 
         }
 
@@ -358,6 +446,29 @@ public class ProfileController {
         TeamMember candidate = teamMemberService.findByUserId(userId);
         candidate.setCanBuy(true);
         teamMemberService.save(candidate);
+
+    }
+
+    @RequestMapping(value = "/profile/confirmCar", method = RequestMethod.POST)
+    @ResponseBody
+    public void confirmCar(HttpServletRequest request) {
+
+        Integer id = Integer.parseInt(request.getParameter("id"));
+        Boolean status = Boolean.parseBoolean(request.getParameter("status"));
+        String comment = request.getParameter("comment");
+
+        Car car = carService.findById(id);
+        car.setComment(comment);
+
+        if (status) { car.setStatus(AcceptStatus.ACCEPTED); } else {
+            car.setStatus(AcceptStatus.REFUSED);
+            car.setCurrentEngine(null);
+            car.setCurrentChassis(null);
+            car.setCurrentCarcase(null);
+            car.setCurrentElectronics(null);
+        }
+
+        carService.save(car);
 
     }
 

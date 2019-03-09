@@ -1,6 +1,8 @@
 package com.rogo.inv.iadprojf1.repository.storageRepository;
 
+import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.Team;
+import com.rogo.inv.iadprojf1.entity.User;
 import com.rogo.inv.iadprojf1.entity.storage.ElectronicsStorage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -19,5 +21,9 @@ public interface ElectronicsStorageRepository extends JpaRepository<ElectronicsS
     @Modifying(clearAutomatically = true)
     @Query("UPDATE ElectronicsStorage t SET t.condition = 'PERFECT' WHERE t.id = :electronics")
     int repairElectronics( @Param("electronics") Integer electronics);
+
+    List<ElectronicsStorage> findAllByTeamAndStatus(Team team, AcceptStatus status);
+
+    List<ElectronicsStorage> findAllBySender(User sender);
 
 }

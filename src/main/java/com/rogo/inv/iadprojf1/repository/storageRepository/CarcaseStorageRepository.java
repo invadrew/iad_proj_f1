@@ -1,6 +1,8 @@
 package com.rogo.inv.iadprojf1.repository.storageRepository;
 
+import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.Team;
+import com.rogo.inv.iadprojf1.entity.User;
 import com.rogo.inv.iadprojf1.entity.storage.CarcaseStorage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -19,4 +21,10 @@ public interface CarcaseStorageRepository extends JpaRepository<CarcaseStorage, 
     @Modifying(clearAutomatically = true)
     @Query("UPDATE CarcaseStorage t SET t.condition = 'PERFECT' WHERE t.id = :carcase")
     int repairCarcase( @Param("carcase") Integer carcase);
+
+    List<CarcaseStorage> findAllByTeamAndStatus(Team team, AcceptStatus status);
+
+    List<CarcaseStorage> findAllBySender(User sender);
+
+
 }

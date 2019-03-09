@@ -171,7 +171,11 @@ public class DetailAddController {
         TeamMember currConstrTm = teamMemberService.findByUserId(currConstrU.getId());
         AcceptStatus status;
 
-        if (currConstrTm.getCanBuy()) { status = AcceptStatus.ACCEPTED; } else { status = AcceptStatus.ON_REVIEW; }
+        if (currConstrTm.getCanBuy()) { status = AcceptStatus.ACCEPTED;
+            Team team = currConstrTm.getTeam();
+            team.setBudget(team.getBudget() - price);
+            teamService.save(team);
+        } else { status = AcceptStatus.ON_REVIEW; }
 
         CarcaseStorage carcaseStorage = new CarcaseStorage(teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId()),
                 ComponentCondition.PERFECT, price, status, currConstrU, material, rearWing, safeArcs, wings);
@@ -194,7 +198,11 @@ public class DetailAddController {
         TeamMember currConstrTm = teamMemberService.findByUserId(currConstrU.getId());
         AcceptStatus status;
 
-        if (currConstrTm.getCanBuy()) { status = AcceptStatus.ACCEPTED; } else { status = AcceptStatus.ON_REVIEW; }
+        if (currConstrTm.getCanBuy()) { status = AcceptStatus.ACCEPTED;
+            Team team = currConstrTm.getTeam();
+            team.setBudget(team.getBudget() - price);
+            teamService.save(team);
+        } else { status = AcceptStatus.ON_REVIEW; }
 
         ChassisStorage chassisStorage = new ChassisStorage(teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId()),
                 ComponentCondition.PERFECT, price, status, currConstrU, model, height, width);
@@ -218,7 +226,11 @@ public class DetailAddController {
         TeamMember currConstrTm = teamMemberService.findByUserId(currConstrU.getId());
         AcceptStatus status;
 
-        if (currConstrTm.getCanBuy()) { status = AcceptStatus.ACCEPTED; } else { status = AcceptStatus.ON_REVIEW; }
+        if (currConstrTm.getCanBuy()) { status = AcceptStatus.ACCEPTED;
+            Team team = currConstrTm.getTeam();
+            team.setBudget(team.getBudget() - price);
+            teamService.save(team);
+        } else { status = AcceptStatus.ON_REVIEW; }
 
         EngineStorage engineStorage = new EngineStorage(teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId()),
                 ComponentCondition.PERFECT, price, status, currConstrU, model, cyclinders, capacity, mass, stroke);
@@ -239,7 +251,11 @@ public class DetailAddController {
         TeamMember currConstrTm = teamMemberService.findByUserId(currConstrU.getId());
         AcceptStatus status;
 
-        if (currConstrTm.getCanBuy()) { status = AcceptStatus.ACCEPTED; } else { status = AcceptStatus.ON_REVIEW; }
+        if (currConstrTm.getCanBuy()) { status = AcceptStatus.ACCEPTED;
+            Team team = currConstrTm.getTeam();
+            team.setBudget(team.getBudget() - price);
+            teamService.save(team);
+        } else { status = AcceptStatus.ON_REVIEW; }
 
         ElectronicsStorage electronicsStorage = new ElectronicsStorage(teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId()),
                 ComponentCondition.PERFECT, price, status, currConstrU, telemetry, controlSystem);

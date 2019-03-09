@@ -1,5 +1,7 @@
 package com.rogo.inv.iadprojf1.service.impl.storage;
+import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.Team;
+import com.rogo.inv.iadprojf1.entity.User;
 import com.rogo.inv.iadprojf1.entity.storage.ElectronicsStorage;
 import com.rogo.inv.iadprojf1.repository.storageRepository.ElectronicsStorageRepository;
 import com.rogo.inv.iadprojf1.service.ElectronicsStorageService;
@@ -40,4 +42,10 @@ public class ElectronicsStorageServiceImpl implements ElectronicsStorageService 
 
     @Override @Transactional
     public int repairElectronics( @Param("electronics") Integer electronics) { return repository.repairElectronics(electronics); }
+
+    @Override
+    public List<ElectronicsStorage> findAllByTeamAndStatus(Team team, AcceptStatus status) { return repository.findAllByTeamAndStatus(team, status);}
+
+    @Override
+    public List<ElectronicsStorage> findAllBySender(User sender) { return repository.findAllBySender(sender); }
 }

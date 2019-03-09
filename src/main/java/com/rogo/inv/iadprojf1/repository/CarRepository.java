@@ -3,6 +3,7 @@ package com.rogo.inv.iadprojf1.repository;
 import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.Car;
 import com.rogo.inv.iadprojf1.entity.Team;
+import com.rogo.inv.iadprojf1.entity.User;
 import com.rogo.inv.iadprojf1.entity.storage.CarcaseStorage;
 import com.rogo.inv.iadprojf1.entity.storage.ChassisStorage;
 import com.rogo.inv.iadprojf1.entity.storage.ElectronicsStorage;
@@ -20,6 +21,10 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
     Car findById(int id);
 
     List<Car> findAllByTeam(Team team);
+
+    List<Car> findAllByTeamAndStatus(Team team, AcceptStatus status);
+
+    List<Car> findAllBySender(User sender);
 
     @Query(value = "SELECT c.id, cs.condition, en.condition, es.condition, ch.condition FROM cars c\n" +
             "  INNER JOIN carcase_storage cs ON (c.current_carcase_id = cs.id)\n" +

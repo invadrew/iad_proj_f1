@@ -94,6 +94,9 @@ public class Car {
     @JoinColumn(name = "sender")
     private User sender;
 
+    @Column(name = "comment")
+    private String comment;
+
     /* ================================
      constructors
     ================================ */
