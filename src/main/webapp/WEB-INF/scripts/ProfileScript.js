@@ -107,3 +107,101 @@ function confirmCar(id, status) {
     });
 
 }
+
+function confirmDetailCarc(status, id, budget) {
+
+    let price = $('#carcPrice' + id).val();
+    let comment = $('#carcComm' + id).val();
+
+    if ((price > budget) && (status)) { document.getElementById("carcNotE" + id).hidden = false; } else {
+
+        $.ajax({
+            type: "POST",
+            url: "/profile/confirmCarcase",
+            data: {
+                "id": id,
+                "comment": comment,
+                "status": status
+            },
+            success: function (data) {
+                location.reload();
+            }
+
+        });
+    }
+
+}
+
+function confirmDetailChass(status, id, budget) {
+
+    let price = $('#chassPrice' + id).val();
+    let comment = $('#chassComm' + id).val();
+
+    if ((price > budget) && (status)) { document.getElementById("chassNotE" + id).hidden = false; } else {
+
+        $.ajax({
+            type: "POST",
+            url: "/profile/confirmChassis",
+            data: {
+                "id": id,
+                "comment": comment,
+                "status": status
+            },
+            success: function (data) {
+                location.reload();
+            }
+
+        });
+    }
+
+}
+
+
+function confirmDetailEng(status, id, budget) {
+
+    let price = $('#engPrice' + id).val();
+    let comment = $('#engComm' + id).val();
+
+    if ((price > budget) && (status)) { document.getElementById("engNotE" + id).hidden = false; } else {
+
+        $.ajax({
+            type: "POST",
+            url: "/profile/confirmEngine",
+            data: {
+                "id": id,
+                "comment": comment,
+                "status": status
+            },
+            success: function (data) {
+                location.reload();
+            }
+
+        });
+    }
+
+}
+
+function confirmDetailElec(status, id, budget) {
+
+    let price = $('#elecPrice' + id).val();
+    let comment = $('#elecComm' + id).val();
+
+    if ((price > budget) && (status)) { document.getElementById("elecNotE" + id).hidden = false; } else {
+
+        $.ajax({
+            type: "POST",
+            url: "/profile/confirmElectronics",
+            data: {
+                "id": id,
+                "comment": comment,
+                "status": status
+            },
+            success: function (data) {
+                location.reload();
+            }
+
+        });
+    }
+
+
+}

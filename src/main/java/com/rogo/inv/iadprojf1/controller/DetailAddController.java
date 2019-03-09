@@ -57,6 +57,7 @@ public class DetailAddController {
                 teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getSurname();
         map.addAttribute("name", name);
         map.addAttribute("team", team);
+        map.addAttribute("budget", team.getBudget());
 
         List<Car> cars = carService.findAllByTeam(team);
 

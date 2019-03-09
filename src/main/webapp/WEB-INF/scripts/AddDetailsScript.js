@@ -79,7 +79,7 @@ function addCar() {
 }
 
 
-function addCarcase() {
+function addCarcase(budget) {
 
     let material = $('#carcMaterial').val();
     let rear_wing = $('#rear-wing').val();
@@ -90,29 +90,29 @@ function addCarcase() {
     if (material.trim() === ""  || rear_wing.trim() === ""  || wings.trim() === ""  || safe_arcs.trim() === ""  || carcPrice.trim() === "" ) {
      document.getElementById("carc-not-all").hidden = false; } else {
         if (carcPrice < 0) { document.getElementById("carc-bad-money").hidden = false; } else {
-
-            $.ajax({
-                type: "POST",
-                url: "/add_detail/addCarcase",
-                data: {
-                    "material" : material,
-                    "rear_wing" : rear_wing,
-                    "wings" : wings,
-                    "safe_arcs" : safe_arcs,
-                    "carcPrice" : carcPrice
-                },
-                success: function (data) {
-                    document.getElementById("carc-ok").hidden = false;
-                }
-            });
-
+            if (carcPrice > budget) { document.getElementById("carc-not-enough").hidden = false; } else {
+                $.ajax({
+                    type: "POST",
+                    url: "/add_detail/addCarcase",
+                    data: {
+                        "material": material,
+                        "rear_wing": rear_wing,
+                        "wings": wings,
+                        "safe_arcs": safe_arcs,
+                        "carcPrice": carcPrice
+                    },
+                    success: function (data) {
+                        document.getElementById("carc-ok").hidden = false;
+                    }
+                });
+            }
         }
     }
 
 }
 
 
-function addChassis() {
+function addChassis(budget) {
 
     let model = $('#chModel').val();
     let width = $('#chWidth').val();
@@ -122,26 +122,30 @@ function addChassis() {
     if (model.trim() === ""  || width.trim() === ""  || height.trim() === ""  || chassPrice.trim() === ""  ) {
         document.getElementById("chass-not-all").hidden = false; } else {
         if (chassPrice < 0) { document.getElementById("chass-bad-money").hidden = false;  } else {
+            if (chassPrice > budget) {
+                document.getElementById("chass-not-enough").hidden = false;
+            } else {
 
-            $.ajax({
-                type: "POST",
-                url: "/add_detail/addChassis",
-                data: {
-                    "model" : model,
-                    "width" : width,
-                    "height" : height,
-                    "chassPrice" : chassPrice
-                },
-                success: function (data) {
-                    document.getElementById("chass-ok").hidden = false;
-                }
-            });
+                $.ajax({
+                    type: "POST",
+                    url: "/add_detail/addChassis",
+                    data: {
+                        "model": model,
+                        "width": width,
+                        "height": height,
+                        "chassPrice": chassPrice
+                    },
+                    success: function (data) {
+                        document.getElementById("chass-ok").hidden = false;
+                    }
+                });
 
+            }
         }
     }
 }
 
-function addEngine() {
+function addEngine(budget) {
 
     let model = $('#engModel').val();
     let cyclinders = $('#cyclNum').val();
@@ -153,29 +157,30 @@ function addEngine() {
     if (model.trim() === "" || cyclinders.trim() === "" || capacity.trim() === ""  || mass.trim() === ""  || stroke.trim() === ""  || engPrice.trim() === "" ) {
         document.getElementById("eng-not-all").hidden = false; } else {
         if (engPrice < 0) { document.getElementById("eng-bad-money").hidden = false } else {
+            if (engPrice > budget) { document.getElementById("eng-not-enough").hidden = false; } else {
 
-            $.ajax({
-                type: "POST",
-                url: "/add_detail/addEngine",
-                data: {
-                    "model" : model,
-                    "cyclinders" : cyclinders,
-                    "capacity" : capacity,
-                    "mass" : mass,
-                    "stroke" : stroke,
-                    "engPrice" : engPrice
-                },
-                success: function (data) {
-                    document.getElementById("eng-ok").hidden = false;
-                }
-            });
-
+                $.ajax({
+                    type: "POST",
+                    url: "/add_detail/addEngine",
+                    data: {
+                        "model": model,
+                        "cyclinders": cyclinders,
+                        "capacity": capacity,
+                        "mass": mass,
+                        "stroke": stroke,
+                        "engPrice": engPrice
+                    },
+                    success: function (data) {
+                        document.getElementById("eng-ok").hidden = false;
+                    }
+                });
+            }
         }
     }
 }
 
 
-function addElectronics() {
+function addElectronics(budget) {
 
     let telemetry = $('#telemetry').val();
     let controlSystem = $('#contrModel').val();
@@ -184,20 +189,21 @@ function addElectronics() {
     if (telemetry.trim() === "" || controlSystem.trim() === "" || elecPrice.trim() === "") {
         document.getElementById("elec-not-all").hidden = false; } else {
         if (elecPrice < 0) { document.getElementById("elec-bad-money").hidden = false } else {
+            if (elecPrice > budget) { document.getElementById("elec-not-enough").hidden = false; } else {
 
-            $.ajax({
-                type: "POST",
-                url: "/add_detail/addElectronics",
-                data: {
-                    "telemetry" : telemetry,
-                    "controlSystem" : controlSystem,
-                    "elecPrice" : elecPrice
-                },
-                success: function (data) {
-                    document.getElementById("elec-ok").hidden = false;
-                }
-            });
-
+                $.ajax({
+                    type: "POST",
+                    url: "/add_detail/addElectronics",
+                    data: {
+                        "telemetry": telemetry,
+                        "controlSystem": controlSystem,
+                        "elecPrice": elecPrice
+                    },
+                    success: function (data) {
+                        document.getElementById("elec-ok").hidden = false;
+                    }
+                });
+            }
         }
 
     }

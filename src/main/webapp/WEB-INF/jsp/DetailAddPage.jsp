@@ -115,10 +115,11 @@
                     <label for="carcPrice">Цена</label>
                     <input type="number" id="carcPrice" class="res-selector" min="0">
                     <br>
-                    <input type="submit" class="res-selector" value="Добавить" onclick="addCarcase()">
+                    <input type="button" class="res-selector" value="Добавить" onclick="addCarcase(${budget})">
                     <br>
                     <label id="carc-not-all" hidden> Не все поля заполнены </label>
                     <label id="carc-bad-money" hidden> Цена должна быть положительной </label>
+                    <label id="carc-not-enough" hidden> У вашей команды не хватит денег для такого </label>
                     <label id="carc-ok" hidden> Готово </label>
                 </form>
             </div>
@@ -140,10 +141,11 @@
                     <label for="chasPrice">Цена</label>
                     <input type="number" id="chasPrice" class="res-selector" min="0">
                     <br>
-                    <input type="submit" class="res-selector" value="Добавить" onclick="addChassis()">
+                    <input type="button" class="res-selector" value="Добавить" onclick="addChassis(${budget})">
                     <br>
                     <label id="chass-not-all" hidden> Не все поля заполнены </label>
                     <label id="chass-bad-money" hidden> Цена должна быть положительной </label>
+                    <label id="chass-not-enough" hidden> У вашей команды не хватит денег для такого </label>
                     <label id="chass-ok" hidden> Готово </label>
                 </form>
             </div>
@@ -171,10 +173,11 @@
                     <label for="engPrice">Цена</label>
                     <input type="number" id="engPrice" class="res-selector" min="0">
                     <br>
-                    <input type="submit" class="res-selector" value="Добавить" onclick="addEngine()">
+                    <input type="button" class="res-selector" value="Добавить" onclick="addEngine(${budget})">
                     <br>
                     <label id="eng-not-all" hidden> Не все поля заполнены </label>
                     <label id="eng-bad-money" hidden> Цена должна быть положительной </label>
+                    <label id="eng-not-enough" hidden> У вашей команды не хватит денег для такого </label>
                     <label id="eng-ok" hidden> Готово </label>
                 </form>
             </div>
@@ -193,10 +196,11 @@
                     <label for="elecPrice">Цена</label>
                     <input type="number" id="elecPrice" class="res-selector" min="0">
                     <br>
-                    <input type="submit" class="res-selector" value="Добавить" onclick="addElectronics()">
+                    <input type="button" class="res-selector" value="Добавить" onclick="addElectronics(${budget})">
                     <br>
                     <label id="elec-not-all" hidden> Не все поля заполнены </label>
                     <label id="elec-bad-money" hidden> Цена должна быть положительной </label>
+                    <label id="elec-not-enough" hidden> У вашей команды не хватит денег для такого </label>
                     <label id="elec-ok" hidden> Готово </label>
                 </form>
             </div>

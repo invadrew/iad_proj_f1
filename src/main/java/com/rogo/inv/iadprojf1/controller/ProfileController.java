@@ -386,6 +386,115 @@ public class ProfileController {
 
            } catch (NullPointerException p) { map.addAttribute("carsSt", null); }
 
+           try {
+
+               List<CarcaseStorage> myCarcases = carcaseStorageService.findAllBySender(userService.findByLogin(authentication.getName()));
+               List<String> myCarcasesConfirmInfo = new ArrayList<>();
+
+               for (CarcaseStorage carcase : myCarcases) {
+                   String info = "Каркас: " + carcase.getRearWing() + " " + carcase.getSafetyArcs() + " " +  carcase.getWings() + " всё ещё на рассмотрении";
+                   if (carcase.getStatus().equals(AcceptStatus.ACCEPTED)) {
+                       if (carcase.getComment() != null) {
+                           info = "Каркас: " + carcase.getRearWing() + " " + carcase.getSafetyArcs() + " " +  carcase.getWings() + " одобрен. Комментарий: " + carcase.getComment(); } else {
+                           info = "Каркас: " + carcase.getRearWing() + " " + carcase.getSafetyArcs() + " " +  carcase.getWings() + " одобрен.";
+                       }
+                   }
+                   if (carcase.getStatus().equals(AcceptStatus.REFUSED)) {
+                       if (carcase.getComment() != null) {
+                           info = "Каркас: " + carcase.getRearWing() + " " + carcase.getSafetyArcs() + " " +  carcase.getWings() + " не одобрен. Комментарий: " + carcase.getComment(); } else {
+                           info = "Каркас: " + carcase.getRearWing() + " " + carcase.getSafetyArcs() + " " +  carcase.getWings() + " не одобрен.";
+                       }
+                   }
+                   myCarcasesConfirmInfo.add(info);
+               }
+
+               map.addAttribute("carcaseSt",myCarcasesConfirmInfo);
+
+           } catch (NullPointerException p) { map.addAttribute("carcaseSt", null); }
+
+
+           try {
+
+               List<ChassisStorage> myChassis = chassisStorageService.findAllBySender(userService.findByLogin(authentication.getName()));
+               List<String> myChassisConfirmInfo = new ArrayList<>();
+
+               for (ChassisStorage chassis : myChassis) {
+                   String info = "Шасси: " + chassis.getModel() + " " + chassis.getWidth() + " шир. " +  chassis.getHeight() + " выс. " + " всё ещё на рассмотрении";
+                   if (chassis.getStatus().equals(AcceptStatus.ACCEPTED)) {
+                       if (chassis.getComment() != null) {
+                           info ="Шасси: " + chassis.getModel() + " " + chassis.getWidth() + " шир. " +  chassis.getHeight() + " выс. " + " одобрен. Комментарий: " + chassis.getComment(); } else {
+                           info = "Шасси: " + chassis.getModel() + " " + chassis.getWidth() + " шир. " +  chassis.getHeight() + " выс. " + " одобрен.";
+                       }
+                   }
+                   if (chassis.getStatus().equals(AcceptStatus.REFUSED)) {
+                       if (chassis.getComment() != null) {
+                           info = "Шасси: " + chassis.getModel() + " " + chassis.getWidth() + " шир. " +  chassis.getHeight() + " выс. " + " не одобрен. Комментарий: " + chassis.getComment(); } else {
+                           info = "Шасси: " + chassis.getModel() + " " + chassis.getWidth() + " шир. " +  chassis.getHeight() + " выс. " + " не одобрен.";
+                       }
+                   }
+                   myChassisConfirmInfo.add(info);
+               }
+
+               map.addAttribute("chassisSt",myChassisConfirmInfo);
+
+           } catch (NullPointerException p) { map.addAttribute("chassisSt", null); }
+
+
+           try {
+
+               List<EngineStorage> myEngine = engineStorageService.findAllBySender(userService.findByLogin(authentication.getName()));
+               List<String> myEngineConfirmInfo = new ArrayList<>();
+
+               for (EngineStorage engine : myEngine) {
+                   String info = "Двигатель: " + engine.getModel() + " " + engine.getCyclinders() + "цил. " + engine.getCapacity() + "л." + " всё ещё на рассмотрении";
+                   if (engine.getStatus().equals(AcceptStatus.ACCEPTED)) {
+                       if (engine.getComment() != null) {
+                           info ="Двигатель: " + engine.getModel() + " " + engine.getCyclinders() + "цил. " + engine.getCapacity() + "л." + " одобрен. Комментарий: " + engine.getComment(); } else {
+                           info = "Двигатель: " + engine.getModel() + " " + engine.getCyclinders() + "цил. " + engine.getCapacity() + "л." +  " одобрен.";
+                       }
+                   }
+                   if (engine.getStatus().equals(AcceptStatus.REFUSED)) {
+                       if (engine.getComment() != null) {
+                           info = "Двигатель: " + engine.getModel() + " " + engine.getCyclinders() + "цил. " + engine.getCapacity() + "л."  + " не одобрен. Комментарий: " + engine.getComment(); } else {
+                           info = "Двигатель: " + engine.getModel() + " " + engine.getCyclinders() + "цил. " + engine.getCapacity() + "л." +  " не одобрен.";
+                       }
+                   }
+                   myEngineConfirmInfo.add(info);
+               }
+
+               map.addAttribute("engineSt",myEngineConfirmInfo);
+
+           } catch (NullPointerException p) { map.addAttribute("engineSt", null); }
+
+
+           try {
+
+               List<ElectronicsStorage> myElectronics = electronicsStorageService.findAllBySender(userService.findByLogin(authentication.getName()));
+               List<String> myElectronicsConfirmInfo = new ArrayList<>();
+
+               for (ElectronicsStorage electronics : myElectronics) {
+                   String info = "Электроника: тел. " + electronics.getTelemetry() + " контр. система"  + electronics.getControlSystem() + " всё ещё на рассмотрении";
+                   if (electronics.getStatus().equals(AcceptStatus.ACCEPTED)) {
+                       if (electronics.getComment() != null) {
+                           info = "Электроника: тел. " + electronics.getTelemetry() + " контр. система"  + electronics.getControlSystem() + " одобрен. Комментарий: " + electronics.getComment(); } else {
+                           info = "Электроника: тел. " + electronics.getTelemetry() + " контр. система"  + electronics.getControlSystem() + " одобрен.";
+                       }
+                   }
+                   if (electronics.getStatus().equals(AcceptStatus.REFUSED)) {
+                       if (electronics.getComment() != null) {
+                           info ="Электроника: тел. " + electronics.getTelemetry() + " контр. система"  + electronics.getControlSystem() + " не одобрен. Комментарий: " + electronics.getComment(); } else {
+                           info ="Электроника: тел. " + electronics.getTelemetry() + " контр. система"  + electronics.getControlSystem() + " не одобрен.";
+                       }
+                   }
+                   myElectronicsConfirmInfo.add(info);
+               }
+
+               map.addAttribute("electronicsSt",myElectronicsConfirmInfo);
+
+           } catch (NullPointerException p) { map.addAttribute("electronicsSt", null); }
+
+
+
         }
 
         return "UserProfilePage";
@@ -469,6 +578,103 @@ public class ProfileController {
         }
 
         carService.save(car);
+
+    }
+
+    @RequestMapping(value = "/profile/confirmCarcase", method = RequestMethod.POST)
+    @ResponseBody
+    public void confirmCarcase(HttpServletRequest request, Authentication authentication) {
+
+        Integer id = Integer.parseInt(request.getParameter("id"));
+        Boolean status = Boolean.parseBoolean(request.getParameter("status"));
+        String comment = request.getParameter("comment");
+
+        Team team = teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId());
+
+        CarcaseStorage carcaseStorage = carcaseStorageService.findById(id);
+        carcaseStorage.setComment(comment);
+
+        if (status) { carcaseStorage.setStatus(AcceptStatus.ACCEPTED);
+            team.setBudget(team.getBudget() - carcaseStorage.getPrice());
+            teamService.save(team);
+        } else {
+            carcaseStorage.setStatus(AcceptStatus.REFUSED);
+        }
+
+        carcaseStorageService.save(carcaseStorage);
+
+    }
+
+    @RequestMapping(value = "/profile/confirmChassis", method = RequestMethod.POST)
+    @ResponseBody
+    public void confirmChassis(HttpServletRequest request, Authentication authentication) {
+
+        Team team = teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId());
+
+        Integer id = Integer.parseInt(request.getParameter("id"));
+        Boolean status = Boolean.parseBoolean(request.getParameter("status"));
+        String comment = request.getParameter("comment");
+
+        ChassisStorage chassisStorage = chassisStorageService.findById(id);
+        chassisStorage.setComment(comment);
+
+        if (status) { chassisStorage.setStatus(AcceptStatus.ACCEPTED);
+
+            team.setBudget(team.getBudget() - chassisStorage.getPrice());
+            teamService.save(team);
+        } else {
+            chassisStorage.setStatus(AcceptStatus.REFUSED);
+        }
+
+        chassisStorageService.save(chassisStorage);
+
+    }
+
+    @RequestMapping(value = "/profile/confirmEngine", method = RequestMethod.POST)
+    @ResponseBody
+    public void confirmEngine(HttpServletRequest request, Authentication authentication) {
+
+        Integer id = Integer.parseInt(request.getParameter("id"));
+        Boolean status = Boolean.parseBoolean(request.getParameter("status"));
+        String comment = request.getParameter("comment");
+
+        Team team = teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId());
+
+        EngineStorage engineStorage = engineStorageService.findById(id);
+        engineStorage.setComment(comment);
+
+        if (status) { engineStorage.setStatus(AcceptStatus.ACCEPTED);
+            team.setBudget(team.getBudget() - engineStorage.getPrice());
+            teamService.save(team);
+        } else {
+            engineStorage.setStatus(AcceptStatus.REFUSED);
+        }
+
+        engineStorageService.save(engineStorage);
+
+    }
+
+    @RequestMapping(value = "/profile/confirmElectronics", method = RequestMethod.POST)
+    @ResponseBody
+    public void confirmElectronics(HttpServletRequest request, Authentication authentication) {
+
+        Integer id = Integer.parseInt(request.getParameter("id"));
+        Boolean status = Boolean.parseBoolean(request.getParameter("status"));
+        String comment = request.getParameter("comment");
+
+        Team team = teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId());
+
+        ElectronicsStorage electronicsStorage = electronicsStorageService.findById(id);
+        electronicsStorage.setComment(comment);
+
+        if (status) { electronicsStorage.setStatus(AcceptStatus.ACCEPTED);
+            team.setBudget(team.getBudget() - electronicsStorage.getPrice());
+            teamService.save(team);
+        } else {
+            electronicsStorage.setStatus(AcceptStatus.REFUSED);
+        }
+
+        electronicsStorageService.save(electronicsStorage);
 
     }
 

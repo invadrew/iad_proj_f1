@@ -123,6 +123,7 @@
                         <h3>Запросы на вступление в команду</h3>
                         <!-- TODO: team join requests-->
                         <h3>Запросы на добавление деталей/болидов</h3>
+                        <c:if test="${!carsToConfirm.isEmpty()}">
                             <h4>Болиды</h4>
                                 <c:forEach items="${carsToConfirm}" var="car">
                                     <div id="carBlock${car.id}">
@@ -143,22 +144,121 @@
                                     <br>
                                     </div>
                                 </c:forEach>
+                        </c:if>
+                        <c:if test="${!carcToConfirm.isEmpty()}">
                             <h4>Каркасы</h4>
+                                <table class="infotable" style="text-align: center; margin: 3%; font-size: 14pt" border="1">
+                                    <tr>
+                                        <th>Спойлер</th>
+                                        <th>Дуги безопасности</th>
+                                        <th>Крылья</th>
+                                        <th>Цена</th>
+                                        <th>Комментарий</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
                                  <c:forEach items="${carcToConfirm}" var="carc">
-
+                                     <input type="hidden" value="${carc.price}" id="carcPrice${carc.id}"/>
+                                    <tr>
+                                        <td>${carc.rearWing}</td>
+                                        <td>${carc.safetyArcs}</td>
+                                        <td>${carc.wings}</td>
+                                        <td>${carc.price}</td>
+                                        <td><input type="text" id="carcComm${carc.id}" class="res-selector" placeholder="Комментарий"/> </td>
+                                        <td><input type="button" value="Принять" class="res-selector" onclick="confirmDetailCarc(true,${carc.id},${budget})"/></td>
+                                        <td><input type="button" value="Отказать" class="res-selector" onclick="confirmDetailCarc(false,${carc.id},${budget})"/></td>
+                                    </tr>
+                                     <br>
+                                     <label hidden id="carcNotE${carc.id}">Недостаточно денег</label>
                                 </c:forEach>
+                                </table>
+                        </c:if>
+                        <c:if test="${!chassToConfirm.isEmpty()}">
                             <h4>Шасси</h4>
+                             <table class="infotable" style="text-align: center; margin: 3%; font-size: 14pt" border="1">
+                                <tr>
+                                <th>Модель</th>
+                                <th>Высота</th>
+                                <th>Ширина</th>
+                                <th>Цена</th>
+                                    <th>Комментарий</th>
+                                <th></th>
+                                <th></th>
+                                </tr>
                                 <c:forEach items="${chassToConfirm}" var="chass">
-
+                                    <input type="hidden" value="${chass.price}" id="chassPrice${chass.id}"/>
+                                <tr>
+                                    <td>${chass.model}</td>
+                                    <td>${chass.height}</td>
+                                    <td>${chass.width}</td>
+                                    <td>${chass.price}</td>
+                                    <td><input type="text" id="chassComm${chass.id}" class="res-selector" placeholder="Комментарий"/> </td>
+                                    <td><input type="button" value="Принять" class="res-selector" onclick="confirmDetailChass(true,${chass.id},${budget})"/></td>
+                                    <td><input type="button" value="Отказать" class="res-selector" onclick="confirmDetailChass(false,${chass.id},${budget})"/></td>
+                                </tr>
+                                    <br>
+                                    <label hidden id="chassNotE${chass.id}">Недостаточно денег</label>
                                 </c:forEach>
+                             </table>
+                        </c:if>
+                        <c:if test="${!engToConfirm.isEmpty()}">
                             <h4>Двигатели</h4>
+                        <table class="infotable" style="text-align: center; margin: 3%; font-size: 14pt" border="1">
+                                <tr>
+                                    <th>Модель</th>
+                                    <th>Цилиндров</th>
+                                    <th>Объем</th>
+                                    <th>Масса</th>
+                                    <th>Ход поршня</th>
+                                    <th>Цена</th>
+                                    <th>Комментарий</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
                                 <c:forEach items="${engToConfirm}" var="eng">
-
+                                    <input type="hidden" value="${eng.price}" id="engPrice${eng.id}"/>
+                                    <tr>
+                                        <td>${eng.model}</td>
+                                        <td>${eng.cyclinders}</td>
+                                        <td>${eng.capacity}</td>
+                                        <td>${eng.mass}</td>
+                                        <td>${eng.stroke}</td>
+                                        <td>${eng.price}</td>
+                                        <td><input type="text" id="engComm${eng.id}" class="res-selector" placeholder="Комментарий"/> </td>
+                                        <td><input type="button" value="Принять" class="res-selector" onclick="confirmDetailEng(true,${eng.id},${budget})"/></td>
+                                        <td><input type="button" value="Отказать" class="res-selector" onclick="confirmDetailEng(false,${eng.id},${budget})"/></td>
+                                    </tr>
+                                    <br>
+                                    <label hidden id="engNotE${eng.id}">Недостаточно денег</label>
                                 </c:forEach>
+                        </table>
+                        </c:if>
+                        <c:if test="${!elecToConfirm.isEmpty()}">
                             <h4>Электроника</h4>
+                    <table class="infotable" style="text-align: center; margin: 3%; font-size: 14pt" border="1">
+                        <tr>
+                            <th>Телеметрия</th>
+                            <th>Сист. контроля</th>
+                            <th>Цена</th>
+                            <th>Комментарий</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
                                 <c:forEach items="${elecToConfirm}" var="elec">
-
+                                    <input type="hidden" value="${elec.price}" id="elecPrice${elec.id}"/>
+                                    <tr>
+                                        <td>${elec.telemetry}</td>
+                                        <td>${elec.controlSystem}</td>
+                                        <td>${elec.price}</td>
+                                        <td><input type="text" id="elecComm${elec.id}" class="res-selector" placeholder="Комментарий"/> </td>
+                                        <td><input type="button" value="Принять" class="res-selector" onclick="confirmDetailElec(true,${elec.id},${budget})"/></td>
+                                        <td><input type="button" value="Отказать" class="res-selector" onclick="confirmDetailElec(false,${elec.id},${budget})"/></td>
+                                    </tr>
+                                    <br>
+                                    <label hidden id="elecNotE${elec.id}">Недостаточно денег</label>
                                 </c:forEach>
+                    </table>
+                        </c:if>
                         <h3>Запросы на получение права на покупку</h3>
                         <table class="infotable" style="text-align: center; margin: 3%;" border="1">
                         <c:forEach items="${constrsAndMechsRev}" var="rev">
@@ -199,6 +299,22 @@
                             ${bpStatus}
                         <br>
                         <c:forEach items="${carsSt}" var="info">
+                            ${info}
+                            <br>
+                        </c:forEach>
+                        <c:forEach items="${carcaseSt}" var="info">
+                            ${info}
+                            <br>
+                        </c:forEach>
+                        <c:forEach items="${chassisSt}" var="info">
+                            ${info}
+                            <br>
+                        </c:forEach>
+                        <c:forEach items="${engineSt}" var="info">
+                            ${info}
+                            <br>
+                        </c:forEach>
+                        <c:forEach items="${electronicsSt}" var="info">
                             ${info}
                             <br>
                         </c:forEach>
