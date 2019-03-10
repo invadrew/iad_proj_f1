@@ -221,3 +221,37 @@ function confirmTeamMember(id, status) {
     });
 
 }
+
+
+function showKickAgain() {
+
+    document.getElementById("kickMember").hidden = false;
+    document.getElementById("kick-sure").hidden = true;
+    document.getElementById("kick-yes").hidden = true;
+    document.getElementById("kick-no").hidden = true;
+
+}
+
+function kickMemberNow(id) {
+
+    $.ajax({
+        type: "POST",
+        url: "/profile/kick",
+        data: {
+          "id" : id
+        },
+        success: function () {
+            window.location.replace("/profile?id=" + id);
+        }
+    });
+
+}
+
+function areYouSureToKick() {
+
+    document.getElementById("kickMember").hidden = true;
+    document.getElementById("kick-sure").hidden = false;
+    document.getElementById("kick-yes").hidden = false;
+    document.getElementById("kick-no").hidden = false;
+
+}

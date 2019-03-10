@@ -210,6 +210,7 @@ public class ProfileController {
          TeamMember teamMember = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId());
          Team teamCurr = teamMember.getTeam();
          map.addAttribute("currUserTeam", teamCurr.getId());
+         map.addAttribute("currUserTeamName", teamCurr.getName());
          if (userService.findById(teamMemberService.findByUserId(teamMember.getUserId()).getUserId()).getBuyStatus().equals(AcceptStatus.ON_REVIEW)) {
              map.addAttribute("ifCanBuy", null);
          } else {
@@ -521,16 +522,13 @@ public class ProfileController {
 
            } catch (NullPointerException p) { map.addAttribute("electronicsSt", null); }
 
-
-
         }
-
 
         try {
 
             if (userService.findByLogin(authentication.getName()).getStatus().equals(AcceptStatus.ACCEPTED)) map.addAttribute("teamMess", "Вашу завяку в команду одобрили");
             if (userService.findByLogin(authentication.getName()).getStatus().equals(AcceptStatus.ON_REVIEW)) map.addAttribute("teamMess", "Ваша заявка в команду ещё на рассмотрении");
-            if (userService.findByLogin(authentication.getName()).getStatus().equals(AcceptStatus.REFUSED)) map.addAttribute("teamMess", "Вашу завяку в команду не одобрили");
+            if (userService.findByLogin(authentication.getName()).getStatus().equals(AcceptStatus.REFUSED)) map.addAttribute("teamMess", "Ваша заявка в команде отозвана");
 
         } catch (NullPointerException x) { }
 
@@ -727,6 +725,7 @@ public class ProfileController {
 
         if (status) {
             user.setStatus(AcceptStatus.ACCEPTED);
+            teamMember.setCanBuy(false);
         } else {
             user.setStatus(AcceptStatus.REFUSED);
             teamMember.setTeam(null);
@@ -737,6 +736,24 @@ public class ProfileController {
 
     }
 
+
+    @RequestMapping(value = "/profile/kick", method = RequestMethod.POST)
+    @ResponseBody
+    public void kickMember(HttpServletRequest request) {
+
+        Integer userId = Integer.parseInt(request.getParameter("id"));
+
+        User toBeKickedU = userService.findById(userId);
+        TeamMember toBeKickedTm = teamMemberService.findByUserId(userId);
+
+        toBeKickedU.setStatus(AcceptStatus.REFUSED);
+        toBeKickedTm.setTeam(null);
+        toBeKickedTm.setCanBuy(false);
+
+        userService.save(toBeKickedU);
+        teamMemberService.save(toBeKickedTm);
+
+    }
 
     private String toNamedSpec(User.Spec spec) {
         switch (spec) {

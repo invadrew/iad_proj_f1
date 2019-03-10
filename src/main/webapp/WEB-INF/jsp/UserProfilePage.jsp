@@ -42,9 +42,14 @@
                 Должность: ${spec}
                 <br>
                 <br>
-                   <%-- <c:if test="${(!currName.equals(user.login)) && currUserSpec.equals('MANAGER') && team.equals('Нет команды')}">
-                        <center> <input type="button" class="res-selector" value="Позвать в команду"> </center>
-                    </c:if> --%>
+                   <c:if test="${(!currName.equals(user.login)) && !(user.spec.toString().equals('MANAGER')) && currUserSpec.equals('MANAGER') && (team.equals(currUserTeamName))}">
+                        <center>
+                            <input type="button" class="res-selector" value="Убрать из команды" id="kickMember" onclick="areYouSureToKick()">
+                            <label hidden id="kick-sure">Вы уверены?</label>
+                            <input type="button" class="res-selector" value="Да" id="kick-yes" hidden onclick="kickMemberNow(${user.id})">
+                            <input type="button" class="res-selector" value="Нет" id="kick-no" hidden onclick="showKickAgain()">
+                        </center>
+                    </c:if>
                     <br>
                     <br>
                 <c:if test="${!(user.spec.toString().equals('RACER'))}">
