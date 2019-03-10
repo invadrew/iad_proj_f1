@@ -19,6 +19,7 @@
     <div class="TeamNameArea">
         <br>
         <center><label style="padding-top: 3px" ><b>${team.name}</b></label></center>
+        <center><c:if test="${team == null}">У вас пока нет команды ...</c:if></center>
     </div>
     <div class="MainArea">
         <div class="CarSelectArea">
@@ -26,12 +27,14 @@
                 <div class="infotab"> <center>
                     <input type="button" class="res-selector" value="Болиды" onclick="chooseCars()"> <br>
                     <input type="button" class="res-selector" value="Склад" onclick="chooseStore()"> <br>
+                    <c:if test="${team != null}">
                     <sec:authorize access="hasAuthority('MECHANIC')">
                     <input type="button" class="res-selector" value="Заменить деталь" onclick="chooseChange()">
                     </sec:authorize>
                     <sec:authorize access="hasAuthority('CONSTRUCTOR')">
                         <input type="button" class="res-selector" value="Добавить деталь" onclick="location.href='/add_detail'">
                     </sec:authorize>
+                    </c:if>
                 </center>
                 </div>
                 <div class="FilterArea" hidden id="filter">
@@ -298,6 +301,7 @@
             <div class="inside_block_wrapper">
 
                 <div class="infotab">
+                    <c:if test="${team == null}"> У вас нет команды </c:if>
                     <div class="cars-main-zone" id="carsZone">
                         <c:if test="${cars.size() == 0}">
                             <h3 style="text-align: center;">Нет болидов</h3>
@@ -603,6 +607,7 @@
                         </div>
                     </div>
 
+                    <c:if test="${team != null}">
                     <div class="DetailChange" id="changes" hidden>
                             <center><h3>Замена оборудования</h3></center>
                             <sec:authorize access="hasAuthority('MECHANIC')">
@@ -705,6 +710,7 @@
                             </form>
                             </sec:authorize>
                     </div>
+                    </c:if>
 
                 </div>
             </div>

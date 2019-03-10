@@ -13,19 +13,19 @@ import java.util.List;
 public interface TeamMemberRepository extends JpaRepository<TeamMember, Integer> {
     TeamMember findByUserId(int id);
 
-    @Query(value = "SELECT user_id, NAME, surname FROM team_members tm\n" +
+    @Query(value = "SELECT user_id, NAME, surname, can_buy, team_id FROM team_members tm\n" +
             "  INNER JOIN users u ON (tm.user_id = u.id)\n" +
-            "  WHERE ((tm.team_id = ?1) AND (u.spec = ?2));", nativeQuery = true)
-    List<TeamMember> getAllspecificType(int team, User.Spec spec);
+            "  WHERE ((tm.team_id = ?1) AND (u.spec = ?2) AND (u.status = 'ACCEPTED'));", nativeQuery = true)
+    List<TeamMember> getAllspecificType(int team, String spec);
 
     @Query(value = "SELECT user_id, NAME, surname FROM team_members tm\n" +
             "  INNER JOIN users u ON (tm.user_id = u.id)\n" +
-            "  WHERE ((tm.team_id = ?1) AND (u.spec = 'RACER'));", nativeQuery = true)
+            "  WHERE ((tm.team_id = ?1) AND (u.spec = 'RACER') AND (u.status = 'ACCEPTED'));", nativeQuery = true)
     List<Object[]> getAllRacers(int team);
 
     @Query(value = "SELECT user_id, NAME, surname, u.buy_status, u.comments FROM team_members tm\n" +
             "  INNER JOIN users AS u ON (tm.user_id = u.id)\n" +
-            "  WHERE ((tm.team_id = ?1) AND ((u.spec = 'CONSTRUCTOR') OR (u.spec = 'MECHANIC')) AND (tm.can_buy = FALSE ));", nativeQuery = true)
+            "  WHERE ((tm.team_id = ?1) AND ((u.spec = 'CONSTRUCTOR') OR (u.spec = 'MECHANIC')) AND (tm.can_buy = FALSE ) AND (u.status = 'ACCEPTED'));", nativeQuery = true)
     List<Object[]> getAllConstrAndMech(int team);
 
     List<TeamMember> findAllByTeam (Team team);

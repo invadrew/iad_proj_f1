@@ -29,7 +29,7 @@
                 <center><h2>${nameSurname}</h2></center>
                 <c:if test="${!team.equals('Нет команды')}">
                 <c:url value="/team" var="uUrl">
-                    <c:param name="id" value="${member[3]}"/>
+                    <c:param name="id" value="${hisTeamId}"/>
                 </c:url>
                 <a class="redirHref" href="${uUrl}">
                     Команда: ${team}
@@ -40,14 +40,14 @@
                 </c:if>
                 <br> <br>
                 Должность: ${spec}
-                <c:if test="${!(user.spec.toString().equals('RACER'))}">
                 <br>
-                    <c:if test="${(!currName.equals(user.login)) && currUserSpec.toString().equals('MANAGER') && team.equals('Нет команды')}">
-                        FFFFFFFFFFFFFFF
-                        <!-- TODO: button to invite usr to team-->
-                    </c:if>
+                <br>
+                   <%-- <c:if test="${(!currName.equals(user.login)) && currUserSpec.equals('MANAGER') && team.equals('Нет команды')}">
+                        <center> <input type="button" class="res-selector" value="Позвать в команду"> </center>
+                    </c:if> --%>
                     <br>
                     <br>
+                <c:if test="${!(user.spec.toString().equals('RACER'))}">
                     <i>Статистика пользователя совпадает с командной</i>
                 </c:if>
             </div>
@@ -95,6 +95,7 @@
                                 <label id="teamBusy" hidden>Название занято</label>
                             </form>
                         </c:if>
+                        <c:if test="${!team.equals('Нет команды')}">
                         <h3>Выдача прав на покупку</h3>
                         <c:if test="${currUserTeam != null}">
                         <c:if test="${constrsAndMechs.isEmpty()}">
@@ -121,7 +122,23 @@
                             <c:out value="${currRaceRegStatus}"/>
                         </c:if>
                         <h3>Запросы на вступление в команду</h3>
-                        <!-- TODO: team join requests-->
+                            <table class="infotable" style="text-align: center; margin: 3%; font-size: 18pt">
+                        <c:forEach items="${onReviewTeamMems}" var="member">
+                            <tr id="tmRow${member[0]}">
+                                <td>
+                                    <c:url value="/profile" var="uUrl">
+                                        <c:param name="id" value="${member[0]}"/>
+                                    </c:url>
+                                    <a class="redirHref" href="${uUrl}">
+                                        ${member[1]}
+                                    </a>
+                                </td>
+                                <td>${member[2]}</td>
+                                <td><input type="button" value="Принять" class="res-selector" onclick="confirmTeamMember(${member[0]}, true)" /></td>
+                                <td><input type="button" value="Отказать" class="res-selector" onclick="confirmTeamMember(${member[0]}, false)" /></td>
+                            </tr>
+                        </c:forEach>
+                            </table>
                         <h3>Запросы на добавление деталей/болидов</h3>
                         <c:if test="${!carsToConfirm.isEmpty()}">
                             <h4>Болиды</h4>
@@ -271,6 +288,7 @@
                             </tr>
                         </c:forEach>
                         </table>
+                        </c:if>
                         <h3>Новости</h3>
                         <c:forEach items="${acceptedNames}" var="accepted">
                             Было принято название команды ${accepted[0]}. Комментарий: ${accepted[1]}
@@ -283,6 +301,7 @@
                     </c:if>
                     
                     <c:if test="${user.spec.toString().equals('MECHANIC') || user.spec.toString().equals('CONSTRUCTOR')}">
+                        <c:if test="${!team.equals('Нет команды')}">
                         <h3>Право на добавление деталей/болидов</h3>
                         <c:if test="${ifCanBuy}">
                             У вас есть право на управление комплектующими без подтверждения
@@ -294,6 +313,7 @@
                             <input type="button" value="Запросить право на покупку" class="res-selector" onclick="requestBuyAbility()" />
                             <label id="bpreqSent" hidden>Готово</label>
                             </form>
+                        </c:if>
                         </c:if>
                         <h3>Новости</h3>
                             ${bpStatus}
@@ -318,6 +338,13 @@
                             ${info}
                             <br>
                         </c:forEach>
+                        <br>
+                        ${teamMess}
+                    </c:if>
+
+                    <c:if test="${user.spec.toString().equals('RACER')}">
+                        <h3>Новости</h3>
+                        ${teamMess}
                     </c:if>
 
                 </div>

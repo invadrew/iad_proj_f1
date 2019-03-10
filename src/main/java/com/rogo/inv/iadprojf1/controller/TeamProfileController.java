@@ -1,6 +1,8 @@
 package com.rogo.inv.iadprojf1.controller;
 
+import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.Team;
+import com.rogo.inv.iadprojf1.entity.TeamMember;
 import com.rogo.inv.iadprojf1.entity.User;
 import com.rogo.inv.iadprojf1.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static com.rogo.inv.iadprojf1.entity.User.Spec;
@@ -57,14 +62,25 @@ public class TeamProfileController {
         Team team;
 
         if (id == null) {
-            team = teamMemberService.findByUserId(user.getId()).getTeam();
+            if (user.getStatus().equals(AcceptStatus.ACCEPTED)) { team = teamMemberService.findByUserId(user.getId()).getTeam(); } else {
+                team = null;
+            }
         } else {
             team = teamService.findById(id);
         }
 
-        map.addAttribute("team", team);
-
         if (team != null) {
+
+            map.addAttribute("team", team);
+          try {  map.addAttribute("currUserTeam",teamMemberService.findByUserId(user.getId()).getTeam());
+
+              map.addAttribute("currUSpec",user.getSpec().toString());
+
+              List<TeamMember> allMemb = teamMemberService.getAllspecificType(teamMemberService.findByUserId(user.getId()).getTeam().getId(), Spec.MANAGER.toString());
+              if (allMemb.size() <= 1) { map.addAttribute("canLeave", false); } else {  map.addAttribute("canLeave", true); }
+
+          }
+          catch (NullPointerException c) { map.addAttribute("currUserTeam",null); }
 
             Object gSP = teamService.getSeasPoints(seasonService.findTopByOrderByYearDesc().getYear(), team.getId());
             if (gSP == null) {
@@ -137,4 +153,29 @@ public class TeamProfileController {
 
     }
 
+    @RequestMapping(value = "/team/leave", method = RequestMethod.GET)
+    @ResponseBody
+    public void leaveTeam(Authentication authentication) {
+        User user = userService.findByLogin(authentication.getName());
+        TeamMember teamMember = teamMemberService.findByUserId(user.getId());
+        teamMember.setTeam(null);
+        teamMemberService.save(teamMember);
+    }
+
+    @RequestMapping(value = "/team/join", method = RequestMethod.POST)
+    @ResponseBody
+    public void joinTeam(HttpServletRequest request, Authentication authentication) {
+
+        Integer teamId = Integer.parseInt(request.getParameter("teamId"));
+
+        User candidateU = userService.findByLogin(authentication.getName());
+        TeamMember candidateTm = teamMemberService.findByUserId(candidateU.getId());
+
+        candidateU.setStatus(AcceptStatus.ON_REVIEW);
+        candidateTm.setTeam(teamService.findById(teamId));
+
+        userService.save(candidateU);
+        teamMemberService.save(candidateTm);
+
+    }
 }

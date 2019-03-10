@@ -16,6 +16,20 @@
     <div class="TeamNameArea">
         <br>
         <center><label style="padding-top: 3px" ><b>${team.name}</b></label></center>
+        <c:if test="${team == null}"><center><label style="padding-top: 3px" ><b>Пока нет команды ...</b></label></center></c:if>
+        <c:if test="${currUserTeam.equals(team) && ((currUSpec.equals('MANAGER') && canLeave) || (!currUSpec.equals('MANAGER')))}">
+            <input style="margin-left: 3% !important;" class="res-selector"  type="button" id="leaveTeam" value="Покинуть команду" onclick="areYouSureToLeave()"/>
+            <label hidden id="remove-sure">Вы уверены?</label>
+            <input type="button" class="res-selector" value="Да" id="remove-yes" hidden onclick="leaveTeamNow()">
+            <input type="button" class="res-selector" value="Нет" id="remove-no" hidden onclick="showRemoveAgain()">
+        </c:if>
+        <c:if test="${currUserTeam.equals(team) && currUSpec.equals('MANAGER') && !canLeave}">
+            <label style="font-size: 12pt"> Нельзя покинуть команду, пока вы единственный менеджер </label>
+        </c:if>
+        <c:if test="${(currUSpec != null) && (currUserTeam == null && team != null)}">
+            <input style="margin-left: 3% !important;" class="res-selector"  type="button" id="joinTeam" value="Вступить в команду" onclick="joinTeamRequest(${team.id})"/>
+            <label id="join-sent" hidden>Запрос отправлен</label>
+        </c:if>
     </div>
     <div class="MainArea">
         <div class="TeamInfoArea">
@@ -135,5 +149,7 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script type="text/javascript" src="../scripts/TeamProfileScript.js"> </script>
 </body>
 </html>

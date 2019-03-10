@@ -21,27 +21,27 @@ public interface TeamRepository extends JpaRepository<Team, Integer> {
 
     @Query(value = "SELECT tm.NAME, tm.surname, u.spec, u.id FROM team_members tm\n" +
             "   INNER JOIN users u ON (u.id = tm.user_id)\n" +
-            "   WHERE (tm.team_id = ?1);", nativeQuery = true)
+            "   WHERE (tm.team_id = ?1) AND (u.status = 'ACCEPTED');", nativeQuery = true)
     List<Object[]> getTeamTable(int team);
 
     @Query(value = "SELECT COUNT(*) FROM team_members tm\n" +
             "   INNER JOIN users u ON (u.id = tm.user_id)\n" +
-            "   WHERE ((tm.team_id = ?1) AND (u.spec = 'RACER'));", nativeQuery = true)
+            "   WHERE ((tm.team_id = ?1) AND (u.spec = 'RACER') AND (u.status = 'ACCEPTED'));", nativeQuery = true)
     Integer getRacersCount(int team);
 
     @Query(value = "SELECT COUNT(*) FROM team_members tm\n" +
             "   INNER JOIN users u ON (u.id = tm.user_id)\n" +
-            "   WHERE ((tm.team_id = ?1) AND (u.spec = 'MECHANIC'));", nativeQuery = true)
+            "   WHERE ((tm.team_id = ?1) AND (u.spec = 'MECHANIC') AND (u.status = 'ACCEPTED'));", nativeQuery = true)
     Integer getMechanicsCount(int team);
 
     @Query(value = "SELECT COUNT(*) FROM team_members tm\n" +
             "   INNER JOIN users u ON (u.id = tm.user_id)\n" +
-            "   WHERE ((tm.team_id = ?1) AND (u.spec = 'MANAGER'));", nativeQuery = true)
+            "   WHERE ((tm.team_id = ?1) AND (u.spec = 'MANAGER') AND (u.status = 'ACCEPTED'));", nativeQuery = true)
     Integer getManagersCount(int team);
 
     @Query(value = "SELECT COUNT(*) FROM team_members tm\n" +
             "   INNER JOIN users u ON (u.id = tm.user_id)\n" +
-            "   WHERE ((tm.team_id = ?1) AND (u.spec = 'CONSTRUCTOR'));", nativeQuery = true)
+            "   WHERE ((tm.team_id = ?1) AND (u.spec = 'CONSTRUCTOR') AND (u.status = 'ACCEPTED'));", nativeQuery = true)
     Integer getConstrsCount(int team);
 
     @Query(value = "SELECT points FROM constr_cup_result c WHERE ((c.season_id = ?1) AND (c.team_id = ?2));", nativeQuery = true)

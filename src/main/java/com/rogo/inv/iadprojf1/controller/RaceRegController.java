@@ -76,7 +76,7 @@ public class RaceRegController {
 
             map.addAttribute("racers", teamMembers);
 
-            List<Car> cars = carService.findAllByTeam(team);
+            List<Car> cars = carService.findAllByTeamAndStatus(team, AcceptStatus.ACCEPTED);
             map.addAttribute("cars", cars);
 
             RaceRegistration registration = raceRegistrationService.findById(team, raceService.findById((int) r[6]));

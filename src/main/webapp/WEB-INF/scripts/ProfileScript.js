@@ -202,6 +202,22 @@ function confirmDetailElec(status, id, budget) {
 
         });
     }
+}
 
+function confirmTeamMember(id, status) {
+
+    $.ajax({
+        type: "POST",
+        url: "/profile/confirmTeamMember",
+        data: {
+            "id": id,
+            "status": status
+        },
+        success: function (data) {
+            document.getElementById("tmRow" + id).hidden = true;
+            location.reload();
+        }
+
+    });
 
 }

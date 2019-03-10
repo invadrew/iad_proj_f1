@@ -33,7 +33,7 @@ public class TeamMemberServiceImpl implements TeamMemberService {
     public TeamMember findByUserId(int id) {return repository.findByUserId(id);}
 
     @Override
-    public List<TeamMember> getAllspecificType(int team, User.Spec spec) { return repository.getAllspecificType(team,spec); }
+    public List<TeamMember> getAllspecificType(int team, String spec) { return repository.getAllspecificType(team,spec); }
 
     @Override
     public List<TeamMember> findAllByTeam (Team team) { return repository.findAllByTeam(team); }

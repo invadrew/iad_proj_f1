@@ -8,6 +8,7 @@ import com.rogo.inv.iadprojf1.entity.storage.ChassisStorage;
 import com.rogo.inv.iadprojf1.entity.storage.ElectronicsStorage;
 import com.rogo.inv.iadprojf1.entity.storage.EngineStorage;
 import com.rogo.inv.iadprojf1.service.*;
+import org.dom4j.util.UserDataAttribute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.Authentication;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -166,7 +168,14 @@ public class ProfileController {
             // Team name
 
             Team team = teamMemberService.findByUserId(user.getId()).getTeam();
-            try { map.addAttribute("team",team.getName()); } catch (NullPointerException n) {
+            try {
+                map.addAttribute("team",team.getName());
+                map.addAttribute("hisTeamId", team.getId());
+            } catch (NullPointerException n) {
+                map.addAttribute("team","Нет команды");
+            }
+
+            if (!user.getStatus().equals(AcceptStatus.ACCEPTED)) {
                 map.addAttribute("team","Нет команды");
             }
 
@@ -196,10 +205,10 @@ public class ProfileController {
 
             map.addAttribute("currName",authentication.getName());
 
+        map.addAttribute("currUserSpec",userService.findByLogin(authentication.getName()).getSpec().toString());
      try {
          TeamMember teamMember = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId());
          Team teamCurr = teamMember.getTeam();
-         map.addAttribute("currUserSpec",userService.findByLogin(authentication.getName()).getSpec());
          map.addAttribute("currUserTeam", teamCurr.getId());
          if (userService.findById(teamMemberService.findByUserId(teamMember.getUserId()).getUserId()).getBuyStatus().equals(AcceptStatus.ON_REVIEW)) {
              map.addAttribute("ifCanBuy", null);
@@ -207,7 +216,7 @@ public class ProfileController {
          map.addAttribute("ifCanBuy", teamMember.getCanBuy()); }
 
     } catch (NullPointerException x) {
-         map.addAttribute("currUserSpec", null);
+      //   map.addAttribute("currUserSpec", null);
         // map.addAttribute("currUserTeam", null);
          map.addAttribute("ifCanBuy", null);
      }
@@ -327,6 +336,25 @@ public class ProfileController {
              map.addAttribute("elecToConfirm", elecToConfirm);
 
          } catch (NullPointerException n) {
+
+         }
+
+
+         try {
+
+             List<TeamMember> allTeamMems = teamMemberService.findAllByTeam(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam());
+             List<Object[]> onReviewTeamMems = new ArrayList<>();
+
+             for (TeamMember tm: allTeamMems) {
+                 if (userService.findById(tm.getUserId()).getStatus().equals(AcceptStatus.ON_REVIEW)) {
+                     Object[] newElement = { tm.getUserId(), tm.getName() + " " + tm.getSurname(), toNamedSpec(userService.findById(tm.getUserId()).getSpec()) };
+                     onReviewTeamMems.add(newElement);
+                 }
+             }
+
+             map.addAttribute("onReviewTeamMems", onReviewTeamMems);
+
+         } catch (NullPointerException v) {
 
          }
 
@@ -496,6 +524,15 @@ public class ProfileController {
 
 
         }
+
+
+        try {
+
+            if (userService.findByLogin(authentication.getName()).getStatus().equals(AcceptStatus.ACCEPTED)) map.addAttribute("teamMess", "Вашу завяку в команду одобрили");
+            if (userService.findByLogin(authentication.getName()).getStatus().equals(AcceptStatus.ON_REVIEW)) map.addAttribute("teamMess", "Ваша заявка в команду ещё на рассмотрении");
+            if (userService.findByLogin(authentication.getName()).getStatus().equals(AcceptStatus.REFUSED)) map.addAttribute("teamMess", "Вашу завяку в команду не одобрили");
+
+        } catch (NullPointerException x) { }
 
         return "UserProfilePage";
     }
@@ -676,6 +713,44 @@ public class ProfileController {
 
         electronicsStorageService.save(electronicsStorage);
 
+    }
+
+    @RequestMapping(value = "/profile/confirmTeamMember", method = RequestMethod.POST)
+    @ResponseBody
+    public void confirmTeamMember(HttpServletRequest request) {
+
+        Integer userId = Integer.parseInt(request.getParameter("id"));
+        Boolean status = Boolean.parseBoolean(request.getParameter("status"));
+
+        User user = userService.findById(userId);
+        TeamMember teamMember = teamMemberService.findByUserId(userId);
+
+        if (status) {
+            user.setStatus(AcceptStatus.ACCEPTED);
+        } else {
+            user.setStatus(AcceptStatus.REFUSED);
+            teamMember.setTeam(null);
+        }
+
+        userService.save(user);
+        teamMemberService.save(teamMember);
+
+    }
+
+
+    private String toNamedSpec(User.Spec spec) {
+        switch (spec) {
+            case RACER:
+                return "Гонщик";
+            case MECHANIC:
+                return "Механик";
+            case MANAGER:
+                return "Менеджер";
+            case CONSTRUCTOR:
+                return "Конструктор";
+
+        }
+        return "never reached";
     }
 
 }

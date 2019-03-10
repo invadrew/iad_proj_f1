@@ -15,7 +15,7 @@ public interface TeamMemberService {
 
     TeamMember findByUserId(int id);
 
-    List<TeamMember> getAllspecificType(int team, User.Spec spec);
+    List<TeamMember> getAllspecificType(int team, String spec);
 
     List<TeamMember> findAllByTeam (Team team);
 
