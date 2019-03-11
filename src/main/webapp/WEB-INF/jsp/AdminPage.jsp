@@ -42,6 +42,9 @@
                     <label for="new-budg" id="new-budg-id" hidden>Бюджет</label>
                     <input type="number" value="0" min="0" id="new-budg" class="res-selector" hidden>
                     <br>
+                    <label id="photo-label"> Фото: </label>
+                    <input type="file" id="photo" accept="image/*" class="res-selector" onchange="newFile(event)">
+                    <br>
                     <input type="button" class="res-selector" style="margin: 2%" value="Добавить" onclick="addUser()">
                     <br>
                     <label id="error" hidden> Не все поля заполнены </label>

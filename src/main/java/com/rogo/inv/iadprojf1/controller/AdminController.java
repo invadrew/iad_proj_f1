@@ -14,11 +14,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -29,6 +35,8 @@ import java.util.List;
 
 @Controller
 public class AdminController {
+
+    public static String uploadDirectory = System.getProperty("user.dir")+"/src/main/resources/pictures";
 
     @Autowired
     private UserService userService;
@@ -284,6 +292,21 @@ public class AdminController {
             raceRegistrationService.updRegRequest(AcceptStatus.REFUSED,comment,raceService.findById(raceId), teamService.findById(teamId));
 
         }
+
+    }
+
+    @RequestMapping(value = "/admin/addPhoto", method = RequestMethod.POST)
+    @ResponseBody
+    public void setPhoto(@RequestParam("file") MultipartFile multipartFile, @RequestParam("login") String login) {
+
+        StringBuilder fileNames = new StringBuilder();
+            Path fileNameAndPath = Paths.get(uploadDirectory, multipartFile.getOriginalFilename());
+            fileNames.append(multipartFile.getOriginalFilename()+" ");
+            try {
+                Files.write(fileNameAndPath, multipartFile.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
     }
 

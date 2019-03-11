@@ -1,3 +1,6 @@
+
+var files = [];
+
 function fieldsHandler() {
 
     var selectobject = document.getElementById("role-selector");
@@ -10,12 +13,16 @@ function fieldsHandler() {
     var surInp = document.getElementById("new-sur");
     var nazvLab = document.getElementById("new-nazv-id");
     var nazvInp = document.getElementById("new-nazv");
+    var photoInp = document.getElementById("photo");
+    var photoLab = document.getElementById("photo-label");
 
     if (selectobject.value === "Sponsor") {
         nazvInp.removeAttribute("hidden");
         nazvLab.removeAttribute("hidden");
         budgLab.removeAttribute("hidden");
         budgInp.removeAttribute("hidden");
+        photoInp.removeAttribute("hidden");
+        photoLab.removeAttribute("hidden");
         surInp.hidden = true;
         surLab.hidden = true;
         nameInp.hidden = true;
@@ -27,6 +34,8 @@ function fieldsHandler() {
         surLab.removeAttribute("hidden");
         nameInp.removeAttribute("hidden");
         nameLab.removeAttribute("hidden");
+        photoInp.removeAttribute("hidden");
+        photoLab.removeAttribute("hidden");
         nazvLab.hidden = true;
         nazvInp.hidden = true;
         budgInp.hidden = true;
@@ -42,6 +51,8 @@ function fieldsHandler() {
         nazvInp.hidden = true;
         budgInp.hidden = true;
         budgLab.hidden = true;
+        photoLab.hidden = true;
+        photoInp.hidden = true;
     }
 }
 
@@ -79,7 +90,8 @@ function addUser() {
                     },
                     success: function (data) {
                         if (data === "ok") {
-                            document.getElementById("reg-ready").hidden = false;
+                           // document.getElementById("reg-ready").hidden = false;
+                            setPhoto(login);
                         } else {
                             document.getElementById("busy").hidden = false;
                         }
@@ -104,7 +116,8 @@ function addUser() {
                     },
                     success: function (data) {
                         if (data === "ok") {
-                            document.getElementById("reg-ready").hidden = false;
+                          //  document.getElementById("reg-ready").hidden = false;
+                            setPhoto(login);
                         } else {
                             document.getElementById("busy").hidden = false;
                         }
@@ -135,7 +148,9 @@ function addUser() {
                     },
                     success:  function (data) {
                         if (data === "ok") {
-                            document.getElementById("reg-ready").hidden = false; } else {
+                        //    document.getElementById("reg-ready").hidden = false;
+                            setPhoto(login);
+                        } else {
                             document.getElementById("busy").hidden = false;
                         }
                     }
@@ -144,6 +159,30 @@ function addUser() {
             }
     }
 
+}
+
+
+
+function newFile(event) {
+    files = event.target.files;
+}
+
+function setPhoto(login) {
+
+    let data = new FormData();
+    data.append("file",files[0]);
+    data.append("login", login);
+
+        $.ajax({
+            url : "/admin/addPhoto",
+            data: data,
+            type : "POST",
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType:false,
+            success:  function (data) {
+                document.getElementById("reg-ready").hidden = false;
+            }});
 }
 
 function addRace() {
