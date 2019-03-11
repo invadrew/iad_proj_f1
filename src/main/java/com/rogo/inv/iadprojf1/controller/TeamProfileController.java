@@ -45,6 +45,8 @@ public class TeamProfileController {
     @RequestMapping(value = "/team", method = RequestMethod.GET)
     public String toTeamProfile(ModelMap map, Authentication authentication, @Param("id") Integer id) {
 
+        map.addAttribute("myPhoto", userService.findByLogin(authentication.getName()).getPhoto().getPath());
+
         User user = userService.findByLogin(authentication.getName());
 
         String name = "Панель администратора";

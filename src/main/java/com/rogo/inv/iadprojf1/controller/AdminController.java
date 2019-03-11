@@ -12,11 +12,9 @@ import org.springframework.security.crypto.password.Md4PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
@@ -61,6 +59,9 @@ public class AdminController {
 
     @Autowired
     private RaceRegistrationService raceRegistrationService;
+
+    @Autowired
+    private PhotoService photoService;
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String toAdminPanel(ModelMap map) {
@@ -124,7 +125,7 @@ public class AdminController {
         if (ifExists != null) { return "exists"; }
 
         Md4PasswordEncoder passwordEncoder = new Md4PasswordEncoder();
-        User user = new User(login, passwordEncoder.encode(password), User.Spec.SPONSOR, null, AcceptStatus.ACCEPTED, null);
+        User user = new User(login, passwordEncoder.encode(password), User.Spec.SPONSOR, photoService.findById(1), AcceptStatus.ACCEPTED, null);
         userService.save(user);
 
         Sponsor sponsor = new Sponsor(user.getId(), user, name, budget, null);
@@ -145,7 +146,7 @@ public class AdminController {
         if (ifExists != null) { return "exists"; }
 
         Md4PasswordEncoder passwordEncoder = new Md4PasswordEncoder();
-        User user = new User(login, passwordEncoder.encode(password), User.Spec.ADMIN, null, AcceptStatus.ACCEPTED, null);
+        User user = new User(login, passwordEncoder.encode(password), User.Spec.ADMIN, photoService.findById(1), AcceptStatus.ACCEPTED, null);
         userService.save(user);
 
         return "ok";
@@ -182,7 +183,7 @@ public class AdminController {
         }
 
         Md4PasswordEncoder passwordEncoder = new Md4PasswordEncoder();
-        User user = new User(login, passwordEncoder.encode(password), spec, null, AcceptStatus.ACCEPTED, null);
+        User user = new User(login, passwordEncoder.encode(password), spec, photoService.findById(1), AcceptStatus.ACCEPTED, null);
         userService.save(user);
 
         if (spec.equals(User.Spec.MANAGER)) {
@@ -300,13 +301,20 @@ public class AdminController {
     public void setPhoto(@RequestParam("file") MultipartFile multipartFile, @RequestParam("login") String login) {
 
         StringBuilder fileNames = new StringBuilder();
-            Path fileNameAndPath = Paths.get(uploadDirectory, multipartFile.getOriginalFilename());
-            fileNames.append(multipartFile.getOriginalFilename()+" ");
-            try {
-                Files.write(fileNameAndPath, multipartFile.getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        Path fileNameAndPath = Paths.get(uploadDirectory, multipartFile.getOriginalFilename());
+        fileNames.append(multipartFile.getOriginalFilename() + " ");
+        try {
+            Files.write(fileNameAndPath, multipartFile.getBytes());
+
+            User user = userService.findByLogin(login);
+            Photo photo = new Photo("/pictures/" + multipartFile.getOriginalFilename());
+            photoService.save(photo);
+            user.setPhoto(photo);
+            userService.save(user);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 

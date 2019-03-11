@@ -45,6 +45,8 @@ public class RaceRegController {
     @RequestMapping(value = "/race-reg", method = RequestMethod.GET)
     public String toRaceRegPage(ModelMap map, Authentication authentication) {
 
+        map.addAttribute("myPhoto", userService.findByLogin(authentication.getName()).getPhoto().getPath());
+
         User user = userService.findByLogin(authentication.getName());
 
         String name = "Панель администратора";

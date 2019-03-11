@@ -50,6 +50,8 @@ public class DetailAddController {
     @RequestMapping(value = "/add_detail", method = RequestMethod.GET)
     public String toGarage(ModelMap map, Authentication authentication) {
 
+        map.addAttribute("myPhoto", userService.findByLogin(authentication.getName()).getPhoto().getPath());
+
         User user = userService.findByLogin(authentication.getName());
         Team team = teamMemberService.findByUserId(user.getId()).getTeam();
 

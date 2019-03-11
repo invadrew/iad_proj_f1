@@ -73,6 +73,8 @@ public class ProfileController {
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public String toProfile(ModelMap map, Authentication authentication, @Param("id") Integer id) {
 
+        map.addAttribute("myPhoto", userService.findByLogin(authentication.getName()).getPhoto().getPath());
+
         User user;
 
         if (id != null) {
@@ -80,6 +82,8 @@ public class ProfileController {
         } else {
             user = userService.findByLogin(authentication.getName());
         }
+
+        map.addAttribute("userPhoto",user.getPhoto().getPath());
 
         map.addAttribute("user",user);
 

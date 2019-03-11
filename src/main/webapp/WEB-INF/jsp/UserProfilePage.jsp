@@ -18,7 +18,7 @@
             <div class="inside_block_wrapper">
                 <div class="infotab">
                     <div class="pic-container">
-                        <img src="/pictures/rogoVK.jpg">
+                        <img src="${userPhoto}">
                     </div>
                 </div>
         </div>

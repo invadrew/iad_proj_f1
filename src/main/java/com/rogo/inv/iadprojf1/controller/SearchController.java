@@ -41,6 +41,8 @@ public class SearchController {
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public String toSearch(ModelMap map, Authentication authentication, @RequestParam String toSearch, HttpServletRequest request, HttpServletResponse response) {
 
+        map.addAttribute("myPhoto", userService.findByLogin(authentication.getName()).getPhoto().getPath());
+
         User user = userService.findByLogin(authentication.getName());
 
         String name = "Панель администратора";

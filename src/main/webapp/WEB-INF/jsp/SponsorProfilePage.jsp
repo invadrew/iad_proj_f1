@@ -21,7 +21,7 @@
         <div class="inside_block_wrapper" style="height: 95%">
             <div class="infotab" style="height: 93.5%">
                 <div class="pic-container">
-                    <img src="/pictures/MonsterEnergy.jpeg">
+                    <img src="${spPhoto}">
                 </div>
             </div>
         </div>

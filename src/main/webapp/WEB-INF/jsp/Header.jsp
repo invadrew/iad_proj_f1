@@ -18,7 +18,7 @@
     </div>
     <div class="UserPhoto-container">
         <sec:authorize access="!(hasAuthority('ADMIN'))">
-            <img src="/pictures/rogoVK.jpg">
+            <img src="${myPhoto}">
         </sec:authorize>
     </div>
 </div>

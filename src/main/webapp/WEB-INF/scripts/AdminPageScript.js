@@ -169,6 +169,8 @@ function newFile(event) {
 
 function setPhoto(login) {
 
+    if (files[0] != null) {
+
     let data = new FormData();
     data.append("file",files[0]);
     data.append("login", login);
@@ -183,6 +185,10 @@ function setPhoto(login) {
             success:  function (data) {
                 document.getElementById("reg-ready").hidden = false;
             }});
+        }
+        else {
+        document.getElementById("reg-ready").hidden = false;
+    }
 }
 
 function addRace() {

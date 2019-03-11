@@ -8,7 +8,6 @@ html, body, .grid-container { height: 100%; margin: 0; background-color: #2f2727
 .grid-container {
     font: 20pt "Courier New", Courier, monospace;
     background-color: #2f2727;
-    display: grid;
     grid-template-columns: 0.6fr 1.3fr 1.5fr 0.6fr;
     grid-template-rows: 0.3fr 0.2fr 1fr 2.5fr;
     grid-template-areas: "Header Header Header Header" "HeaderMenu HeaderMenu HeaderMenu HeaderMenu" "MainArea MainArea MainArea MainArea" "MainArea MainArea MainArea MainArea";
@@ -73,4 +72,11 @@ html, body, .grid-container { height: 100%; margin: 0; background-color: #2f2727
     overflow: auto;
     width: 45%;
     margin: 2.5%;
+}
+
+@media only screen  and (max-device-width: 750px) {
+    .MainArea {
+        display: flex !important;
+        flex-direction: column;
+    }
 }

@@ -41,6 +41,8 @@ public class SponsorController {
     @RequestMapping(value = "/sponsor", method = RequestMethod.GET)
     public String toSponsorPage(ModelMap map, Authentication authentication, @Param("id") Integer id) {
 
+        map.addAttribute("myPhoto", userService.findByLogin(authentication.getName()).getPhoto().getPath());
+
         Sponsor sponsor;
 
         if (id != null) {
@@ -48,6 +50,8 @@ public class SponsorController {
         } else {
             sponsor = sponsorService.findByUserId(userService.findByLogin(authentication.getName()).getId());
         }
+
+        map.addAttribute("spPhoto", userService.findById(sponsor.getUserId()).getPhoto().getPath());
 
         map.addAttribute("userName", userService.findById(sponsorService.findByUserId(sponsor.getUserId()).getUserId()).getLogin());
         map.addAttribute("sponsor", sponsor);

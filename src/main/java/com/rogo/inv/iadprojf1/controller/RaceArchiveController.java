@@ -39,6 +39,8 @@ public class RaceArchiveController {
     @RequestMapping(value = "/race-res", method = RequestMethod.GET)
     public String toRaceResPage(ModelMap map, Authentication authentication) {
 
+        map.addAttribute("myPhoto", userService.findByLogin(authentication.getName()).getPhoto().getPath());
+
         User user = userService.findByLogin(authentication.getName());
 
         String name = "Панель администратора";
