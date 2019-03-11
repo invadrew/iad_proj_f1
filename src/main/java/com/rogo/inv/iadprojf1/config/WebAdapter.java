@@ -12,7 +12,7 @@ public class WebAdapter extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/WEB-INF/jsp/**").addResourceLocations("/WEB-INF/jsp/");
-        registry.addResourceHandler("/pictures/**").addResourceLocations("classpath:pictures/");
+        registry.addResourceHandler("/pictures/**").addResourceLocations("file:/home/dell/IdeaProjects/iad_proj_f1/src/main/resources/pictures/");
         registry.addResourceHandler("/styles/**").addResourceLocations("/WEB-INF/styles/");
         registry.addResourceHandler("/scripts/**").addResourceLocations("/WEB-INF/scripts/");
     }

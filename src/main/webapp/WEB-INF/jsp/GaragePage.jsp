@@ -42,7 +42,7 @@
 
                         <div class="infotab">
                             <center><h3>Фильтр</h3></center>
-                          <!--   <form> -->
+
                                 <label for="compType">Тип</label>
                                 <select class="res-selector" id="compType" style="width: 70% !important;" onchange="chooseFilter()">
                                     <option selected value="any">Любой</option>
@@ -52,8 +52,6 @@
                                     <option value="electronics">Электроника</option>
                                 </select>
 
-                              <!--  <input type="submit" value="Показать" class="res-selector" style="margin-top: 7%">
-                            </form> -->
                         </div>
 
                             <div class="infotab" id="carcase_filter" hidden>
@@ -312,7 +310,7 @@
                             <div class="inside_block_wrapper" style="background: #2f2727">
                                 <div class="infotab">
                             <div style="width: 50%; height: 50%; position: relative; margin-left: 25%; margin-right: 25%">
-                            <img src="/pictures/CarDemo.jpg" style="width: 100%; height: 100%;">
+                            <img src="${carPhotos.get(cars.indexOf(car)).path}" style="width: 100%; height: 100%;">
                             </div>
                                 </div>
                             </div>

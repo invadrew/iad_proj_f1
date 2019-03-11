@@ -79,6 +79,7 @@ public class GarageController {
             List<EngineStorage> engines = new ArrayList<>();
             List<CarcaseStorage> carcases = new ArrayList<>();
             List<ElectronicsStorage> electronics = new ArrayList<>();
+            List<Photo> carPhotos = new ArrayList<>();
             List<Car> carList = new ArrayList<>();
 
             for (Car car : cars) {
@@ -90,6 +91,7 @@ public class GarageController {
                     engines.add(car.getCurrentEngine());
                     carcases.add(car.getCurrentCarcase());
                     electronics.add(car.getCurrentElectronics());
+                    carPhotos.add(car.getPhoto());
                 }
             }
 
@@ -99,6 +101,7 @@ public class GarageController {
             map.addAttribute("engines", engines);
             map.addAttribute("carcases", carcases);
             map.addAttribute("electronics", electronics);
+            map.addAttribute("carPhotos", carPhotos);
 
             List<CarcaseStorage> acceptedCarc = new ArrayList<>();
 

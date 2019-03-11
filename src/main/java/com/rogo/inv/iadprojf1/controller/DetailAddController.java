@@ -12,16 +12,24 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 @Controller
 public class DetailAddController {
+
+    public static String uploadDirectory = System.getProperty("user.dir")+"/src/main/resources/pictures";
 
     @Autowired
     private UserService userService;
@@ -46,6 +54,9 @@ public class DetailAddController {
 
     @Autowired
     private ElectronicsStorageService electronicsStorageService;
+
+    @Autowired
+    private PhotoService photoService;
 
     @RequestMapping(value = "/add_detail", method = RequestMethod.GET)
     public String toGarage(ModelMap map, Authentication authentication) {
@@ -141,11 +152,12 @@ public class DetailAddController {
 
         Car car = new Car(label,model, Calendar.getInstance().get(Calendar.YEAR),
                 teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId()),
-                null, Boolean.TRUE, carcaseStorageService.findById(carcase), engineStorageService.findById(engine), chassisStorageService.findById(chassis),
+                photoService.findById(2), Boolean.TRUE, carcaseStorageService.findById(carcase), engineStorageService.findById(engine), chassisStorageService.findById(chassis),
                 electronicsStorageService.findById(electronics), status, currConstrU);
 
         car.setStatus(status);
         car.setSender(currConstrU);
+        car.setPhoto(photoService.findById(2));
         car.setCurrentElectronics(electronicsStorageService.findById(electronics));
         car.setCurrentCarcase(carcaseStorageService.findById(carcase));
         car.setCurrentChassis(chassisStorageService.findById(chassis));
@@ -158,6 +170,55 @@ public class DetailAddController {
 
         carService.save(car);
 
+    }
+
+    @RequestMapping(value = "/add_detail/addCarWithPhoto", method = RequestMethod.POST)
+    @ResponseBody
+    public void addCarWithPhoto(@RequestParam("file") MultipartFile multipartFile , @RequestParam("label") String label,
+                                @RequestParam("model") String model, @RequestParam("carcase") Integer carcase,
+                                @RequestParam("chassis") Integer chassis, @RequestParam("engine") Integer engine,
+                                @RequestParam("electronics") Integer electronics, Authentication authentication) {
+
+
+        User currConstrU = userService.findByLogin(authentication.getName());
+        TeamMember currConstrTm = teamMemberService.findByUserId(currConstrU.getId());
+        AcceptStatus status;
+
+        if (currConstrTm.getCanBuy()) { status = AcceptStatus.ACCEPTED; } else { status = AcceptStatus.ON_REVIEW; }
+
+        StringBuilder fileNames = new StringBuilder();
+        Path fileNameAndPath = Paths.get(uploadDirectory, multipartFile.getOriginalFilename());
+        fileNames.append(multipartFile.getOriginalFilename() + " ");
+
+        try {
+            Files.write(fileNameAndPath, multipartFile.getBytes());
+
+            Photo photo = new Photo("/pictures/" + multipartFile.getOriginalFilename());
+            photoService.save(photo);
+
+            Car car = new Car(label, model, Calendar.getInstance().get(Calendar.YEAR),
+                    teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId()),
+                    photo, Boolean.TRUE, carcaseStorageService.findById(carcase), engineStorageService.findById(engine), chassisStorageService.findById(chassis),
+                    electronicsStorageService.findById(electronics), status, currConstrU);
+
+            car.setStatus(status);
+            car.setSender(currConstrU);
+            car.setPhoto(photo);
+            car.setCurrentElectronics(electronicsStorageService.findById(electronics));
+            car.setCurrentCarcase(carcaseStorageService.findById(carcase));
+            car.setCurrentChassis(chassisStorageService.findById(chassis));
+            car.setCurrentEngine(engineStorageService.findById(engine));
+            car.setModel(model);
+            car.setLabel(label);
+            car.setCreationYear(Calendar.getInstance().get(Calendar.YEAR));
+            car.setTeam(teamService.findById(teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam().getId()));
+            car.setIsReady(Boolean.TRUE);
+
+            carService.save(car);
+
+        } catch (IOException c) {
+            c.printStackTrace();
+        }
     }
 
     @RequestMapping(value = "/add_detail/addCarcase", method = RequestMethod.POST)

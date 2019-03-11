@@ -77,6 +77,9 @@
                     </c:if>
                 </select>
                 <br>
+                <label id="photo-label"> Фото: </label>
+                <input type="file" id="photo" accept="image/*" class="res-selector" style="width: 42% !important;" onchange="newFile(event)">
+                <br>
                 <input type="button" value="Добавить" class="res-selector" onclick="addCar()">
                 <br>
                 <label id="carOk" hidden> Готово </label>

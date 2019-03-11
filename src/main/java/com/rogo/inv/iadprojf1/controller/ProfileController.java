@@ -506,17 +506,17 @@ public class ProfileController {
                List<String> myElectronicsConfirmInfo = new ArrayList<>();
 
                for (ElectronicsStorage electronics : myElectronics) {
-                   String info = "Электроника: тел. " + electronics.getTelemetry() + " контр. система"  + electronics.getControlSystem() + " всё ещё на рассмотрении";
+                   String info = "Электроника: тел. " + electronics.getTelemetry() + " контр. система "  + electronics.getControlSystem() + " всё ещё на рассмотрении";
                    if (electronics.getStatus().equals(AcceptStatus.ACCEPTED)) {
                        if (electronics.getComment() != null) {
-                           info = "Электроника: тел. " + electronics.getTelemetry() + " контр. система"  + electronics.getControlSystem() + " одобрен. Комментарий: " + electronics.getComment(); } else {
-                           info = "Электроника: тел. " + electronics.getTelemetry() + " контр. система"  + electronics.getControlSystem() + " одобрен.";
+                           info = "Электроника: тел. " + electronics.getTelemetry() + " контр. система "  + electronics.getControlSystem() + " одобрен. Комментарий: " + electronics.getComment(); } else {
+                           info = "Электроника: тел. " + electronics.getTelemetry() + " контр. система "  + electronics.getControlSystem() + " одобрен.";
                        }
                    }
                    if (electronics.getStatus().equals(AcceptStatus.REFUSED)) {
                        if (electronics.getComment() != null) {
-                           info ="Электроника: тел. " + electronics.getTelemetry() + " контр. система"  + electronics.getControlSystem() + " не одобрен. Комментарий: " + electronics.getComment(); } else {
-                           info ="Электроника: тел. " + electronics.getTelemetry() + " контр. система"  + electronics.getControlSystem() + " не одобрен.";
+                           info ="Электроника: тел. " + electronics.getTelemetry() + " контр. система "  + electronics.getControlSystem() + " не одобрен. Комментарий: " + electronics.getComment(); } else {
+                           info ="Электроника: тел. " + electronics.getTelemetry() + " контр. система "  + electronics.getControlSystem() + " не одобрен.";
                        }
                    }
                    myElectronicsConfirmInfo.add(info);
@@ -530,9 +530,12 @@ public class ProfileController {
 
         try {
 
-            if (userService.findByLogin(authentication.getName()).getStatus().equals(AcceptStatus.ACCEPTED)) map.addAttribute("teamMess", "Вашу завяку в команду одобрили");
-            if (userService.findByLogin(authentication.getName()).getStatus().equals(AcceptStatus.ON_REVIEW)) map.addAttribute("teamMess", "Ваша заявка в команду ещё на рассмотрении");
-            if (userService.findByLogin(authentication.getName()).getStatus().equals(AcceptStatus.REFUSED)) map.addAttribute("teamMess", "Ваша заявка в команде отозвана");
+            if (userService.findByLogin(authentication.getName()).getStatus().equals(AcceptStatus.ACCEPTED)
+                    && teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam() != null) map.addAttribute("teamMess", "Вашу завяку в команду одобрили");
+            if (userService.findByLogin(authentication.getName()).getStatus().equals(AcceptStatus.ON_REVIEW)
+                    && teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam() != null) map.addAttribute("teamMess", "Ваша заявка в команду ещё на рассмотрении");
+            if (userService.findByLogin(authentication.getName()).getStatus().equals(AcceptStatus.REFUSED)
+                    && teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam() != null) map.addAttribute("teamMess", "Ваша заявка в команде отозвана");
 
         } catch (NullPointerException x) { }
 

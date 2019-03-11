@@ -1,4 +1,6 @@
 
+var files = [];
+
 window.onload = function (ev) {
      carcBlock = document.getElementById("carcAddArea");
      chBlock = document.getElementById("chasAddArea");
@@ -56,27 +58,59 @@ function addCar() {
             document.getElementById("carFail").hidden = false;
         } else {
 
-            $.ajax({
-                type: "POST",
-                url: "/add_detail/addCar",
-                data: {
-                    "label" : label,
-                    "model" : model,
-                    "carcase" : carcase,
-                    "chassis" : chassis,
-                    "engine" : engine,
-                    "electronics" : electronics
-                },
-                success: function (data) {
-                    document.getElementById("carOk").hidden = false;
-                    location.reload();
-                }
-            });
+            if (files[0] == null) {
 
+                $.ajax({
+                    type: "POST",
+                    url: "/add_detail/addCar",
+                    data: {
+                        "label": label,
+                        "model": model,
+                        "carcase": carcase,
+                        "chassis": chassis,
+                        "engine": engine,
+                        "electronics": electronics
+                    },
+                    success: function (data) {
+                        document.getElementById("carOk").hidden = false;
+                        location.reload();
+                    }
+                });
+            } else {
+
+                let data = new FormData();
+                data.append("file",files[0]);
+                data.append("label", label);
+                data.append("model", model);
+                data.append("carcase", carcase);
+                data.append("chassis", chassis);
+                data.append("engine", engine);
+                data.append("electronics", electronics);
+
+                $.ajax({
+                    url : "/add_detail/addCarWithPhoto",
+                    data: data,
+                    type : "POST",
+                    enctype: 'multipart/form-data',
+                    processData: false,
+                    contentType:false,
+                    success:  function (data) {
+                        document.getElementById("carOk").hidden = false;
+                        location.reload();
+                    }});
+
+            }
         }
     }
 
 }
+
+function newFile(event) {
+    files = event.target.files;
+}
+
+
+
 
 
 function addCarcase(budget) {
