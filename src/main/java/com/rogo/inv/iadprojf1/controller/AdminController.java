@@ -189,6 +189,8 @@ public class AdminController {
         if (spec.equals(User.Spec.MANAGER)) {
 
             TeamMember teamMember = new TeamMember(user.getId(), user, name, surname, true, null);
+            user.setBuyStatus(AcceptStatus.ACCEPTED);
+            userService.save(user);
             teamMemberService.save(teamMember);
 
         } else {

@@ -161,6 +161,8 @@ public class TeamProfileController {
         User user = userService.findByLogin(authentication.getName());
         TeamMember teamMember = teamMemberService.findByUserId(user.getId());
         teamMember.setTeam(null);
+        user.setBuyStatus(null);
+        teamMember.setCanBuy(false);
         teamMemberService.save(teamMember);
     }
 

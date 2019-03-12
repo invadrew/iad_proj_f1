@@ -288,7 +288,7 @@ public class ProfileController {
              List<Object[]> requestsToGiveBuyInfo = new ArrayList<>();
 
              for (Object[] mem: toBeGivenBuy) {
-                 if (mem[3].equals("ON_REVIEW")) {
+                 if ( userService.findById((Integer) mem[0]).getBuyStatus() != null && userService.findById((Integer) mem[0]).getBuyStatus().equals(AcceptStatus.ON_REVIEW)) {
                      requestsToGiveBuyInfo.add(mem);
                  }
              }
@@ -407,9 +407,13 @@ public class ProfileController {
                        }
                    }
                    if (car.getStatus().equals(AcceptStatus.REFUSED)) {
-                       if (car.getComment() != null) {
-                           info = "Болид " + car.getLabel() + " " + car.getModel() + " не одобрен. Комментарий: " + car.getComment(); } else {
+                       if (!car.getIfDismantled()) {
+                           if (car.getComment() != null) { info = "Болид " + car.getLabel() + " " + car.getModel() + " не одобрен. Комментарий: " + car.getComment(); } else {
                            info = "Болид " + car.getLabel() + " " + car.getModel() + " не одобрен.";
+                       }
+                       }
+                       if ( car.getIfDismantled()) {
+                           info = "Болид " + car.getLabel() + " " + car.getModel() + " разобран.";
                        }
                    }
                    myCarsConfirmInfo.add(info);
@@ -596,6 +600,8 @@ public class ProfileController {
         Integer userId = Integer.parseInt(request.getParameter("user"));
         TeamMember candidate = teamMemberService.findByUserId(userId);
         candidate.setCanBuy(true);
+        User cand = userService.findById(userId);
+        cand.setBuyStatus(AcceptStatus.ACCEPTED);
         teamMemberService.save(candidate);
 
     }
@@ -756,6 +762,7 @@ public class ProfileController {
         toBeKickedU.setStatus(AcceptStatus.REFUSED);
         toBeKickedTm.setTeam(null);
         toBeKickedTm.setCanBuy(false);
+        toBeKickedU.setBuyStatus(null);
 
         userService.save(toBeKickedU);
         teamMemberService.save(toBeKickedTm);

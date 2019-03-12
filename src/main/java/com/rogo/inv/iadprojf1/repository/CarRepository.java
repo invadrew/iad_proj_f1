@@ -51,7 +51,7 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
     int updElectronics(@Param("elec") ElectronicsStorage elec, @Param("car") Integer car);
 
     @Modifying(clearAutomatically = true)
-    @Query("UPDATE Car t SET t.status = 'REFUSED', t.currentElectronics = NULL, t.currentEngine = NULL, t.currentChassis = NULL, t.currentCarcase = NULL WHERE t.id = :car")
+    @Query("UPDATE Car t SET t.status = 'REFUSED', t.ifDismantled = true, t.currentElectronics = NULL, t.currentEngine = NULL, t.currentChassis = NULL, t.currentCarcase = NULL WHERE t.id = :car")
     int refuseCar( @Param("car") Integer car);
 
 }

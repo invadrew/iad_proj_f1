@@ -97,6 +97,9 @@ public class Car {
     @Column(name = "comment")
     private String comment;
 
+    @Column(name = "if_dismantled")
+    private Boolean ifDismantled = false;
+
     /* ================================
      constructors
     ================================ */
