@@ -11,9 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 public class RaceTimeMechanicController {
@@ -55,6 +57,20 @@ public class RaceTimeMechanicController {
 
         return "RacetimeMechanicPage";
 
+    }
+
+    @RequestMapping(value ="/raceTime-mechanic/time", method = RequestMethod.GET)
+    @ResponseBody
+    public String getRaceTime() {
+        List<Object[]> currRace = raceService.getCurrentEvent();
+        Race race = raceService.findById((Integer) currRace.get(0)[6]);
+        Date start = race.getDateTime();
+        Date now = new Date();
+        long current = start.getTime() - now.getTime();
+        long diffSeconds = (-1)*current / 1000 % 60;
+        long diffMinutes = (-1)*current / (60 * 1000) % 60;
+        long diffHours = (-1) * current / (60 * 60 * 1000);
+        return diffHours + ":" + diffMinutes + ":" + diffSeconds;
     }
 
 

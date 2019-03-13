@@ -29,7 +29,7 @@
         <div class="RaceTimeArea">
             <div class="inside_block_wrapper" id="timeWrapper">
                 <div class="infotab" id="timeBlock">
-                    <label>Тут в общем должно быть время гонки</label>
+                    Время гонки: <label id="time"></label>
                 </div>
             </div>
         </div>
@@ -207,3 +207,8 @@
     </div>
     </c:if>
 </div>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script type="text/javascript" src="../scripts/RacersScript.js"></script>
+<script type="text/javascript" src="../scripts/RaceTimeScript.js"></script>
+</body>
+</html>
