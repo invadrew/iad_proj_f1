@@ -54,6 +54,7 @@
             </div>
             <div class="infotab">
                 <center><h3>Объявление гонки</h3></center>
+                <c:if test="${ifFinished}">
                 Текущий сезон: ${currSeason.year}
                 <br><br>
                 <form>
@@ -79,6 +80,11 @@
                     <label id="race-error" hidden> Не все поля заполнены </label>
                     <label id="too-early" hidden> Выбранная дата неактуальна </label>
                 </form>
+                </c:if>
+                <c:if test="${!ifFinished}">
+                    Гонка уже объявлена, идет регистрация
+                    <br> <br>
+                </c:if>
             </div>
             <div class="infotab">
                 <center><h3>Запросы на создание команд</h3></center>

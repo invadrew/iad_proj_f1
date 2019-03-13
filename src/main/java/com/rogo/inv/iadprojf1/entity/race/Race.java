@@ -41,6 +41,9 @@ public class Race {
     @NotNull @Column(length = 30)
     private String track;
 
+    @Column(name = "if_finished")
+    private Boolean ifFinished = false;
+
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "race_result")
 //    private List<RaceResult> raceResults = new ArrayList<>();
 //

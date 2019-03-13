@@ -80,6 +80,11 @@ public class AdminController {
         map.addAttribute("teamsOnReview",revTeams);
 
         Race currentRace = raceService.findTopByOrderByDateTimeDesc();
+        if (currentRace.getIfFinished()) {
+            map.addAttribute("ifFinished", true);
+        } else {
+            map.addAttribute("ifFinished", false);
+        }
         List<RaceRegistration> allRegs = raceRegistrationService.findAllByRace(currentRace);
         List<Object[]> regsOnReview = new ArrayList<>();
 

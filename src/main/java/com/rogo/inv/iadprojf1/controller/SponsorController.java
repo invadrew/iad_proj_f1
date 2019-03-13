@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
@@ -40,6 +41,8 @@ public class SponsorController {
 
     @RequestMapping(value = "/sponsor", method = RequestMethod.GET)
     public String toSponsorPage(ModelMap map, Authentication authentication, @Param("id") Integer id) {
+
+        map.addAttribute("currUserSpec", userService.findByLogin(authentication.getName()).getSpec().toString());
 
         map.addAttribute("myPhoto", userService.findByLogin(authentication.getName()).getPhoto().getPath());
 
@@ -136,6 +139,19 @@ public class SponsorController {
         return 1; } catch (Exception ex) {
             return 0;
         }
+    }
+
+    @RequestMapping(value = "/sponsor/admin", method = RequestMethod.POST)
+    @ResponseBody
+    public void spSponsor(HttpServletRequest request) {
+
+        Integer spId = Integer.parseInt(request.getParameter("sponsor"));
+        Sponsor sponsor = sponsorService.findByUserId(spId);
+        Double money = Double.parseDouble(request.getParameter("money"));
+
+        sponsor.setBudget(sponsor.getBudget() + money);
+        sponsorService.save(sponsor);
+
     }
 
 

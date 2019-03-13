@@ -61,3 +61,23 @@ function sendNewTeam(sId) {
     });
 
 }
+
+
+function addMoneyToSponse(id) {
+
+    let money = $('#spMoneyAdd').val();
+
+    $.ajax({
+        type : "POST",
+        url : "/sponsor/admin",
+        data : {
+            "sponsor" : id,
+            "money" : money
+        },
+        success: function(data) {
+                document.getElementById("adm-ready").hidden = false;
+                location.reload();
+        }
+    });
+
+}

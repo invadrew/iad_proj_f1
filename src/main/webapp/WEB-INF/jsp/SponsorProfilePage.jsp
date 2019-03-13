@@ -35,6 +35,14 @@
                     Спонсировано команд: ${teamCount}
                     <br> <br>
                     Суммарно потрачено: ${sumMoney}
+                    <c:if test="${currUserSpec.equals('ADMIN')}">
+                        <br> <br>
+                        <label for="spMoneyAdd">Пополнить счёт</label><br>
+                        <input type="number" class="res-selector" value="1" min="1" id="spMoneyAdd">
+                        <input type="button" class="res-selector"  value="Отправить" onclick="addMoneyToSponse(${sponsor.userId})">
+                        <br>
+                        <label hidden id="adm-ready">Готово</label>
+                    </c:if>
                 </div>
             </div>
         </div>
@@ -62,7 +70,7 @@
                             <input type="hidden" value="${sponsor.budget}" id="allMoney">
                             <input type="hidden" value="${sponsor.userId}" id="spId${sponsor.userId}">
                             <label for="moneySp${sponsoring[1]}">Спонсировать</label>
-                            <input type="number" class="res-selector" id="moneySp${sponsoring[1]}" >
+                            <input type="number" class="res-selector" value="0" min="0" id="moneySp${sponsoring[1]}" >
                             <input type="button" class="res-selector" value="Перевести" onclick="sendMoney(${sponsoring[1]}, ${sponsor.userId})">
                             <br>
                             <label id="notEnough${sponsoring[1]}" hidden> Недостаточно денег </label>
