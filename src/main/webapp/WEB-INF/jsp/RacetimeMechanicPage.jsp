@@ -36,33 +36,17 @@
                 </div>
             </div>
 
+            <c:forEach items="${pitStopPlaces}" var="place">
             <div class="pit-stop-place-condition">
                 <div class="inside_block_wrapper">
                     <div class="infotab">
-                        <label style="text-decoration: underline">Пит-стоп: А</label> <br> <br>
-                        <label>Шины: Жесткие х4, Мягкие х8 </label> <br>
-                        <label>Топливо: 300 литров</label> <br> <br>
-                        <label class="details">Детали:</label> <br>
-                        <label class="details">  -------------- </label> <br>
-                        <label class="details"> --------------  </label><br>
-                        <label class="details"> -------------- </label>
+                        <label style="text-decoration: underline">Пит-стоп: ${place.name}</label> <br> <br>
+                        <label>Шины: Жесткие х${place.tough}, Мягкие х${place.soft} </label> <br>
+                        <label>Топливо: ${place.fuel} литров</label> <br> <br>
                     </div>
                 </div>
             </div>
-
-            <div class="pit-stop-place-condition">
-                <div class="inside_block_wrapper">
-                    <div class="infotab">
-                        <label style="text-decoration: underline">Пит-стоп: B</label> <br> <br>
-                        <label>Шины: Жесткие х1, Мягкие х9 </label> <br>
-                        <label>Топливо: 129 литров</label> <br> <br>
-                        <label class="details">Детали:</label> <br>
-                        <label class="details">  -------------- </label> <br>
-                        <label class="details"> --------------  </label><br>
-                        <label class="details"> -------------- </label>
-                    </div>
-                </div>
-            </div>
+            </c:forEach>
 
             <div class="pit-stop-transfer-area">
                 <div class="inside_block_wrapper">
@@ -71,11 +55,15 @@
                         <form>
                             <label for="place-from-transfer">Из</label>
                             <select class="res-selector" id="place-from-transfer">
-                                <option>A</option>
+                                <c:forEach items="${pitStopPlaces}" var="place">
+                                    <option ${place.id}>${place.name}</option>
+                                </c:forEach>
                             </select>
                             <label for="place-to-transfer">В</label>
                             <select class="res-selector" id="place-to-transfer">
-                                <option>B</option>
+                                <c:forEach items="${pitStopPlaces}" var="place">
+                                    <option ${place.id}>${place.name}</option>
+                                </c:forEach>
                             </select> <br>
                             <label for="item-transfer">Что перемещать:</label>
                             <select class="res-selector" id="item-transfer">
@@ -130,14 +118,38 @@
                 <div class="car-info">
                     <div class="inside_block_wrapper">
                         <div class="infotab">
-                            <label style="text-decoration: underline">Болид: Ferrari 488 pista spider</label>
+                            <label style="text-decoration: underline">Болид: ${firstCar.label} ${firstCar.model}</label>
                             <h3 style="text-align: center">Состояние болида</h3>
                             <label>Топливо: 32 литра</label> <br>
                             <label>Шины: Нормально</label> <br>
-                            <label>Каркас: Нормально</label> <br>
-                            <label>Шасси: Нормально</label> <br>
-                            <label>Двигатель: Нормально</label> <br>
-                            <label>Электроника: Нормально</label>
+                            <label>Каркас:
+                                <c:if test="${fCarcase.condition.toString().equals('PERFECT')}">Идеально</c:if>
+                                <c:if test="${fCarcase.condition.toString().equals('GOOD')}">Хорошо</c:if>
+                                <c:if test="${fCarcase.condition.toString().equals('NORMAL')}">Нормально</c:if>
+                                <c:if test="${fCarcase.condition.toString().equals('BAD')}">Плохо</c:if>
+                                <c:if test="${fCarcase.condition.toString().equals('AWFUL')}">Ужасно</c:if>
+                            </label> <br>
+                            <label>Шасси:
+                                <c:if test="${fChassis.condition.toString().equals('PERFECT')}">Идеально</c:if>
+                                <c:if test="${fChassis.condition.toString().equals('GOOD')}">Хорошо</c:if>
+                                <c:if test="${fChassis.condition.toString().equals('NORMAL')}">Нормально</c:if>
+                                <c:if test="${fChassis.condition.toString().equals('BAD')}">Плохо</c:if>
+                                <c:if test="${fChassis.condition.toString().equals('AWFUL')}">Ужасно</c:if>
+                            </label> <br>
+                            <label>Двигатель:
+                                <c:if test="${fEngine.condition.toString().equals('PERFECT')}">Идеально</c:if>
+                                <c:if test="${fEngine.condition.toString().equals('GOOD')}">Хорошо</c:if>
+                                <c:if test="${fEngine.condition.toString().equals('NORMAL')}">Нормально</c:if>
+                                <c:if test="${fEngine.condition.toString().equals('BAD')}">Плохо</c:if>
+                                <c:if test="${fEngine.condition.toString().equals('AWFUL')}">Ужасно</c:if>
+                            </label> <br>
+                            <label>Электроника:
+                                <c:if test="${fElectronics.condition.toString().equals('PERFECT')}">Идеально</c:if>
+                                <c:if test="${fElectronics.condition.toString().equals('GOOD')}">Хорошо</c:if>
+                                <c:if test="${fElectronics.condition.toString().equals('NORMAL')}">Нормально</c:if>
+                                <c:if test="${fElectronics.condition.toString().equals('BAD')}">Плохо</c:if>
+                                <c:if test="${fElectronics.condition.toString().equals('AWFUL')}">Ужасно</c:if>
+                            </label>
                             <br> <br>
                             <form>
                                 <label>Причина пит-стопа</label>
@@ -151,14 +163,38 @@
                 <div class="car-info">
                     <div class="inside_block_wrapper">
                         <div class="infotab">
-                            <label style="text-decoration: underline">Болид: Ferrari F40</label>
+                            <label style="text-decoration: underline">Болид: ${secondCar.label} ${secondCar.model}</label>
                             <h3 style="text-align: center">Состояние болида</h3>
                             <label>Топливо: 84 литра</label> <br>
                             <label>Шины: Нормально</label> <br>
-                            <label>Каркас: Нормально</label> <br>
-                            <label>Шасси: Нормально</label> <br>
-                            <label>Двигатель: Нормально</label> <br>
-                            <label>Электроника: Нормально</label>
+                            <label>Каркас:
+                                <c:if test="${sCarcase.condition.toString().equals('PERFECT')}">Идеально</c:if>
+                                <c:if test="${sCarcase.condition.toString().equals('GOOD')}">Хорошо</c:if>
+                                <c:if test="${sCarcase.condition.toString().equals('NORMAL')}">Нормально</c:if>
+                                <c:if test="${sCarcase.condition.toString().equals('BAD')}">Плохо</c:if>
+                                <c:if test="${sCarcase.condition.toString().equals('AWFUL')}">Ужасно</c:if>
+                            </label> <br>
+                            <label>Шасси:
+                                <c:if test="${sChassis.condition.toString().equals('PERFECT')}">Идеально</c:if>
+                                <c:if test="${sChassis.condition.toString().equals('GOOD')}">Хорошо</c:if>
+                                <c:if test="${sChassis.condition.toString().equals('NORMAL')}">Нормально</c:if>
+                                <c:if test="${sChassis.condition.toString().equals('BAD')}">Плохо</c:if>
+                                <c:if test="${sChassis.condition.toString().equals('AWFUL')}">Ужасно</c:if>
+                            </label> <br>
+                            <label>Двигатель:
+                                <c:if test="${sEngine.condition.toString().equals('PERFECT')}">Идеально</c:if>
+                                <c:if test="${sEngine.condition.toString().equals('GOOD')}">Хорошо</c:if>
+                                <c:if test="${sEngine.condition.toString().equals('NORMAL')}">Нормально</c:if>
+                                <c:if test="${sEngine.condition.toString().equals('BAD')}">Плохо</c:if>
+                                <c:if test="${sEngine.condition.toString().equals('AWFUL')}">Ужасно</c:if>
+                            </label> <br>
+                            <label>Электроника:
+                                <c:if test="${sElectronics.condition.toString().equals('PERFECT')}">Идеально</c:if>
+                                <c:if test="${sElectronics.condition.toString().equals('GOOD')}">Хорошо</c:if>
+                                <c:if test="${sElectronics.condition.toString().equals('NORMAL')}">Нормально</c:if>
+                                <c:if test="${sElectronics.condition.toString().equals('BAD')}">Плохо</c:if>
+                                <c:if test="${sElectronics.condition.toString().equals('AWFUL')}">Ужасно</c:if>
+                            </label>
                             <br> <br>
                             <form>
                                 <label>Причина пит-стопа</label>

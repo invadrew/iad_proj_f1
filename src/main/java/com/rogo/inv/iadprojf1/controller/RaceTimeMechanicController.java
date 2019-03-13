@@ -1,8 +1,11 @@
 package com.rogo.inv.iadprojf1.controller;
 
+import com.rogo.inv.iadprojf1.entity.Car;
 import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.User;
+import com.rogo.inv.iadprojf1.entity.pitstop.PitStopPlace;
 import com.rogo.inv.iadprojf1.entity.race.Race;
+import com.rogo.inv.iadprojf1.entity.race.RaceRegistration;
 import com.rogo.inv.iadprojf1.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -35,6 +38,12 @@ public class RaceTimeMechanicController {
     @Autowired
     private PhotoService photoService;
 
+    @Autowired
+    private PitStopPlaceService pitStopPlaceService;
+
+    @Autowired
+    private RaceRegistrationService raceRegistrationService;
+
     @RequestMapping(value = "/raceTime-mechanic", method = RequestMethod.GET)
     public String toRace(ModelMap map, Authentication authentication, @Param("id") Integer id) {
 
@@ -49,10 +58,36 @@ public class RaceTimeMechanicController {
         map.addAttribute("raceDateTime", race.getDateTime());
         Date now = new Date();
 
+        RaceRegistration registration = raceRegistrationService.findById(team,race);
+
         if (race.getDateTime().after(now)) {
             map.addAttribute("ifStarted", false);
         } else {
             map.addAttribute("ifStarted", true);
+
+            List<PitStopPlace> places = pitStopPlaceService.findAllByTeam(team);
+            map.addAttribute("pitStopPlaces", places);
+
+            Car firstCar = registration.getFirstCar();
+            map.addAttribute("firstCar", firstCar);
+
+            Car secondCar = registration.getSecondCar();
+            map.addAttribute("secondCar", secondCar);
+
+            try {
+                map.addAttribute("fCarcase", firstCar.getCurrentCarcase());
+                map.addAttribute("fChassis", firstCar.getCurrentChassis());
+                map.addAttribute("fEngine", firstCar.getCurrentEngine());
+                map.addAttribute("fElectronics", firstCar.getCurrentElectronics());
+
+                map.addAttribute("sCarcase", secondCar.getCurrentCarcase());
+                map.addAttribute("sChassis", secondCar.getCurrentChassis());
+                map.addAttribute("sEngine", secondCar.getCurrentEngine());
+                map.addAttribute("sElectronics", secondCar.getCurrentElectronics());
+
+            } catch (NullPointerException x) {}
+
+
         }
 
         return "RacetimeMechanicPage";
