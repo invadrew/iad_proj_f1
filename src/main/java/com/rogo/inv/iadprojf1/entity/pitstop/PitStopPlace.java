@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "pit_stop_places")
-@ToString @EqualsAndHashCode @NoArgsConstructor
+@Data @ToString @EqualsAndHashCode @NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class PitStopPlace {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -16,14 +16,21 @@
         <br>
         <center><label style="padding-top: 3px" ><b>${team.name}</b></label></center>
     </div>
-    <c:if test="${!ifStarted}">
+    <c:if test="${!isRegistrated}">
+        <label style="color: white; text-align: center">
+            <br> <br> <br>
+            Вас не было в заявке на участие в этой гонке
+
+        </label>
+    </c:if>
+    <c:if test="${!ifStarted && isRegistrated}">
         <label style="color: white; text-align: center">
             <br> <br> <br>
             Заезд ещё не начался. Начало заезда: <fmt:formatDate value="${raceDateTime}" pattern="dd-MM-yyyy HH:mm" />
 
         </label>
     </c:if>
-    <c:if test="${ifStarted}">
+    <c:if test="${ifStarted && isRegistrated}">
     <div class="MainArea">
     <div class="LeftPart">
         <div class="RaceTimeArea">
@@ -37,14 +44,38 @@
         <div class="CarConditionArea">
             <div class="inside_block_wrapper">
                 <div class="infotab">
-                    <label style="text-decoration: underline">Болид: Ferrari 488 pista spider</label>
+                    <label style="text-decoration: underline">Болид: ${car.label} ${car.model}</label>
                     <h3 style="text-align: center">Состояние болида</h3>
                     <label>Топливо: 32 литра</label> <br>
                     <label>Шины: Нормально</label> <br>
-                    <label>Каркас: Нормально</label> <br>
-                    <label>Шасси: Нормально</label> <br>
-                    <label>Двигатель: Нормально</label> <br>
-                    <label>Электроника: Нормально</label>
+                    <label>Каркас:
+                        <c:if test="${carcase.condition.toString().equals('PERFECT')}">Идеально</c:if>
+                        <c:if test="${carcase.condition.toString().equals('GOOD')}">Хорошо</c:if>
+                        <c:if test="${carcase.condition.toString().equals('NORMAL')}">Нормально</c:if>
+                        <c:if test="${carcase.condition.toString().equals('BAD')}">Плохо</c:if>
+                        <c:if test="${carcase.condition.toString().equals('AWFUL')}">Ужасно</c:if>
+                    </label> <br>
+                    <label>Шасси:
+                        <c:if test="${chassis.condition.toString().equals('PERFECT')}">Идеально</c:if>
+                        <c:if test="${chassis.condition.toString().equals('GOOD')}">Хорошо</c:if>
+                        <c:if test="${chassis.condition.toString().equals('NORMAL')}">Нормально</c:if>
+                        <c:if test="${chassis.condition.toString().equals('BAD')}">Плохо</c:if>
+                        <c:if test="${chassis.condition.toString().equals('AWFUL')}">Ужасно</c:if>
+                    </label> <br>
+                    <label>Двигатель:
+                        <c:if test="${engine.condition.toString().equals('PERFECT')}">Идеально</c:if>
+                        <c:if test="${engine.condition.toString().equals('GOOD')}">Хорошо</c:if>
+                        <c:if test="${engine.condition.toString().equals('NORMAL')}">Нормально</c:if>
+                        <c:if test="${engine.condition.toString().equals('BAD')}">Плохо</c:if>
+                        <c:if test="${engine.condition.toString().equals('AWFUL')}">Ужасно</c:if>
+                    </label> <br>
+                    <label>Электроника:
+                        <c:if test="${electronics.condition.toString().equals('PERFECT')}">Идеально</c:if>
+                        <c:if test="${electronics.condition.toString().equals('GOOD')}">Хорошо</c:if>
+                        <c:if test="${electronics.condition.toString().equals('NORMAL')}">Нормально</c:if>
+                        <c:if test="${electronics.condition.toString().equals('BAD')}">Плохо</c:if>
+                        <c:if test="${electronics.condition.toString().equals('AWFUL')}">Ужасно</c:if>
+                    </label>
                 </div>
             </div>
         </div>
@@ -54,10 +85,11 @@
                 <div class="infotab">
                     <h3 style="text-align: center">Запрос обслуживания</h3>
                     <form>
-                        <label>Пункт пит-стопа:</label>
-                        <label><input type="radio" name="place-select"> А </label>
-                        <label><input type="radio" name="place-select"> B </label>
-                        <label><input type="radio" name="place-select"> C </label> <br>
+                        <label>Пункт пит-стопа:</label> <br>
+                        <c:forEach items="${pitStopPlaces}" var="place">
+                        <label><input type="radio" name="place-select" value="${place.id}"> ${place.name} </label>
+                        </c:forEach>
+                         <br>
                         <label for="tire-change">Сменить резину:</label>
                         <select class="res-selector" id="tire-change">
                             <option>Не надо</option>
@@ -78,10 +110,11 @@
                 <div class="infotab">
                     <h3 style="text-align: center">Запрос ремонта</h3>
                     <form>
-                        <label>Пункт пит-стопа:</label>
-                        <label><input type="radio" name="place-select"> А </label>
-                        <label><input type="radio" name="place-select"> B </label>
-                        <label><input type="radio" name="place-select"> C </label> <br>
+                        <label>Пункт пит-стопа:</label> <br>
+                        <c:forEach items="${pitStopPlaces}" var="place">
+                            <label><input type="radio" name="place-select" value="${place.id}"> ${place.name} </label>
+                        </c:forEach>
+                         <br>
                         <table style="margin: 2%">
                             <tr>
                                 <th>Деталь</th>
@@ -94,9 +127,7 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <select class="res-selector">
-                                        <option> придумаем</option>
-                                    </select>
+                                    <input id="carc-reason" class="res-selector" type="text">
                                 </td>
                             </tr>
                             <tr>
@@ -106,9 +137,7 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <select class="res-selector">
-                                        <option> придумаем</option>
-                                    </select>
+                                    <input id="chass-reason" class="res-selector" type="text">
                                 </td>
                             </tr>
                             <tr>
@@ -118,9 +147,7 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <select class="res-selector">
-                                        <option> придумаем</option>
-                                    </select>
+                                    <input id="eng-reason" class="res-selector" type="text">
                                 </td>
                             </tr>
                             <tr>
@@ -130,9 +157,7 @@
                                     </label>
                                 </td>
                                 <td>
-                                    <select class="res-selector">
-                                        <option> придумаем</option>
-                                    </select>
+                                    <input id="elec-reason" class="res-selector" type="text">
                                 </td>
                             </tr>
                         </table>
@@ -190,14 +215,14 @@
                 <div class="infotab">
                     <center><h3>Запрос на смену пилота</h3></center>
                     <form>
-                        <label>Пункт пит-стопа:</label>
-                        <label><input type="radio" name="place-select"> А </label>
-                        <label><input type="radio" name="place-select"> B </label>
-                        <label><input type="radio" name="place-select"> C </label> <br>
+                        <label>Пункт пит-стопа:</label> <br>
+                        <c:forEach items="${pitStopPlaces}" var="place">
+                            <label><input type="radio" name="place-select" value="${place.id}"> ${place.name} </label>
+                        </c:forEach>
+                         <br>
                         <label for="pilot-reason">Причина</label>
-                        <select class="res-selector" id="pilot-reason">
-                            <option>hello there</option>
-                        </select> <br>
+                        <input id="pilot-reason" class="res-selector" type="text">
+                         <br>
                         <input type="submit" class="res-selector" value="Отправить запрос">
                     </form>
                 </div>

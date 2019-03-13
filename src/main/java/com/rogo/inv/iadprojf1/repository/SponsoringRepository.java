@@ -31,7 +31,7 @@ public interface SponsoringRepository extends JpaRepository<Sponsoring, Integer>
     @Query(value = "SELECT t.name as teamN, s2.name, sp.sp_money, sp.date FROM sponsoring sp \n" +
             "INNER JOIN sponsors s2 on sp.sponsor_id = s2.user_id \n" +
             "INNER JOIN teams t on sp.team_id = t.id \n" +
-            "ORDER BY sp.date DESC LIMIT 1;",nativeQuery = true)
+            "WHERE sp.date IS NOT NULL ORDER BY sp.date DESC LIMIT 1;",nativeQuery = true)
     Object[] getLatestSponsNews();
 
 }
