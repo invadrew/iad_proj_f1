@@ -33,6 +33,8 @@ public class WebConfig  implements WebMvcConfigurer {
         registry.addViewController("/search").setViewName("SearchPage");
         registry.addViewController("/garage").setViewName("GaragePage");
         registry.addViewController("/add_detail").setViewName("DetailAddPage");
+        registry.addViewController("/raceTime-mechanic").setViewName("RacetimeMechanicPage");
+        registry.addViewController("/raceTime-racer").setViewName("RacetimeRacerPage");
     }
 
     @Bean

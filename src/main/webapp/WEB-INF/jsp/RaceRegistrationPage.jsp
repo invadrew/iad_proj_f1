@@ -30,6 +30,15 @@
                     Номер этапа: ${currRace[0][2]}
                     <br>
                     Трасса: ${currRace[0][4]}
+                    <br>
+                        <c:if test="${ifReg}">
+                            <sec:authorize access="hasAuthority('RACER')">
+                                <input type="button" value="Перейти к гонке" class="res-selector" onclick="location.href='/raceTime-racer?id=${currRace[0][6]}'">
+                            </sec:authorize>
+                            <sec:authorize access="hasAuthority('MECHANIC')">
+                                <input type="button" value="Перейти к гонке" class="res-selector" onclick="location.href='/raceTime-mechanic?id=${currRace[0][6]}'">
+                            </sec:authorize>
+                        </c:if>
                 </div>
                 <div class="infotab">
                     <center><h3>Принять участие</h3></center>

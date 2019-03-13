@@ -69,7 +69,10 @@ public class RaceRegController {
         List<Object[]> regTable = raceRegistrationService.getRegistrationTable(raceService.findTopByOrderByDateTimeDesc().getId());
         map.addAttribute("regTable", regTable);
 
-        if (user.getSpec().equals(User.Spec.MANAGER)) {
+       // if (user.getSpec().equals(User.Spec.MANAGER)) {
+
+        try {
+
             Team team = teamService.findById(teamMemberService.findByUserId(user.getId()).getTeam().getId());
 
             map.addAttribute("team", team);
@@ -89,7 +92,10 @@ public class RaceRegController {
                 map.addAttribute("ifReg", false);
             }
 
+        } catch (NullPointerException x) {
+
         }
+      //  }
 
         Integer teamCount = 0;
             if (raceRegistrationService.canReg((int) r[6]) != null) { teamCount = raceRegistrationService.canReg((int) r[6]); }

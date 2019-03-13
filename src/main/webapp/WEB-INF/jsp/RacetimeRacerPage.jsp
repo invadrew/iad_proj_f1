@@ -1,3 +1,6 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,43 +11,19 @@
 </head>
 <body>
 <div class="grid-container">
-    <!-- TODO: try to make ui component for header zone-->
-    <div class="Header">
-        <div class="Header-LogoContainer">
-            <img src="/pictures/Formula_1_logo.jpg">
-        </div>
-        <div class="Header-UserInfo-container">
-            Никита Рогаленко
-            <form action="/logout">
-                <input type="submit" value="Выйти" id="out">
-            </form>
-        </div>
-        <div class="UserPhoto-container">
-            <img src="/pictures/rogoVK.jpg">
-        </div>
-    </div>
-    <div class="HeaderMenu">
-        <ul>
-            <li><a href="MainPage.jsp">Профиль</a></li>
-            <li><a href="MainPage.jsp">Команда</a></li>
-            <li><a href="MainPage.jsp">Гараж</a></li>
-            <li><a href="MainPage.jsp">Заезды</a></li>
-            <li><a href="RanksPage.jsp">Рейтинг</a></li>
-            <li><a href="MainPage.jsp">Сообщения</a></li>
-        </ul>
-        <div class="searcher">
-            <form>
-                <input type="text" placeholder="Поиск по сайту" id="search">
-                <input type="submit" value="Найти" id="find">
-            </form>
-        </div>
-    </div>
-    <!-- end if-->
+    <jsp:include page="Header.jsp"/>
     <div class="TeamNameArea">
         <br>
-        <center><label style="padding-top: 3px" ><b>RogoNemRacing</b></label></center>
+        <center><label style="padding-top: 3px" ><b>${team.name}</b></label></center>
     </div>
+    <c:if test="${!ifStarted}">
+        <label style="color: white; text-align: center">
+            <br> <br> <br>
+            Заезд ещё не начался. Начало заезда: <fmt:formatDate value="${raceDateTime}" pattern="dd-MM-yyyy HH:mm" />
 
+        </label>
+    </c:if>
+    <c:if test="${ifStarted}">
     <div class="MainArea">
     <div class="LeftPart">
         <div class="RaceTimeArea">
@@ -226,4 +205,5 @@
         </div>
         </div>
     </div>
+    </c:if>
 </div>
