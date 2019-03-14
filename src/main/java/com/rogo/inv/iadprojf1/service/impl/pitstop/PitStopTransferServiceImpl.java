@@ -1,5 +1,7 @@
 package com.rogo.inv.iadprojf1.service.impl.pitstop;
+import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.pitstop.PitStopTransfer;
+import com.rogo.inv.iadprojf1.entity.race.Race;
 import com.rogo.inv.iadprojf1.repository.pitstopRepository.PitStopTransferRepository;
 import com.rogo.inv.iadprojf1.service.PitStopTransferService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,4 +33,10 @@ public class PitStopTransferServiceImpl implements PitStopTransferService {
     public PitStopTransfer findById(int id) {
         return repository.findById(id);
     }
+
+    @Override
+    public List<PitStopTransfer> findAllByStatusAndRace(AcceptStatus status, Race race) { return repository.findAllByStatusAndRace(status, race); }
+
+    @Override
+    public List<PitStopTransfer> findAllByTransferAndRace(PitStopTransfer.Transfers transfers, Race race) { return repository.findAllByTransferAndRace(transfers, race); }
 }

@@ -1,9 +1,11 @@
 package com.rogo.inv.iadprojf1.controller;
 
+import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.Car;
 import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.User;
 import com.rogo.inv.iadprojf1.entity.pitstop.PitStopPlace;
+import com.rogo.inv.iadprojf1.entity.pitstop.PitStopTransfer;
 import com.rogo.inv.iadprojf1.entity.race.Race;
 import com.rogo.inv.iadprojf1.entity.race.RaceRegistration;
 import com.rogo.inv.iadprojf1.service.*;
@@ -16,9 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 public class RaceTimeMechanicController {
@@ -43,6 +47,9 @@ public class RaceTimeMechanicController {
 
     @Autowired
     private RaceRegistrationService raceRegistrationService;
+
+    @Autowired
+    private PitStopTransferService pitStopTransferService;
 
     @RequestMapping(value = "/raceTime-mechanic", method = RequestMethod.GET)
     public String toRace(ModelMap map, Authentication authentication, @Param("id") Integer id) {
@@ -88,6 +95,9 @@ public class RaceTimeMechanicController {
             } catch (NullPointerException x) {}
 
 
+
+
+
         }
 
         return "RacetimeMechanicPage";
@@ -108,5 +118,63 @@ public class RaceTimeMechanicController {
         return diffHours + ":" + diffMinutes + ":" + diffSeconds;
     }
 
+    @RequestMapping(value = "/raceTime-mechanic/transfer", method = RequestMethod.POST)
+    @ResponseBody
+    public Object[] doTransfer(HttpServletRequest request) {
+
+        Integer pitFrom = Integer.parseInt(request.getParameter("from"));
+        Integer pitTo = Integer.parseInt(request.getParameter("to"));
+        String item = request.getParameter("item");
+        Float num = Float.parseFloat(request.getParameter("num"));
+
+        PitStopPlace placeFrom = pitStopPlaceService.findById(pitFrom);
+        PitStopPlace placeTo = pitStopPlaceService.findById(pitTo);
+
+        PitStopTransfer.Transfers transType = null;
+
+        Object[] notEnough = {"not-enough"};
+
+        switch (item) {
+            case "tough":
+                if (placeFrom.getTough() < num) return notEnough;
+                transType = PitStopTransfer.Transfers.TOUGH;
+                int tNum = Math.round(num);
+                num = (float) Math.round(num);
+                placeFrom.setTough(placeFrom.getTough() - tNum);
+                placeTo.setTough(placeTo.getTough() + tNum);
+                break;
+            case "soft":
+                if (placeFrom.getSoft() < num) return notEnough;
+                transType = PitStopTransfer.Transfers.SOFT;
+                int sNum =  Math.round(num);
+                num = (float) Math.round(num);
+                placeFrom.setSoft(placeFrom.getSoft() - sNum);
+                placeTo.setTough(placeTo.getSoft() + sNum);
+                break;
+            case "fuel":
+                if (placeFrom.getFuel() < num) return notEnough;
+                transType = PitStopTransfer.Transfers.FUEL;
+                placeFrom.setFuel(placeFrom.getFuel() - num);
+                placeTo.setFuel(placeTo.getFuel() + num);
+                break;
+        }
+
+        List<Object[]> currRace = raceService.getCurrentEvent();
+        Race race = raceService.findById((Integer) currRace.get(0)[6]);
+
+        PitStopTransfer transfer = new PitStopTransfer(race,placeFrom,placeTo, transType, num, AcceptStatus.ACCEPTED);
+
+        try { TimeUnit.SECONDS.sleep(9); } catch (InterruptedException ex) { ex.printStackTrace(); }
+
+        pitStopPlaceService.save(placeFrom);
+        pitStopPlaceService.save(placeTo);
+        pitStopTransferService.save(transfer);
+
+        Object[] updData = {transfer.getAmount(), transfer.getTransfer().toString(), placeFrom.getName(), placeTo.getName()};
+
+        return updData;
+
+
+    }
 
 }

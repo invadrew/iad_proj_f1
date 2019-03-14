@@ -58,7 +58,7 @@ public class PitStopTransfer {
     /* ================================
      enums
     ================================ */
-    enum Transfers {
+    public enum Transfers {
         TOUGH,
         FUEL,
         SOFT

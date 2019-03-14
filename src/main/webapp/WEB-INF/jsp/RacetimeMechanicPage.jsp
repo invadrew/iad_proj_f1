@@ -56,25 +56,31 @@
                             <label for="place-from-transfer">Из</label>
                             <select class="res-selector" id="place-from-transfer">
                                 <c:forEach items="${pitStopPlaces}" var="place">
-                                    <option ${place.id}>${place.name}</option>
+                                    <option value="${place.id}">${place.name}</option>
                                 </c:forEach>
                             </select>
                             <label for="place-to-transfer">В</label>
                             <select class="res-selector" id="place-to-transfer">
                                 <c:forEach items="${pitStopPlaces}" var="place">
-                                    <option ${place.id}>${place.name}</option>
+                                    <option value="${place.id}">${place.name}</option>
                                 </c:forEach>
                             </select> <br>
                             <label for="item-transfer">Что перемещать:</label>
                             <select class="res-selector" id="item-transfer">
-                                <option>Жесткие шины</option>
-                                <option>Мягкие шины</option>
-                                <option>Топливо</option>
+                                <option value="tough">Жесткие шины</option>
+                                <option value="soft">Мягкие шины</option>
+                                <option value="fuel">Топливо</option>
                             </select> <br>
                             <label for="transfer-num">Количество:</label>
-                            <input type="number" min="1" id="transfer-num" class="res-selector"> <br>
-                            <label>Примерное время: 00:22:22</label> <br> <br>
-                            <input type="submit" class="res-selector" value="Переместить">
+                            <input type="number" min="1" value="1" id="transfer-num" class="res-selector"> <br>
+                            <label> Время перемещения: 10 секунд </label> <br>
+                           <label hidden id="transfer-same"> Выберите разные пункты </label> <br>
+                            <label hidden id="transfer-not-enough">На пункте нет столько</label> <br>
+                            <label hidden id="transfer-empty">Введите количество</label>
+                            <label hidden id="transfer-wait">Ожидаем</label> <br>
+                            <label hidden id="transfer-ready">Готово</label>
+                            <br> <br>
+                            <input type="button" class="res-selector" value="Переместить" onclick="doTransfer()">
                         </form>
                     </div>
                 </div>
@@ -161,6 +167,7 @@
                 </div>
 
                 <div class="car-info">
+                    <c:if test="${secondCar != null}">
                     <div class="inside_block_wrapper">
                         <div class="infotab">
                             <label style="text-decoration: underline">Болид: ${secondCar.label} ${secondCar.model}</label>
@@ -203,6 +210,7 @@
                             </form>
                         </div>
                     </div>
+                    </c:if>
                 </div>
 
             </div>
