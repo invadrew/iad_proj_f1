@@ -1,6 +1,7 @@
 package com.rogo.inv.iadprojf1.repository.pitstopRepository;
 
 import com.rogo.inv.iadprojf1.entity.AcceptStatus;
+import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.pitstop.PitStopTransfer;
 import com.rogo.inv.iadprojf1.entity.race.Race;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,4 +17,5 @@ public interface PitStopTransferRepository extends JpaRepository<PitStopTransfer
 
     List<PitStopTransfer> findAllByTransferAndRace(PitStopTransfer.Transfers transfers, Race race);
 
+    List<PitStopTransfer> findAllByTeamIdAndRace(Team team, Race race);
 }

@@ -2,12 +2,15 @@ package com.rogo.inv.iadprojf1.entity.pitstop;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.rogo.inv.iadprojf1.entity.AcceptStatus;
+import com.rogo.inv.iadprojf1.entity.Team;
+import com.rogo.inv.iadprojf1.entity.User;
 import com.rogo.inv.iadprojf1.entity.race.Race;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "pit_stop_transfer")
@@ -43,16 +46,25 @@ public class PitStopTransfer {
     @Enumerated(EnumType.STRING)
     private AcceptStatus status;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "team_id")
+    private Team teamId;
+
+    private LocalTime time;
+
     /* ================================
      constructors
     ================================ */
-    public PitStopTransfer(@NotNull Race race, @NotNull PitStopPlace placeFrom, @NotNull PitStopPlace placeTo, @NotNull Transfers transfer, @NotNull @Min(1) float amount, @NotNull AcceptStatus status) {
+    public PitStopTransfer(@NotNull Race race, @NotNull PitStopPlace placeFrom, @NotNull PitStopPlace placeTo, @NotNull Transfers transfer, @NotNull @Min(1) float amount, @NotNull AcceptStatus status, Team team
+    , LocalTime time) {
         this.race = race;
         this.placeFrom = placeFrom;
         this.placeTo = placeTo;
         this.transfer = transfer;
         this.amount = amount;
         this.status = status;
+        this.teamId = team;
+        this.time = time;
     }
 
     /* ================================

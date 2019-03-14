@@ -40,9 +40,9 @@
             <div class="pit-stop-place-condition">
                 <div class="inside_block_wrapper">
                     <div class="infotab">
-                        <label style="text-decoration: underline">Пит-стоп: ${place.name}</label> <br> <br>
-                        <label>Шины: Жесткие х${place.tough}, Мягкие х${place.soft} </label> <br>
-                        <label>Топливо: ${place.fuel} литров</label> <br> <br>
+                        <label id="placeName${place.id}" style="text-decoration: underline">Пит-стоп: ${place.name}</label> <br> <br>
+                        <label id="shini${place.id}">Шины: Жесткие х${place.tough}, Мягкие х${place.soft} </label> <br>
+                        <label id="fuel${place.id}">Топливо: ${place.fuel} литров</label> <br> <br>
                     </div>
                 </div>
             </div>
@@ -93,27 +93,23 @@
             <div class="RaceMessageTableArea">
                 <div class="inside_block_wrapper">
                     <div class="infotab">
-                        <table class="infotable" border="1" style="max-height: 30%">
+                        <table class="infotable" id="transfersTable" border="1" style="max-height: 30%">
+                            <tr><td colspan="2">Трансферы</td></tr>
                             <tr>
                                 <th>Время</th>
                                 <th>Сообщение</th>
                             </tr>
+                            <c:forEach items="${transfers}" var="transfer">
                             <tr>
-                                <td>00:01:34</td>
-                                <td>Тут будет очень длинное сообщение с информацией о пит-сто пе 0_0 0_0</td>
+                                <td>${transfer.time}</td>
+                                <td>Из пункта ${placesFrom.get(transfers.indexOf(transfer)).name} в пункт ${placesTo.get(transfers.indexOf(transfer)).name} перенесено:
+                                    <c:if test="${transfer.transfer.toString().equals('TOUGH')}"> жесткие шины в количестве </c:if>
+                                    <c:if test="${transfer.transfer.toString().equals('SOFT')}"> мягкие шины в количестве </c:if>
+                                    <c:if test="${transfer.transfer.toString().equals('FUEL')}"> топливо в объеме </c:if>
+                                     ${transfer.amount}
+                                </td>
                             </tr>
-                            <tr>
-                                <td>00:01:34</td>
-                                <td>Тут будет очень длинное сообщение с информацией о пит-сто пе 0_0 0_0</td>
-                            </tr>
-                            <tr>
-                                <td>00:01:34</td>
-                                <td>Тут будет очень длинное сообщение с информацией о пит-сто пе 0_0 0_0</td>
-                            </tr>
-                            <tr>
-                                <td>00:01:34</td>
-                                <td>Тут будет очень длинное сообщение с информацией о пит-сто пе 0_0 0_0</td>
-                            </tr>
+                            </c:forEach>
                         </table>
                     </div>
                 </div>

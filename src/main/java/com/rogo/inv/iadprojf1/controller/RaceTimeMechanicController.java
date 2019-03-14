@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -94,9 +96,19 @@ public class RaceTimeMechanicController {
 
             } catch (NullPointerException x) {}
 
+            List<PitStopTransfer> transfers = pitStopTransferService.findAllByTeamIdAndRace(team,race);
+            map.addAttribute("transfers", transfers);
 
+            List<PitStopPlace> placesFrom = new ArrayList<>();
+            List<PitStopPlace> placesTo = new ArrayList<>();
 
+            for(PitStopTransfer transfer: transfers) {
+                placesFrom.add(transfer.getPlaceFrom());
+                placesTo.add(transfer.getPlaceTo());
+            }
 
+            map.addAttribute("placesFrom", placesFrom);
+            map.addAttribute("placesTo", placesTo);
 
         }
 
@@ -120,12 +132,13 @@ public class RaceTimeMechanicController {
 
     @RequestMapping(value = "/raceTime-mechanic/transfer", method = RequestMethod.POST)
     @ResponseBody
-    public Object[] doTransfer(HttpServletRequest request) {
+    public Object[] doTransfer(HttpServletRequest request, Authentication authentication) {
 
         Integer pitFrom = Integer.parseInt(request.getParameter("from"));
         Integer pitTo = Integer.parseInt(request.getParameter("to"));
         String item = request.getParameter("item");
         Float num = Float.parseFloat(request.getParameter("num"));
+        User user = userService.findByLogin(authentication.getName());
 
         PitStopPlace placeFrom = pitStopPlaceService.findById(pitFrom);
         PitStopPlace placeTo = pitStopPlaceService.findById(pitTo);
@@ -162,15 +175,31 @@ public class RaceTimeMechanicController {
         List<Object[]> currRace = raceService.getCurrentEvent();
         Race race = raceService.findById((Integer) currRace.get(0)[6]);
 
-        PitStopTransfer transfer = new PitStopTransfer(race,placeFrom,placeTo, transType, num, AcceptStatus.ACCEPTED);
+        Team team = teamMemberService.findByUserId(user.getId()).getTeam();
 
         try { TimeUnit.SECONDS.sleep(9); } catch (InterruptedException ex) { ex.printStackTrace(); }
+
+        Date start = race.getDateTime();
+        Date now = new Date();
+        long current = start.getTime() - now.getTime();
+        long diffSeconds = (-1)*current / 1000 % 60;
+        long diffMinutes = (-1)*current / (60 * 1000) % 60;
+        long diffHours = (-1) * current / (60 * 60 * 1000);
+        String sec = "" + diffSeconds;
+        if (diffSeconds < 10) { sec = "0" + diffSeconds; }
+        String min = "" + diffMinutes;
+        if (diffMinutes < 10) { min = "0" + diffMinutes; }
+        String ho = "" + diffHours;
+        if (diffHours < 10) { ho = "0" + diffHours; }
+
+        PitStopTransfer transfer = new PitStopTransfer(race,placeFrom,placeTo, transType, num, AcceptStatus.ACCEPTED, team, LocalTime.parse(ho + ":" + min + ":" + sec));
 
         pitStopPlaceService.save(placeFrom);
         pitStopPlaceService.save(placeTo);
         pitStopTransferService.save(transfer);
 
-        Object[] updData = {transfer.getAmount(), transfer.getTransfer().toString(), placeFrom.getName(), placeTo.getName()};
+        Object[] updData = {ho + ":" + min + ":" + sec, transfer.getAmount(), transfer.getTransfer().toString(), placeFrom.getName(), placeTo.getName(),
+         placeFrom.getTough(), placeFrom.getSoft(), placeFrom.getFuel(), placeTo.getTough(), placeTo.getSoft(), placeTo.getFuel(), placeTo.getId(), placeFrom.getId()};
 
         return updData;
 

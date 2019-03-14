@@ -1,5 +1,6 @@
 package com.rogo.inv.iadprojf1.service.impl.pitstop;
 import com.rogo.inv.iadprojf1.entity.AcceptStatus;
+import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.pitstop.PitStopTransfer;
 import com.rogo.inv.iadprojf1.entity.race.Race;
 import com.rogo.inv.iadprojf1.repository.pitstopRepository.PitStopTransferRepository;
@@ -39,4 +40,7 @@ public class PitStopTransferServiceImpl implements PitStopTransferService {
 
     @Override
     public List<PitStopTransfer> findAllByTransferAndRace(PitStopTransfer.Transfers transfers, Race race) { return repository.findAllByTransferAndRace(transfers, race); }
+
+    @Override
+    public List<PitStopTransfer> findAllByTeamIdAndRace(Team team, Race race) { return repository.findAllByTeamIdAndRace(team, race); }
 }

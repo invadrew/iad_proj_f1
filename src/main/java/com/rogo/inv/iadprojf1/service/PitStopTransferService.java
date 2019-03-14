@@ -1,6 +1,7 @@
 package com.rogo.inv.iadprojf1.service;
 
 import com.rogo.inv.iadprojf1.entity.AcceptStatus;
+import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.pitstop.PitStopTransfer;
 import com.rogo.inv.iadprojf1.entity.race.Race;
 
@@ -18,4 +19,6 @@ public interface PitStopTransferService {
     List<PitStopTransfer> findAllByStatusAndRace(AcceptStatus status, Race race);
 
     List<PitStopTransfer> findAllByTransferAndRace(PitStopTransfer.Transfers transfers, Race race);
+
+    List<PitStopTransfer> findAllByTeamIdAndRace(Team team, Race race);
 }
