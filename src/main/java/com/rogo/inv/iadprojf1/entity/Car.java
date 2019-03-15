@@ -100,6 +100,11 @@ public class Car {
     @Column(name = "if_dismantled")
     private Boolean ifDismantled = false;
 
+    @Enumerated(EnumType.STRING)
+    private ComponentCondition tires = ComponentCondition.PERFECT;
+
+    private float fuel = 20;
+
     /* ================================
      constructors
     ================================ */

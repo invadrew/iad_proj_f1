@@ -10,6 +10,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "pilot_change")
@@ -25,12 +26,15 @@ public class PilotChange extends BasePitStop {
     @NotNull
     private String comment;
 
+    private LocalTime time;
+
     /* ================================
      constructors
     ================================ */
-    public PilotChange(@NotNull Race race, @NotNull PitStopPlace place, @NotNull Car car, @NotNull AcceptStatus status, @NotNull TeamMember pilot, @NotNull String comment) {
+    public PilotChange(@NotNull Race race, @NotNull PitStopPlace place, @NotNull Car car, @NotNull AcceptStatus status, @NotNull TeamMember pilot, @NotNull String comment, LocalTime time) {
         super(race, place, car, status);
         this.pilot = pilot;
         this.comment = comment;
+        this.time = time;
     }
 }

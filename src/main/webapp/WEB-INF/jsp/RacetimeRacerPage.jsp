@@ -217,13 +217,15 @@
                     <form>
                         <label>Пункт пит-стопа:</label> <br>
                         <c:forEach items="${pitStopPlaces}" var="place">
-                            <label><input type="radio" name="place-select" value="${place.id}"> ${place.name} </label>
+                            <label><input type="radio" name="pilot-place-select" value="${place.id}"> ${place.name} </label>
                         </c:forEach>
                          <br>
                         <label for="pilot-reason">Причина</label>
                         <input id="pilot-reason" class="res-selector" type="text">
                          <br>
-                        <input type="submit" class="res-selector" value="Отправить запрос">
+                        <input type="button" class="res-selector" value="Отправить запрос" onclick="changePilot()">
+                        <label hidden id="pilot-change-ready">Отправлено</label>
+                        <label hidden id="pilot-change-error">Выберите пит-стоп</label>
                     </form>
                 </div>
             </div>

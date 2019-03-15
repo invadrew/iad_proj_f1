@@ -122,8 +122,14 @@
                         <div class="infotab">
                             <label style="text-decoration: underline">Болид: ${firstCar.label} ${firstCar.model}</label>
                             <h3 style="text-align: center">Состояние болида</h3>
-                            <label>Топливо: 32 литра</label> <br>
-                            <label>Шины: Нормально</label> <br>
+                            <label>Топливо: ${firstCar.fuel} литра</label> <br>
+                            <label>Шины:
+                                <c:if test="${firstCar.tires.toString().equals('PERFECT')}">Идеально</c:if>
+                                <c:if test="${firstCar.tires.toString().equals('GOOD')}">Хорошо</c:if>
+                                <c:if test="${firstCar.tires.toString().equals('NORMAL')}">Нормально</c:if>
+                                <c:if test="${firstCar.tires.toString().equals('BAD')}">Плохо</c:if>
+                                <c:if test="${firstCar.tires.toString().equals('AWFUL')}">Ужасно</c:if>
+                            </label> <br>
                             <label>Каркас:
                                 <c:if test="${fCarcase.condition.toString().equals('PERFECT')}">Идеально</c:if>
                                 <c:if test="${fCarcase.condition.toString().equals('GOOD')}">Хорошо</c:if>
@@ -168,8 +174,14 @@
                         <div class="infotab">
                             <label style="text-decoration: underline">Болид: ${secondCar.label} ${secondCar.model}</label>
                             <h3 style="text-align: center">Состояние болида</h3>
-                            <label>Топливо: 84 литра</label> <br>
-                            <label>Шины: Нормально</label> <br>
+                            <label>Топливо: ${secondCar.fuel} литра</label> <br>
+                            <label>Шины:
+                                <c:if test="${secondCar.tires.toString().equals('PERFECT')}">Идеально</c:if>
+                                <c:if test="${secondCar.tires.toString().equals('GOOD')}">Хорошо</c:if>
+                                <c:if test="${secondCar.tires.toString().equals('NORMAL')}">Нормально</c:if>
+                                <c:if test="${secondCar.tires.toString().equals('BAD')}">Плохо</c:if>
+                                <c:if test="${secondCar.tires.toString().equals('AWFUL')}">Ужасно</c:if>
+                            </label> <br>
                             <label>Каркас:
                                 <c:if test="${sCarcase.condition.toString().equals('PERFECT')}">Идеально</c:if>
                                 <c:if test="${sCarcase.condition.toString().equals('GOOD')}">Хорошо</c:if>

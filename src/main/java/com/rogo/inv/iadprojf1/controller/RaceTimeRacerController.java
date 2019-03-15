@@ -1,10 +1,8 @@
 package com.rogo.inv.iadprojf1.controller;
 
 
-import com.rogo.inv.iadprojf1.entity.Car;
-import com.rogo.inv.iadprojf1.entity.Team;
-import com.rogo.inv.iadprojf1.entity.TeamMember;
-import com.rogo.inv.iadprojf1.entity.User;
+import com.rogo.inv.iadprojf1.entity.*;
+import com.rogo.inv.iadprojf1.entity.pitstop.PilotChange;
 import com.rogo.inv.iadprojf1.entity.pitstop.PitStopPlace;
 import com.rogo.inv.iadprojf1.entity.race.Race;
 import com.rogo.inv.iadprojf1.entity.race.RaceRegistration;
@@ -16,7 +14,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,6 +48,9 @@ public class RaceTimeRacerController {
 
     @Autowired
     private CarService carService;
+
+    @Autowired
+    private PilotChangeService pilotChangeService;
 
     @RequestMapping(value = "/raceTime-racer", method = RequestMethod.GET)
     public String toRace(ModelMap map, Authentication authentication, @Param("id") Integer id) {
@@ -100,5 +104,48 @@ public class RaceTimeRacerController {
     return "RacetimeRacerPage";
 
     }
+
+
+    @RequestMapping(value = "/raceTime-racer/offerPilotChange", method = RequestMethod.POST)
+    @ResponseBody
+    public void pilotChange(HttpServletRequest request, Authentication authentication) {
+
+        String comment = request.getParameter("comment");
+        PitStopPlace pitStopPlace = pitStopPlaceService.findById(Integer.parseInt(request.getParameter("place")));
+
+        User pilot = userService.findByLogin(authentication.getName());
+        TeamMember pilotTm = teamMemberService.findByUserId(pilot.getId());
+        Team team = teamMemberService.findByUserId(pilot.getId()).getTeam();
+        List<Object[]> currRace = raceService.getCurrentEvent();
+        Race race = raceService.findById((Integer) currRace.get(0)[6]);
+
+        Car car;
+
+        RaceRegistration registration = raceRegistrationService.findById(team,race);
+        if (registration.getFirstPilot().getUserId() == pilot.getId()) {
+            car = carService.findById(registration.getFirstCar().getId());
+        } else {
+            car = carService.findById(registration.getSecondCar().getId());
+        }
+
+        Date start = race.getDateTime();
+        Date now = new Date();
+        long current = start.getTime() - now.getTime();
+        long diffSeconds = (-1)*current / 1000 % 60;
+        long diffMinutes = (-1)*current / (60 * 1000) % 60;
+        long diffHours = (-1) * current / (60 * 60 * 1000);
+        String sec = "" + diffSeconds;
+        if (diffSeconds < 10) { sec = "0" + diffSeconds; }
+        String min = "" + diffMinutes;
+        if (diffMinutes < 10) { min = "0" + diffMinutes; }
+        String ho = "" + diffHours;
+        if (diffHours < 10) { ho = "0" + diffHours; }
+
+        PilotChange pilotChange = new PilotChange(race,pitStopPlace,car, AcceptStatus.ON_REVIEW, pilotTm, comment, LocalTime.parse(ho + ":" + min + ":" + sec));
+
+        pilotChangeService.save(pilotChange);
+
+    }
+
 
 }
