@@ -1,3 +1,6 @@
+
+var lastTime;
+
 function getTime() {
 
     $.ajax({
@@ -11,3 +14,30 @@ function getTime() {
 }
 
 setInterval(getTime,1000);
+
+window.onload = function()
+{
+
+    $.ajax({
+        type : "GET",
+        url : "/raceTime-mechanic/time",
+        success: function(data) {
+            lastTime = data;
+        }
+    });
+
+};
+
+
+function getNews() {
+    $.ajax({
+        type : "GET",
+        data : {"lastTime" : lastTime},
+        url: "/raceTime-racer/news",
+        success: function (data) {
+                if (data !== "nothing") { lastTime = data; location.reload(); }
+        }
+    });
+}
+
+setInterval(getNews,2000);

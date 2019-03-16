@@ -19,7 +19,7 @@
     <c:if test="${!isRegistrated}">
         <label style="color: white; text-align: center">
             <br> <br> <br>
-            Вас не было в заявке на участие в этой гонке
+            Вы не являетесь участником этой гонки
 
         </label>
     </c:if>
@@ -188,19 +188,23 @@
                                 </td>
                             </tr>
                         </c:forEach>
+                    </table>
+                    <table class="infotable" border="1" style="max-height: 30%">
                         <tr><td colspan="2">Замена пилотов</td></tr>
                         <c:forEach items="${pilChang_accept}" var="change">
                             <tr>
                                 <td> ${change.time} </td>
                             <td> Болид ${pilChang_accept_cars.get(pilChang_accept.indexOf(change)).label} ${pilChang_accept_cars.get(pilChang_accept.indexOf(change)).model}.
-                                Одобрена замена пилота ${pilChang_accept_pilots.get(pilChang_accept.indexOf(change)).name} ${pilChang_accept_pilots.get(pilChang_accept.indexOf(change)).surname}.</td>
+                                Одобрена замена пилота ${pilChang_accept_pilots.get(pilChang_accept.indexOf(change)).name} ${pilChang_accept_pilots.get(pilChang_accept.indexOf(change)).surname}.
+                                Комментарий: ${change.comment}</td>
                             </tr>
                         </c:forEach>
                         <c:forEach items="${pilChang_refuse}" var="change">
                             <tr>
                                 <td> ${change.time} </td>
                                 <td> Болид ${pilChang_refuse_cars.get(pilChang_refuse.indexOf(change)).label} ${pilChang_refuse_cars.get(pilChang_refuse.indexOf(change)).model}.
-                                    Отклонена замена пилота ${pilChang_refuse_pilots.get(pilChang_refuse.indexOf(change)).name} ${pilChang_refuse_pilots.get(pilChang_refuse.indexOf(change)).surname}.</td>
+                                    Отклонена замена пилота ${pilChang_refuse_pilots.get(pilChang_refuse.indexOf(change)).name} ${pilChang_refuse_pilots.get(pilChang_refuse.indexOf(change)).surname}.
+                                    Комментарий: ${change.comment}</td>
                             </tr>
                         </c:forEach>
                     </table>

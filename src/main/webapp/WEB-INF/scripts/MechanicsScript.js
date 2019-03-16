@@ -60,3 +60,25 @@ function doTransfer() {
     }
 
 }
+
+
+function handleChangePilot(id, status) {
+
+    let comment = document.getElementById("pcAnsw" + id).value;
+    let pilot = document.getElementById("pilot4Change" + id).value;
+
+    $.ajax({
+        type: "POST",
+        url: "/raceTime-mechanic/pilotChange",
+        data: {
+            "comment" : comment,
+            "id" : id,
+            "pilot" : pilot,
+            "status" : status
+        },
+        success: function (data) {
+            location.reload();
+        }
+    });
+    
+}

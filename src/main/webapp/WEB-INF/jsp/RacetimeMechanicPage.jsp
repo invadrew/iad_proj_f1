@@ -110,19 +110,23 @@
                                 </td>
                             </tr>
                             </c:forEach>
+                        </table>
+                        <table class="infotable" border="1" style="max-height: 30%">
                             <tr><td colspan="2">Замена пилотов</td></tr>
                             <c:forEach items="${pilChang_accept}" var="change">
                                 <tr>
                                     <td> ${change.time} </td>
                                     <td> Болид ${pilChang_accept_cars.get(pilChang_accept.indexOf(change)).label} ${pilChang_accept_cars.get(pilChang_accept.indexOf(change)).model}.
-                                        Одобрена замена пилота ${pilChang_accept_pilots.get(pilChang_accept.indexOf(change)).name} ${pilChang_accept_pilots.get(pilChang_accept.indexOf(change)).surname}.</td>
+                                        Одобрена замена пилота ${pilChang_accept_pilots.get(pilChang_accept.indexOf(change)).name} ${pilChang_accept_pilots.get(pilChang_accept.indexOf(change)).surname}.
+                                     Комментарий: ${change.comment}</td>
                                 </tr>
                             </c:forEach>
                             <c:forEach items="${pilChang_refuse}" var="change">
                                 <tr>
                                     <td> ${change.time} </td>
                                     <td> Болид ${pilChang_refuse_cars.get(pilChang_refuse.indexOf(change)).label} ${pilChang_refuse_cars.get(pilChang_refuse.indexOf(change)).model}.
-                                        Отклонена замена пилота ${pilChang_refuse_pilots.get(pilChang_refuse.indexOf(change)).name} ${pilChang_refuse_pilots.get(pilChang_refuse.indexOf(change)).surname}.</td>
+                                        Отклонена замена пилота ${pilChang_refuse_pilots.get(pilChang_refuse.indexOf(change)).name} ${pilChang_refuse_pilots.get(pilChang_refuse.indexOf(change)).surname}.
+                                        Комментарий: ${change.comment}</td>
                                 </tr>
                             </c:forEach>
                         </table>
@@ -241,7 +245,32 @@
             <div class="pit-stop-request">
                 <div class="inside_block_wrapper">
                     <div class="infotab">
-                        <center><h3>Запрос пит-стопа</h3></center>
+                        <center><h3>Запросы пит-стопа</h3></center>
+                        <c:forEach items="${pilChang_review}" var="change">
+                            <h4>Смена пилота</h4>
+                        <table class="infotable" style="text-align: left;" border="1" >
+                            <tr>
+                                <td>Болид ${pilChang_review_cars.get(pilChang_review.indexOf(change)).label}
+                                        ${pilChang_review_cars.get(pilChang_review.indexOf(change)).model}</td>
+                                <td>Пилот ${pilChang_review_pilots.get(pilChang_review.indexOf(change)).name}
+                                        ${pilChang_review_pilots.get(pilChang_review.indexOf(change)).surname}</td>
+                                <td>Пит-стоп ${pilChang_review_places.get(pilChang_review.indexOf(change)).name}</td>
+                                <td>Комментарий: ${change.comment}</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" placeholder="Ваш ответ" class="res-selector" id="pcAnsw${change.id}"></td>
+                                <td>
+                                    <select class="res-selector" id="pilot4Change${change.id}">
+                                    <c:forEach items="${freePilots}" var="pilot">
+                                        <option value="${pilot.userId}">${pilot.name} ${pilot.surname}</option>
+                                    </c:forEach>
+                                    </select>
+                                </td>
+                                <td><input type="button" value="Принять" class="res-selector" onclick="handleChangePilot(${change.id}, true)"></td>
+                                <td><input type="button" value="Отказать" class="res-selector" onclick="handleChangePilot(${change.id}, false)" ></td>
+                            </tr>
+                        </table>
+                        </c:forEach>
                             <table class="infotable" style="text-align: left;" border="1" >
                                 <tr>
                                     <td>Болид: А</td>

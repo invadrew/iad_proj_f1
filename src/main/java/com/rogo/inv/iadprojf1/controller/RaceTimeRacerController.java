@@ -214,19 +214,20 @@ public class RaceTimeRacerController {
 
     @RequestMapping(value = "/raceTime-racer/news", method = RequestMethod.GET)
     @ResponseBody
-    public List<Object[]> getNews(@RequestParam(name = "lastTime", required = false) String lTime, Authentication authentication) {
-
-        List<Object[]> updates = new ArrayList<>();
+    public Object getNews(@RequestParam(name = "lastTime", required = false) String lTime, Authentication authentication) {
 
             String[] lTimeParts = lTime.trim().split(":");
             if (Integer.parseInt(lTimeParts[0]) < 10 && (!lTimeParts[0].startsWith("0"))) {
                 lTimeParts[0] = "0" + lTimeParts[0];
+                if (lTimeParts[0].equals("0")) lTimeParts[0] = "00";
             }
             if (Integer.parseInt(lTimeParts[1]) < 10 && (!lTimeParts[1].startsWith("0"))) {
                 lTimeParts[1] = "0" + lTimeParts[1];
+                if (lTimeParts[1].equals("0")) lTimeParts[1] = "00";
             }
             if (Integer.parseInt(lTimeParts[2]) < 10 && (!lTimeParts[2].startsWith("0"))) {
                 lTimeParts[2] = "0" + lTimeParts[2];
+                if (lTimeParts[2].equals("0")) lTimeParts[2] = "00";
             }
             LocalTime maxTime = LocalTime.parse(lTimeParts[0] + ":" + lTimeParts[1] + ":" + lTimeParts[2]);
 
@@ -255,24 +256,36 @@ public class RaceTimeRacerController {
             }
 
             List<PitStopTransfer> transfers = pitStopTransferService.findAllByTeamIdAndRaceOrderByTimeDesc(team, race);
+            List<PilotChange> pilotChangesA = pilotChangeService.findAllByRaceAndStatusAndTeamId(race, AcceptStatus.ACCEPTED, team);
+            List<PilotChange> pilotChangesR = pilotChangeService.findAllByRaceAndStatusAndTeamId(race, AcceptStatus.REFUSED, team);
+        List<PilotChange> pilotChangesRev = pilotChangeService.findAllByRaceAndStatusAndTeamId(race, AcceptStatus.ON_REVIEW, team);
             LocalTime curr = LocalTime.parse(ho + ":" + min + ":" + sec);
 
             for (PitStopTransfer transfer : transfers) {
 
                 if (transfer.getTime().isBefore(curr) && (transfer.getTime().isAfter(maxTime))) {
-                    PitStopPlace placeFrom = transfer.getPlaceFrom();
-                    PitStopPlace placeTo = transfer.getPlaceTo();
-                    Object[] updData = {transfer.getTime().toString(), transfer.getAmount(), transfer.getTransfer().toString(), placeFrom.getName(), placeTo.getName(), ho + ":" + min + ":" + sec};
-                    updates.add(updData);
-                    break;
+                    return ho + ":" + min + ":" + sec;
                 }
             }
 
-            if (updates.isEmpty()) {
-                Object[] bad = {"nothing"};
-                updates.add(bad);
+            for (PilotChange change: pilotChangesA) {
+                if (change.getTime().isBefore(curr) && (change.getTime().isAfter(maxTime))) {
+                    return ho + ":" + min + ":" + sec;
+                }
             }
-            return updates;
+
+        for (PilotChange change: pilotChangesR) {
+            if (change.getTime().isBefore(curr) && (change.getTime().isAfter(maxTime))) {
+                return ho + ":" + min + ":" + sec;
+            }
+        }
+
+        for (PilotChange change: pilotChangesRev) {
+            if (change.getTime().isBefore(curr) && (change.getTime().isAfter(maxTime))) {
+                return ho + ":" + min + ":" + sec;
+            }
+        }
+            return "nothing";
         }
     }
 
