@@ -117,6 +117,39 @@ public class RaceTimeRacerController {
             map.addAttribute("placesFrom", placesFrom);
             map.addAttribute("placesTo", placesTo);
 
+            List<PilotChange> pilotChanges = pilotChangeService.findAllByRaceAndStatusAndTeamId(race, AcceptStatus.ON_REVIEW, team);
+            List<TeamMember> pc_pilots = new ArrayList<>();
+            List<Car> pc_cars = new ArrayList<>();
+            for (PilotChange change: pilotChanges ) {
+                pc_pilots.add(change.getPilot());
+                pc_cars.add(change.getCar());
+            }
+            map.addAttribute("pilChang_review", pilotChanges);
+            map.addAttribute("pilChang_review_cars", pc_cars);
+            map.addAttribute("pilChang_review_pilots", pc_pilots);
+
+            List<PilotChange> pilotChangesAcc = pilotChangeService.findAllByRaceAndStatusAndTeamId(race, AcceptStatus.ACCEPTED, team);
+            List<TeamMember> pc_pilots_acc = new ArrayList<>();
+            List<Car> pc_cars_acc = new ArrayList<>();
+            for (PilotChange change: pilotChangesAcc ) {
+                pc_pilots_acc.add(change.getPilot());
+                pc_cars_acc.add(change.getCar());
+            }
+            map.addAttribute("pilChang_accept", pilotChangesAcc);
+            map.addAttribute("pilChang_accept_cars", pc_cars_acc);
+            map.addAttribute("pilChang_accept_pilots", pc_pilots_acc);
+
+            List<PilotChange> pilotChangesRef = pilotChangeService.findAllByRaceAndStatusAndTeamId(race, AcceptStatus.REFUSED, team);
+            List<TeamMember> pc_pilots_ref = new ArrayList<>();
+            List<Car> pc_cars_ref = new ArrayList<>();
+            for (PilotChange change: pilotChangesRef ) {
+                pc_pilots_ref.add(change.getPilot());
+                pc_cars_ref.add(change.getCar());
+            }
+            map.addAttribute("pilChang_refuse", pilotChangesRef);
+            map.addAttribute("pilChang_refuse_cars", pc_cars_ref);
+            map.addAttribute("pilChang_refuse_pilots", pc_pilots_ref);
+
 
         }
 
@@ -127,7 +160,7 @@ public class RaceTimeRacerController {
 
     @RequestMapping(value = "/raceTime-racer/offerPilotChange", method = RequestMethod.POST)
     @ResponseBody
-    public void pilotChange(HttpServletRequest request, Authentication authentication) {
+    public String pilotChange(HttpServletRequest request, Authentication authentication) {
 
         String comment = request.getParameter("comment");
         PitStopPlace pitStopPlace = pitStopPlaceService.findById(Integer.parseInt(request.getParameter("place")));
@@ -147,6 +180,17 @@ public class RaceTimeRacerController {
             car = carService.findById(registration.getSecondCar().getId());
         }
 
+        List<TeamMember> allPilots = teamMemberService.getAllspecificType(team.getId(), "RACER");
+        List<TeamMember> freePilots = new ArrayList<>();
+
+        for (TeamMember member: allPilots) {
+            if ((member.getUserId() != registration.getFirstPilot().getUserId()) && (member.getUserId() != registration.getSecondPilot().getUserId())) {
+                freePilots.add(member);
+            }
+        }
+
+        if (freePilots.isEmpty()) { return "no-free"; }
+
         Date start = race.getDateTime();
         Date now = new Date();
         long current = start.getTime() - now.getTime();
@@ -160,9 +204,11 @@ public class RaceTimeRacerController {
         String ho = "" + diffHours;
         if (diffHours < 10) { ho = "0" + diffHours; }
 
-        PilotChange pilotChange = new PilotChange(race,pitStopPlace,car, AcceptStatus.ON_REVIEW, pilotTm, comment, LocalTime.parse(ho + ":" + min + ":" + sec));
+        PilotChange pilotChange = new PilotChange(race,pitStopPlace,car, AcceptStatus.ON_REVIEW, pilotTm, comment, LocalTime.parse(ho + ":" + min + ":" + sec), team);
 
         pilotChangeService.save(pilotChange);
+
+        return "ok";
 
     }
 

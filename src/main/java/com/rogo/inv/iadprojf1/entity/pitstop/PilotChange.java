@@ -3,6 +3,7 @@ package com.rogo.inv.iadprojf1.entity.pitstop;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.common.base.Objects;
 import com.rogo.inv.iadprojf1.entity.Car;
+import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.TeamMember;
 import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.race.Race;
@@ -28,13 +29,18 @@ public class PilotChange extends BasePitStop {
 
     private LocalTime time;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "team_id")
+    private Team teamId;
+
     /* ================================
      constructors
     ================================ */
-    public PilotChange(@NotNull Race race, @NotNull PitStopPlace place, @NotNull Car car, @NotNull AcceptStatus status, @NotNull TeamMember pilot, @NotNull String comment, LocalTime time) {
+    public PilotChange(@NotNull Race race, @NotNull PitStopPlace place, @NotNull Car car, @NotNull AcceptStatus status, @NotNull TeamMember pilot, @NotNull String comment, LocalTime time, Team team) {
         super(race, place, car, status);
         this.pilot = pilot;
         this.comment = comment;
         this.time = time;
+        this.teamId = team;
     }
 }

@@ -4,6 +4,7 @@ function changePilot() {
 
     document.getElementById("pilot-change-ready").hidden = true;
     document.getElementById("pilot-change-error").hidden = true;
+    document.getElementById("pilot-change-busy").hidden = true;
 
     let comment = $('#pilot-reason').val();
     let places = document.getElementsByName('pilot-place-select');
@@ -26,7 +27,10 @@ function changePilot() {
                 "place": pitStop
             },
             success: function (data) {
-                document.getElementById("pilot-change-ready").hidden = false;
+                if (data === "ok") {
+                document.getElementById("pilot-change-ready").hidden = false; } else {
+                    document.getElementById("pilot-change-busy").hidden = false;
+                }
             }
         });
     }

@@ -1,9 +1,7 @@
 package com.rogo.inv.iadprojf1.controller;
 
-import com.rogo.inv.iadprojf1.entity.AcceptStatus;
-import com.rogo.inv.iadprojf1.entity.Car;
-import com.rogo.inv.iadprojf1.entity.Team;
-import com.rogo.inv.iadprojf1.entity.User;
+import com.rogo.inv.iadprojf1.entity.*;
+import com.rogo.inv.iadprojf1.entity.pitstop.PilotChange;
 import com.rogo.inv.iadprojf1.entity.pitstop.PitStopPlace;
 import com.rogo.inv.iadprojf1.entity.pitstop.PitStopTransfer;
 import com.rogo.inv.iadprojf1.entity.race.Race;
@@ -52,6 +50,9 @@ public class RaceTimeMechanicController {
 
     @Autowired
     private PitStopTransferService pitStopTransferService;
+
+    @Autowired
+    private PilotChangeService pilotChangeService;
 
     @RequestMapping(value = "/raceTime-mechanic", method = RequestMethod.GET)
     public String toRace(ModelMap map, Authentication authentication, @Param("id") Integer id) {
@@ -109,6 +110,39 @@ public class RaceTimeMechanicController {
 
             map.addAttribute("placesFrom", placesFrom);
             map.addAttribute("placesTo", placesTo);
+
+            List<PilotChange> pilotChanges = pilotChangeService.findAllByRaceAndStatusAndTeamId(race, AcceptStatus.ON_REVIEW, team);
+            List<TeamMember> pc_pilots = new ArrayList<>();
+            List<Car> pc_cars = new ArrayList<>();
+            for (PilotChange change: pilotChanges ) {
+                pc_pilots.add(change.getPilot());
+                pc_cars.add(change.getCar());
+            }
+            map.addAttribute("pilChang_review", pilotChanges);
+            map.addAttribute("pilChang_review_cars", pc_cars);
+            map.addAttribute("pilChang_review_pilots", pc_pilots);
+
+            List<PilotChange> pilotChangesAcc = pilotChangeService.findAllByRaceAndStatusAndTeamId(race, AcceptStatus.ACCEPTED, team);
+            List<TeamMember> pc_pilots_acc = new ArrayList<>();
+            List<Car> pc_cars_acc = new ArrayList<>();
+            for (PilotChange change: pilotChangesAcc ) {
+                pc_pilots_acc.add(change.getPilot());
+                pc_cars_acc.add(change.getCar());
+            }
+            map.addAttribute("pilChang_accept", pilotChangesAcc);
+            map.addAttribute("pilChang_accept_cars", pc_cars_acc);
+            map.addAttribute("pilChang_accept_pilots", pc_pilots_acc);
+
+            List<PilotChange> pilotChangesRef = pilotChangeService.findAllByRaceAndStatusAndTeamId(race, AcceptStatus.REFUSED, team);
+            List<TeamMember> pc_pilots_ref = new ArrayList<>();
+            List<Car> pc_cars_ref = new ArrayList<>();
+            for (PilotChange change: pilotChangesRef ) {
+                pc_pilots_ref.add(change.getPilot());
+                pc_cars_ref.add(change.getCar());
+            }
+            map.addAttribute("pilChang_refuse", pilotChangesRef);
+            map.addAttribute("pilChang_refuse_cars", pc_cars_ref);
+            map.addAttribute("pilChang_refuse_pilots", pc_pilots_ref);
 
         }
 

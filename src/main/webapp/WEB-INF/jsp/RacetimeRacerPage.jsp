@@ -172,11 +172,11 @@
             <div class="inside_block_wrapper">
                 <div class="infotab">
                     <table class="infotable" id="transfersTable" border="1" style="max-height: 30%">
-                        <tr><td colspan="2">Трансферы</td></tr>
                         <tr>
                             <th>Время</th>
                             <th>Сообщение</th>
                         </tr>
+                        <tr><td colspan="2">Трансферы</td></tr>
                         <c:forEach items="${transfers}" var="transfer">
                             <tr>
                                 <td>${transfer.time}</td>
@@ -186,6 +186,21 @@
                                     <c:if test="${transfer.transfer.toString().equals('FUEL')}"> топливо в объеме </c:if>
                                         ${transfer.amount}
                                 </td>
+                            </tr>
+                        </c:forEach>
+                        <tr><td colspan="2">Замена пилотов</td></tr>
+                        <c:forEach items="${pilChang_accept}" var="change">
+                            <tr>
+                                <td> ${change.time} </td>
+                            <td> Болид ${pilChang_accept_cars.get(pilChang_accept.indexOf(change)).label} ${pilChang_accept_cars.get(pilChang_accept.indexOf(change)).model}.
+                                Одобрена замена пилота ${pilChang_accept_pilots.get(pilChang_accept.indexOf(change)).name} ${pilChang_accept_pilots.get(pilChang_accept.indexOf(change)).surname}.</td>
+                            </tr>
+                        </c:forEach>
+                        <c:forEach items="${pilChang_refuse}" var="change">
+                            <tr>
+                                <td> ${change.time} </td>
+                                <td> Болид ${pilChang_refuse_cars.get(pilChang_refuse.indexOf(change)).label} ${pilChang_refuse_cars.get(pilChang_refuse.indexOf(change)).model}.
+                                    Отклонена замена пилота ${pilChang_refuse_pilots.get(pilChang_refuse.indexOf(change)).name} ${pilChang_refuse_pilots.get(pilChang_refuse.indexOf(change)).surname}.</td>
                             </tr>
                         </c:forEach>
                     </table>
@@ -220,7 +235,8 @@
                         <input id="pilot-reason" class="res-selector" type="text">
                          <br>
                         <input type="button" class="res-selector" value="Отправить запрос" onclick="changePilot()">
-                        <label hidden id="pilot-change-ready">Отправлено</label>
+                        <label hidden id="pilot-change-busy">Нет свободных пилотов</label>
+                        <label hidden id="pilot-change-ready">Заявка отправлена</label>
                         <label hidden id="pilot-change-error">Выберите пит-стоп</label>
                     </form>
                 </div>

@@ -1,5 +1,8 @@
 package com.rogo.inv.iadprojf1.service.impl.pitstop;
+import com.rogo.inv.iadprojf1.entity.AcceptStatus;
+import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.pitstop.PilotChange;
+import com.rogo.inv.iadprojf1.entity.race.Race;
 import com.rogo.inv.iadprojf1.repository.pitstopRepository.PilotChangeRepository;
 import com.rogo.inv.iadprojf1.service.PilotChangeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,4 +34,8 @@ public class PilotChangeServiceImpl implements PilotChangeService {
     public PilotChange findById(int id) {
         return repository.findById(id);
     }
+
+    @Override
+    public  List<PilotChange> findAllByRaceAndStatusAndTeamId(Race race, AcceptStatus status, Team team) {
+        return repository.findAllByRaceAndStatusAndTeamId(race, status, team); }
 }
