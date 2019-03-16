@@ -198,9 +198,16 @@
                             </label>
                             <br> <br>
                             <form>
-                                <label>Причина пит-стопа</label>
-                                <input type="text" class="res-selector" name="offer-reason"> <br> <br>
-                                <input type="submit" class="res-selector" value="Предложить пит-стоп">
+                                <label for="offer-reason${firstCar.id}">Причина пит-стопа</label>
+                                <select class="res-selector" id="offer-reason${firstCar.id}" onchange="chooseRepair(${firstCar.id})">
+                                    <option value="service" selected>Обслуживание</option>
+                                    <option value="repair">Ремонт</option>
+                                </select>  <br> <br>
+                                <div id="repair-menu${firstCar.id}" hidden>
+                                    <input type="text" class="res-selector" placeholder="Комментарий" id="repair-offer-comm${firstCar.id}" >
+                                    <input type="button" class="res-selector" value="Предложить пит-стоп" onclick="offerRepair(${firstCar.id})">
+                                    <br> <label hidden id="of-rep-ready${firstCar.id}">Готово</label>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -250,9 +257,16 @@
                             </label>
                             <br> <br>
                             <form>
-                                <label>Причина пит-стопа</label>
-                                <input type="text" class="res-selector" name="offer-reason"> <br> <br>
-                                <input type="submit" class="res-selector" value="Предложить пит-стоп">
+                                <label for="offer-reason${secondCar.id}">Причина пит-стопа</label>
+                                <select class="res-selector" id="offer-reason${secondCar.id}" onchange="chooseRepair(${secondCar.id})">
+                                    <option value="service" selected>Обслуживание</option>
+                                    <option value="repair">Ремонт</option>
+                                </select>  <br> <br>
+                                <div id="repair-menu${secondCar.id}" hidden>
+                                    <input type="text" class="res-selector" placeholder="Комментарий" id="repair-offer-comm${secondCar.id}" >
+                                    <input type="button" class="res-selector" value="Предложить пит-стоп" onclick="offerRepair(${secondCar.id})">
+                                    <br> <label hidden id="of-rep-ready${secondCar.id}">Готово</label>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -300,8 +314,8 @@
                                 </tr>
                                 <tr>
                                     <td><input type="text" placeholder="Ваш ответ" class="res-selector" id="repAnsw${repair.id}"></td>
-                                    <td><input type="button" value="Принять" class="res-selector" onclick=""></td>
-                                    <td><input type="button" value="Отказать" class="res-selector" onclick="" ></td>
+                                    <td><input type="button" value="Принять" class="res-selector" onclick="handleRepair(${repair.id}, true)"></td>
+                                    <td><input type="button" value="Отказать" class="res-selector" onclick="handleRepair(${repair.id}, false)" ></td>
                                 </tr>
                             </table>
                         </c:forEach>

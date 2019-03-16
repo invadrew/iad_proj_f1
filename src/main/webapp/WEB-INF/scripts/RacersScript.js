@@ -54,3 +54,21 @@ function askRepair() {
 
 }
 
+function confirmRepair(id, status) {
+
+    let comment = document.getElementById("rev-rep-comm" + id).value;
+
+    $.ajax({
+        type: "POST",
+        url: "/raceTime-racer/conformRepair",
+        data: {
+            "comment": comment,
+            "id" : id,
+            "status" : status
+        },
+        success: function (data) {
+
+        }
+    });
+
+}

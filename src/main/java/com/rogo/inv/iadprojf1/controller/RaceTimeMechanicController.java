@@ -58,6 +58,9 @@ public class RaceTimeMechanicController {
     @Autowired
     private PitStopRepairService pitStopRepairService;
 
+    @Autowired
+    private CarService carService;
+
     @RequestMapping(value = "/raceTime-mechanic", method = RequestMethod.GET)
     public String toRace(ModelMap map, Authentication authentication, @Param("id") Integer id) {
 
@@ -342,6 +345,80 @@ public class RaceTimeMechanicController {
         }
 
         pilotChangeService.save(pilotChange);
+
+    }
+
+    @RequestMapping(value = "/raceTime-mechanic/repair", method = RequestMethod.POST)
+    @ResponseBody
+    public void repair(Authentication authentication, HttpServletRequest request) {
+
+        String comment = request.getParameter("comment");
+        PitStopRepair pitStopRepair = pitStopRepairService.findById(Integer.parseInt(request.getParameter("id")));
+        Boolean status = Boolean.parseBoolean(request.getParameter("status"));
+
+        Team team = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam();
+        List<Object[]> currRace = raceService.getCurrentEvent();
+        Race race = raceService.findById((Integer) currRace.get(0)[6]);
+        RaceRegistration registration = raceRegistrationService.findById(team, race);
+
+        Date start = race.getDateTime();
+        Date now = new Date();
+        long current = start.getTime() - now.getTime();
+        long diffSeconds = (-1)*current / 1000 % 60;
+        long diffMinutes = (-1)*current / (60 * 1000) % 60;
+        long diffHours = (-1) * current / (60 * 60 * 1000);
+        String sec = "" + diffSeconds;
+        if (diffSeconds < 10) { sec = "0" + diffSeconds; }
+        String min = "" + diffMinutes;
+        if (diffMinutes < 10) { min = "0" + diffMinutes; }
+        String ho = "" + diffHours;
+        if (diffHours < 10) { ho = "0" + diffHours; }
+
+        pitStopRepair.setComment(comment);
+        pitStopRepair.setTime(LocalTime.parse(ho + ":" + min + ":" + sec));
+
+        if (status) {
+
+            pitStopRepair.setStatus(AcceptStatus.ACCEPTED);
+
+        } else {
+
+            pitStopRepair.setStatus(AcceptStatus.REFUSED);
+        }
+
+        pitStopRepairService.save(pitStopRepair);
+
+    }
+
+    @RequestMapping(value = "/raceTime-mechanic/offer-repair", method = RequestMethod.POST)
+    @ResponseBody
+    public void offerRepair(HttpServletRequest request, Authentication authentication) {
+
+        String comment = request.getParameter("comment");
+
+        Team team = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam();
+        List<Object[]> currRace = raceService.getCurrentEvent();
+        Race race = raceService.findById((Integer) currRace.get(0)[6]);
+        Car car = carService.findById(Integer.parseInt(request.getParameter("id")));
+
+        Date start = race.getDateTime();
+        Date now = new Date();
+        long current = start.getTime() - now.getTime();
+        long diffSeconds = (-1)*current / 1000 % 60;
+        long diffMinutes = (-1)*current / (60 * 1000) % 60;
+        long diffHours = (-1) * current / (60 * 60 * 1000);
+        String sec = "" + diffSeconds;
+        if (diffSeconds < 10) { sec = "0" + diffSeconds; }
+        String min = "" + diffMinutes;
+        if (diffMinutes < 10) { min = "0" + diffMinutes; }
+        String ho = "" + diffHours;
+        if (diffHours < 10) { ho = "0" + diffHours; }
+
+        PitStopRepair repair = new PitStopRepair(race,null,car,AcceptStatus.ON_REVIEW,comment,"MECHANIC",team,
+                LocalTime.parse(ho + ":" + min + ":" + sec));
+
+        pitStopRepairService.save(repair);
+
 
     }
 

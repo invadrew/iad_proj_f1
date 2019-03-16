@@ -31,7 +31,6 @@
         <sec:authorize access="hasAnyAuthority('RACER','MANAGER','CONSTRUCTOR','MECHANIC')"> <li><a href="/garage">Гараж</a></li> </sec:authorize>
         <li><a href="/race-reg">Заезды</a></li>
         <li><a href="/ranks">Рейтинг</a></li>
-        <li><a href="MainPage.jsp">Сообщения</a></li>
     </ul>
     <div class="searcher">
         <form  action="/search">

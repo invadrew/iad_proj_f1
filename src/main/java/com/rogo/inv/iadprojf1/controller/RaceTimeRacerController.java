@@ -154,6 +154,37 @@ public class RaceTimeRacerController {
             map.addAttribute("pilChang_refuse_cars", pc_cars_ref);
             map.addAttribute("pilChang_refuse_pilots", pc_pilots_ref);
 
+            List<PitStopRepair> pitStopRepairsA = pitStopRepairService.findAllByRaceAndStatusAndTeamId(race, AcceptStatus.ACCEPTED, team);
+            List<PitStopRepair> pitStopRepairsOnR = pitStopRepairService.findAllByRaceAndStatusAndTeamIdAndCar(race, AcceptStatus.ON_REVIEW, team, activeCar);
+            List<PitStopRepair> pitStopRepairsR = pitStopRepairService.findAllByRaceAndStatusAndTeamId(race, AcceptStatus.REFUSED, team);
+
+            List<PitStopRepair> repairsFromRacers = new ArrayList<>();
+
+            List<Car> carsA = new ArrayList<>();
+            List<Car> carsR = new ArrayList<>();
+
+            for( PitStopRepair rep: pitStopRepairsOnR ) {
+                if (rep.getSender().equals("MECHANIC")) {
+                    repairsFromRacers.add(rep);
+                }
+            }
+
+            for( PitStopRepair rep: pitStopRepairsA ) {
+                carsA.add(rep.getCar());
+            }
+
+            for( PitStopRepair rep: pitStopRepairsR ) {
+                carsR.add(rep.getCar());
+            }
+
+            map.addAttribute("repair_accept", pitStopRepairsA);
+            map.addAttribute("repair_accept_cars", carsA);
+
+            map.addAttribute("repair_refuse", pitStopRepairsR);
+            map.addAttribute("repair_refuse_cars", carsR);
+
+            map.addAttribute("repair_review", repairsFromRacers);
+
 
         }
 
@@ -342,6 +373,44 @@ public class RaceTimeRacerController {
 
         }
 
+
+        @RequestMapping(value = "/raceTime-racer/conformRepair", method = RequestMethod.POST)
+        @ResponseBody
+        public void confirmRepair(HttpServletRequest request, Authentication authentication) {
+
+            String comment = request.getParameter("comment");
+            PitStopRepair pitStopRepair= pitStopRepairService.findById(Integer.parseInt(request.getParameter("id")));
+            Boolean status = Boolean.parseBoolean(request.getParameter("status"));
+
+            Team team = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam();
+            List<Object[]> currRace = raceService.getCurrentEvent();
+            Race race = raceService.findById((Integer) currRace.get(0)[6]);
+
+            Date start = race.getDateTime();
+            Date now = new Date();
+            long current = start.getTime() - now.getTime();
+            long diffSeconds = (-1)*current / 1000 % 60;
+            long diffMinutes = (-1)*current / (60 * 1000) % 60;
+            long diffHours = (-1) * current / (60 * 60 * 1000);
+            String sec = "" + diffSeconds;
+            if (diffSeconds < 10) { sec = "0" + diffSeconds; }
+            String min = "" + diffMinutes;
+            if (diffMinutes < 10) { min = "0" + diffMinutes; }
+            String ho = "" + diffHours;
+            if (diffHours < 10) { ho = "0" + diffHours; }
+
+            pitStopRepair.setComment(comment);
+            pitStopRepair.setTime(LocalTime.parse(ho + ":" + min + ":" + sec));
+
+            if (status) {
+                pitStopRepair.setStatus(AcceptStatus.ACCEPTED);
+                pitStopRepairService.save(pitStopRepair);
+            } else {
+                pitStopRepair.setStatus(AcceptStatus.REFUSED);
+                pitStopRepairService.save(pitStopRepair);
+            }
+
+        }
 
     }
 

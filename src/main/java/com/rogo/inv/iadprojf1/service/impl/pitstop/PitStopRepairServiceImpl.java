@@ -48,4 +48,9 @@ public class PitStopRepairServiceImpl implements PitStopRepairService {
         return repository.findAllByRaceAndTeamId(race, team);
     }
 
+    @Override
+    public List<PitStopRepair> findAllByRaceAndStatusAndTeamIdAndCar(Race race, AcceptStatus status, Team team, Car car) {
+        return repository.findAllByRaceAndStatusAndTeamIdAndCar(race, status, team, car);
+    }
+
 }

@@ -19,4 +19,6 @@ public interface PitStopRepairRepository extends JpaRepository<PitStopRepair, In
     List<PitStopRepair> findAllByRaceAndStatusAndTeamId(Race race, AcceptStatus status, Team team);
 
     List<PitStopRepair> findAllByRaceAndTeamId(Race race, Team team);
+
+    List<PitStopRepair> findAllByRaceAndStatusAndTeamIdAndCar(Race race, AcceptStatus status, Team team, Car car);
 }

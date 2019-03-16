@@ -82,3 +82,47 @@ function handleChangePilot(id, status) {
     });
     
 }
+
+function handleRepair(id, status) {
+
+    let comment = document.getElementById("repAnsw" + id).value;
+
+    $.ajax({
+        type: "POST",
+        url: "/raceTime-mechanic/repair",
+        data: {
+            "comment" : comment,
+            "id" : id,
+            "status" : status
+        },
+        success: function (data) {
+
+        }
+    });
+
+}
+
+function chooseRepair(id) {
+    let val = document.getElementById("offer-reason" + id).value;
+    if (val === 'repair') { document.getElementById("repair-menu" + id).hidden = false; }
+}
+
+function offerRepair(id) {
+
+    document.getElementById("of-rep-ready" + id).hidden = true;
+
+    let comment = document.getElementById("repair-offer-comm" + id).value;
+
+    $.ajax({
+        type: "POST",
+        url: "/raceTime-mechanic/offer-repair",
+        data: {
+            "id" : id,
+            "comment" : comment
+        },
+        success: function (data) {
+            document.getElementById("of-rep-ready" + id).hidden = false;
+        }
+    });
+
+}

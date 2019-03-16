@@ -155,6 +155,25 @@
                                     Комментарий: ${change.comment}</td>
                             </tr>
                         </c:forEach>
+                        <table class="infotable" border="1" style="max-height: 30%">
+                            <tr><td colspan="2">Ремонт деталей</td></tr>
+                            <c:forEach items="${repair_accept}" var="repair">
+                                <tr>
+                                    <td>
+                                        Было одобрено тех. обслуживание болида ${repair_accept_cars.get(repair_accept.indexOf(repair)).label} ${repair_accept_cars.get(repair_accept.indexOf(repair)).model}
+                                        Комментарий: ${repair.comment}
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            <c:forEach items="${repair_refuse}" var="repair">
+                                <tr>
+                                    <td>
+                                        Было отклонено тех. обслуживание болида ${repair_refuse_cars.get(repair_refuse.indexOf(repair)).label} ${repair_refuse_cars.get(repair_refuse.indexOf(repair)).model}
+                                        Комментарий: ${repair.comment}
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </table>
                     </table>
                 </div>
             </div>
@@ -164,11 +183,17 @@
             <div class="inside_block_wrapper">
                 <div class="infotab">
                     <h3 style="text-align: center">Предложение пит-стопа</h3>
-                    Пит-стоп на пункте А через 1 круг <br>
-                    Тип: обслуживание <br>
-                    Причина: дозаправка <br> <br>
-                    <input type="button" class="res-selector" value="Принять">
-                    <input type="button" class="res-selector" value="Отказать">
+                    <c:forEach items="${repair_review}" var="repair">
+                    <table class="infotable" style="max-height: 30%" border="1">
+                        <tr>
+                            <td>Предложение ремонта</td>
+                            <td>Комментарий: ${repair.comment}</td>
+                            <td><input type="text" class="res-selector" id="rev-rep-comm${repair.id}" placeholder="Ваш ответ"></td>
+                            <td><input type="button" class="res-selector" value="Принять" onclick="confirmRepair(${repair.id}, true)"></td>
+                            <td><input type="button" class="res-selector" value="Отказать" onclick="confirmRepair(${repair.id}, false)" ></td>
+                        </tr>
+                    </table>
+                    </c:forEach>
                 </div>
             </div>
         </div>
