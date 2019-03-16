@@ -1,3 +1,5 @@
+var lastTime;
+
 function changePilot() {
 
     document.getElementById("pilot-change-ready").hidden = true;
@@ -29,3 +31,51 @@ function changePilot() {
         });
     }
 }
+
+function getNews() {
+    $.ajax({
+        type : "GET",
+        data : {"lastTime" : lastTime},
+        url: "/raceTime-racer/news",
+        success: function (data) {
+
+            if ((data[0][0]) !== "nothing") {
+                let mess = "Из пункта " + data[0][3] + " в пункт " + data[0][4] + " перенесено: ";
+                let typeM = "";
+
+                if (data[0][2] === "TOUGH") {
+                    typeM = " жесткие шины в количестве ";
+                }
+                if (data[0][2] === "SOFT") {
+                    typeM = " мягкие шины в количестве ";
+                }
+                if (data[0][2] === "FUEL") {
+                    typeM = " топливо в объеме ";
+                }
+
+                let transTable = $('#transfersTable');
+                let $tr = $('<tr>').append(
+                    $('<td>').text(data[0][0]),
+                    $('<td>').text(mess + typeM + data[0][1]));
+                transTable.append($tr);
+
+                lastTime = data[0][5];
+            }
+        }
+    });
+}
+
+setInterval(getNews,2000);
+
+window.onload = function()
+ {
+
+    $.ajax({
+        type : "GET",
+        url : "/raceTime-mechanic/time",
+        success: function(data) {
+            lastTime = data;
+        }
+    });
+
+};

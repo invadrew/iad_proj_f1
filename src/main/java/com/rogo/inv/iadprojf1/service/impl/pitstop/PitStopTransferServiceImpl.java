@@ -43,4 +43,7 @@ public class PitStopTransferServiceImpl implements PitStopTransferService {
 
     @Override
     public List<PitStopTransfer> findAllByTeamIdAndRace(Team team, Race race) { return repository.findAllByTeamIdAndRace(team, race); }
+
+    @Override
+    public   List<PitStopTransfer> findAllByTeamIdAndRaceOrderByTimeDesc(Team team, Race race) { return repository.findAllByTeamIdAndRaceOrderByTimeDesc(team, race); }
 }

@@ -21,4 +21,6 @@ public interface PitStopTransferService {
     List<PitStopTransfer> findAllByTransferAndRace(PitStopTransfer.Transfers transfers, Race race);
 
     List<PitStopTransfer> findAllByTeamIdAndRace(Team team, Race race);
+
+    List<PitStopTransfer> findAllByTeamIdAndRaceOrderByTimeDesc(Team team, Race race);
 }

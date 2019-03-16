@@ -4,6 +4,7 @@ package com.rogo.inv.iadprojf1.controller;
 import com.rogo.inv.iadprojf1.entity.*;
 import com.rogo.inv.iadprojf1.entity.pitstop.PilotChange;
 import com.rogo.inv.iadprojf1.entity.pitstop.PitStopPlace;
+import com.rogo.inv.iadprojf1.entity.pitstop.PitStopTransfer;
 import com.rogo.inv.iadprojf1.entity.race.Race;
 import com.rogo.inv.iadprojf1.entity.race.RaceRegistration;
 import com.rogo.inv.iadprojf1.service.*;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +26,9 @@ import java.util.List;
 
 @Controller
 public class RaceTimeRacerController {
+
+    @Autowired
+    private PitStopTransferService pitStopTransferService;
 
     @Autowired
     private RaceService raceService;
@@ -98,6 +103,20 @@ public class RaceTimeRacerController {
 
             } catch (NullPointerException x) {}
 
+            List<PitStopTransfer> transfers = pitStopTransferService.findAllByTeamIdAndRace(team,race);
+            map.addAttribute("transfers", transfers);
+
+            List<PitStopPlace> placesFrom = new ArrayList<>();
+            List<PitStopPlace> placesTo = new ArrayList<>();
+
+            for(PitStopTransfer transfer: transfers) {
+                placesFrom.add(transfer.getPlaceFrom());
+                placesTo.add(transfer.getPlaceTo());
+            }
+
+            map.addAttribute("placesFrom", placesFrom);
+            map.addAttribute("placesTo", placesTo);
+
 
         }
 
@@ -147,5 +166,67 @@ public class RaceTimeRacerController {
 
     }
 
+    @RequestMapping(value = "/raceTime-racer/news", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Object[]> getNews(@RequestParam(name = "lastTime", required = false) String lTime, Authentication authentication) {
 
-}
+        List<Object[]> updates = new ArrayList<>();
+
+            String[] lTimeParts = lTime.trim().split(":");
+            if (Integer.parseInt(lTimeParts[0]) < 10 && (!lTimeParts[0].startsWith("0"))) {
+                lTimeParts[0] = "0" + lTimeParts[0];
+            }
+            if (Integer.parseInt(lTimeParts[1]) < 10 && (!lTimeParts[1].startsWith("0"))) {
+                lTimeParts[1] = "0" + lTimeParts[1];
+            }
+            if (Integer.parseInt(lTimeParts[2]) < 10 && (!lTimeParts[2].startsWith("0"))) {
+                lTimeParts[2] = "0" + lTimeParts[2];
+            }
+            LocalTime maxTime = LocalTime.parse(lTimeParts[0] + ":" + lTimeParts[1] + ":" + lTimeParts[2]);
+
+
+            List<Object[]> currRace = raceService.getCurrentEvent();
+            Race race = raceService.findById((Integer) currRace.get(0)[6]);
+            Team team = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam();
+
+            Date start = race.getDateTime();
+            Date now = new Date();
+            long current = start.getTime() - now.getTime();
+            long diffSeconds = (-1) * current / 1000 % 60;
+            long diffMinutes = (-1) * current / (60 * 1000) % 60;
+            long diffHours = (-1) * current / (60 * 60 * 1000);
+            String sec = "" + diffSeconds;
+            if (diffSeconds < 10) {
+                sec = "0" + diffSeconds;
+            }
+            String min = "" + diffMinutes;
+            if (diffMinutes < 10) {
+                min = "0" + diffMinutes;
+            }
+            String ho = "" + diffHours;
+            if (diffHours < 10) {
+                ho = "0" + diffHours;
+            }
+
+            List<PitStopTransfer> transfers = pitStopTransferService.findAllByTeamIdAndRaceOrderByTimeDesc(team, race);
+            LocalTime curr = LocalTime.parse(ho + ":" + min + ":" + sec);
+
+            for (PitStopTransfer transfer : transfers) {
+
+                if (transfer.getTime().isBefore(curr) && (transfer.getTime().isAfter(maxTime))) {
+                    PitStopPlace placeFrom = transfer.getPlaceFrom();
+                    PitStopPlace placeTo = transfer.getPlaceTo();
+                    Object[] updData = {transfer.getTime().toString(), transfer.getAmount(), transfer.getTransfer().toString(), placeFrom.getName(), placeTo.getName(), ho + ":" + min + ":" + sec};
+                    updates.add(updData);
+                    break;
+                }
+            }
+
+            if (updates.isEmpty()) {
+                Object[] bad = {"nothing"};
+                updates.add(bad);
+            }
+            return updates;
+        }
+    }
+

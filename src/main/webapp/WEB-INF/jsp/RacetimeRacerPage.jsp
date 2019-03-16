@@ -171,27 +171,23 @@
         <div class="RaceMessageTableArea">
             <div class="inside_block_wrapper">
                 <div class="infotab">
-                    <table class="infotable" border="1" style="max-height: 30%">
+                    <table class="infotable" id="transfersTable" border="1" style="max-height: 30%">
+                        <tr><td colspan="2">Трансферы</td></tr>
                         <tr>
                             <th>Время</th>
                             <th>Сообщение</th>
                         </tr>
-                        <tr>
-                            <td>00:01:34</td>
-                            <td>Тут будет очень длинное сообщение с информацией о пит-сто пе 0_0 0_0</td>
-                        </tr>
-                        <tr>
-                            <td>00:01:34</td>
-                            <td>Тут будет очень длинное сообщение с информацией о пит-сто пе 0_0 0_0</td>
-                        </tr>
-                        <tr>
-                            <td>00:01:34</td>
-                            <td>Тут будет очень длинное сообщение с информацией о пит-сто пе 0_0 0_0</td>
-                        </tr>
-                        <tr>
-                            <td>00:01:34</td>
-                            <td>Тут будет очень длинное сообщение с информацией о пит-сто пе 0_0 0_0</td>
-                        </tr>
+                        <c:forEach items="${transfers}" var="transfer">
+                            <tr>
+                                <td>${transfer.time}</td>
+                                <td>Из пункта ${placesFrom.get(transfers.indexOf(transfer)).name} в пункт ${placesTo.get(transfers.indexOf(transfer)).name} перенесено:
+                                    <c:if test="${transfer.transfer.toString().equals('TOUGH')}"> жесткие шины в количестве </c:if>
+                                    <c:if test="${transfer.transfer.toString().equals('SOFT')}"> мягкие шины в количестве </c:if>
+                                    <c:if test="${transfer.transfer.toString().equals('FUEL')}"> топливо в объеме </c:if>
+                                        ${transfer.amount}
+                                </td>
+                            </tr>
+                        </c:forEach>
                     </table>
                 </div>
             </div>
