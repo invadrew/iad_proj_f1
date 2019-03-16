@@ -34,3 +34,23 @@ function changePilot() {
     }
 }
 
+
+function askRepair() {
+
+    document.getElementById("repair-sent").hidden = true;
+    let comment = document.getElementById("repair-comment").value;
+
+    $.ajax({
+        type: "POST",
+        url: "/raceTime-racer/askRepair",
+        data: {
+            "comment": comment,
+        },
+        success: function (data) {
+            document.getElementById("repair-sent").hidden = false;
+            }
+    });
+
+
+}
+

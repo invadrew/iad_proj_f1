@@ -109,60 +109,8 @@
             <div class="inside_block_wrapper">
                 <div class="infotab">
                     <h3 style="text-align: center">Запрос ремонта</h3>
-                    <form>
-                        <label>Пункт пит-стопа:</label> <br>
-                        <c:forEach items="${pitStopPlaces}" var="place">
-                            <label><input type="radio" name="place-select" value="${place.id}"> ${place.name} </label>
-                        </c:forEach>
-                         <br>
-                        <table style="margin: 2%">
-                            <tr>
-                                <th>Деталь</th>
-                                <th>Причина</th>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>
-                                        <input type="checkbox"> Каркас
-                                    </label>
-                                </td>
-                                <td>
-                                    <input id="carc-reason" class="res-selector" type="text">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>
-                                        <input type="checkbox"> Шасси
-                                    </label>
-                                </td>
-                                <td>
-                                    <input id="chass-reason" class="res-selector" type="text">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>
-                                        <input type="checkbox"> Двигатель
-                                    </label>
-                                </td>
-                                <td>
-                                    <input id="eng-reason" class="res-selector" type="text">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>
-                                        <input type="checkbox"> Электроника
-                                    </label>
-                                </td>
-                                <td>
-                                    <input id="elec-reason" class="res-selector" type="text">
-                                </td>
-                            </tr>
-                        </table>
-                        <input type="submit" value="Запросить" class="res-selector">
-                    </form>
+                    <input type="text" class="res-selector" placeholder="Комментарий" id ="repair-comment" /> <br>
+                    <input type="button" value="Запросить" class="res-selector" onclick="askRepair()"> <label hidden id="repair-sent"> Отправлено </label>
                 </div>
             </div>
         </div>

@@ -130,6 +130,25 @@
                                 </tr>
                             </c:forEach>
                         </table>
+                        <table class="infotable" border="1" style="max-height: 30%">
+                            <tr><td colspan="2">Ремонт деталей</td></tr>
+                                <c:forEach items="${repair_accept}" var="repair">
+                                    <tr>
+                                        <td>
+                                            Было одобрено тех. обслуживание болида ${repair_accept_cars.get(repair_accept.indexOf(repair)).label} ${repair_accept_cars.get(repair_accept.indexOf(repair)).model}
+                                            Комментарий: ${repair.comment}
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            <c:forEach items="${repair_refuse}" var="repair">
+                                <tr>
+                                    <td>
+                                        Было отклонено тех. обслуживание болида ${repair_refuse_cars.get(repair_refuse.indexOf(repair)).label} ${repair_refuse_cars.get(repair_refuse.indexOf(repair)).model}
+                                        Комментарий: ${repair.comment}
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -270,6 +289,21 @@
                                 <td><input type="button" value="Отказать" class="res-selector" onclick="handleChangePilot(${change.id}, false)" ></td>
                             </tr>
                         </table>
+                        </c:forEach>
+                        <c:forEach items="${repair_review}" var="repair">
+                            <h4>Ремонт</h4>
+                            <table class="infotable" style="text-align: left;" border="1" >
+                                <tr>
+                                    <td>Болид: ${repair_review_cars.get(repair_review.indexOf(repair)).label} ${repair_review_cars.get(repair_review.indexOf(repair)).model} </td>
+                                    <td>Комментарий: ${repair.comment}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" placeholder="Ваш ответ" class="res-selector" id="repAnsw${repair.id}"></td>
+                                    <td><input type="button" value="Принять" class="res-selector" onclick=""></td>
+                                    <td><input type="button" value="Отказать" class="res-selector" onclick="" ></td>
+                                </tr>
+                            </table>
                         </c:forEach>
                             <table class="infotable" style="text-align: left;" border="1" >
                                 <tr>

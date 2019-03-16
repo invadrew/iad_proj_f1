@@ -1,6 +1,9 @@
 package com.rogo.inv.iadprojf1.service.impl.pitstop;
+import com.rogo.inv.iadprojf1.entity.AcceptStatus;
 import com.rogo.inv.iadprojf1.entity.Car;
+import com.rogo.inv.iadprojf1.entity.Team;
 import com.rogo.inv.iadprojf1.entity.pitstop.PitStopRepair;
+import com.rogo.inv.iadprojf1.entity.race.Race;
 import com.rogo.inv.iadprojf1.repository.pitstopRepository.PitStopRepairRepository;
 import com.rogo.inv.iadprojf1.service.PitStopRepairService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +38,14 @@ public class PitStopRepairServiceImpl implements PitStopRepairService {
 
     @Override
     public List<PitStopRepair> findAllByCar(Car car) { return repository.findAllByCar(car); }
+
+    @Override
+    public  List<PitStopRepair> findAllByRaceAndStatusAndTeamId(Race race, AcceptStatus status, Team team) {
+        return repository.findAllByRaceAndStatusAndTeamId(race, status, team); }
+
+    @Override
+    public List<PitStopRepair> findAllByRaceAndTeamId(Race race, Team team) {
+        return repository.findAllByRaceAndTeamId(race, team);
+    }
 
 }

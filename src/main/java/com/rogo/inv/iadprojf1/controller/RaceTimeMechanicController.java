@@ -3,6 +3,7 @@ package com.rogo.inv.iadprojf1.controller;
 import com.rogo.inv.iadprojf1.entity.*;
 import com.rogo.inv.iadprojf1.entity.pitstop.PilotChange;
 import com.rogo.inv.iadprojf1.entity.pitstop.PitStopPlace;
+import com.rogo.inv.iadprojf1.entity.pitstop.PitStopRepair;
 import com.rogo.inv.iadprojf1.entity.pitstop.PitStopTransfer;
 import com.rogo.inv.iadprojf1.entity.race.Race;
 import com.rogo.inv.iadprojf1.entity.race.RaceRegistration;
@@ -53,6 +54,9 @@ public class RaceTimeMechanicController {
 
     @Autowired
     private PilotChangeService pilotChangeService;
+
+    @Autowired
+    private PitStopRepairService pitStopRepairService;
 
     @RequestMapping(value = "/raceTime-mechanic", method = RequestMethod.GET)
     public String toRace(ModelMap map, Authentication authentication, @Param("id") Integer id) {
@@ -157,6 +161,43 @@ public class RaceTimeMechanicController {
             map.addAttribute("pilChang_refuse", pilotChangesRef);
             map.addAttribute("pilChang_refuse_cars", pc_cars_ref);
             map.addAttribute("pilChang_refuse_pilots", pc_pilots_ref);
+
+            List<PitStopRepair> pitStopRepairsA = pitStopRepairService.findAllByRaceAndStatusAndTeamId(race, AcceptStatus.ACCEPTED, team);
+            List<PitStopRepair> pitStopRepairsOnR = pitStopRepairService.findAllByRaceAndStatusAndTeamId(race, AcceptStatus.ON_REVIEW, team);
+            List<PitStopRepair> pitStopRepairsR = pitStopRepairService.findAllByRaceAndStatusAndTeamId(race, AcceptStatus.REFUSED, team);
+
+            List<PitStopRepair> repairsFromRacers = new ArrayList<>();
+
+            List<Car> carsA = new ArrayList<>();
+            List<Car> carsR = new ArrayList<>();
+            List<Car> carsOnR = new ArrayList<>();
+
+            for( PitStopRepair rep: pitStopRepairsOnR ) {
+                if (rep.getSender().equals("RACER")) {
+                    repairsFromRacers.add(rep);
+                }
+            }
+
+            for( PitStopRepair rep: pitStopRepairsA ) {
+                carsA.add(rep.getCar());
+            }
+
+            for( PitStopRepair rep: pitStopRepairsR ) {
+                carsR.add(rep.getCar());
+            }
+
+            for( PitStopRepair rep: repairsFromRacers ) {
+                carsOnR.add(rep.getCar());
+            }
+
+            map.addAttribute("repair_accept", pitStopRepairsA);
+            map.addAttribute("repair_accept_cars", carsA);
+
+            map.addAttribute("repair_refuse", pitStopRepairsR);
+            map.addAttribute("repair_refuse_cars", carsR);
+
+            map.addAttribute("repair_review", repairsFromRacers);
+            map.addAttribute("repair_review_cars", carsOnR);
 
         }
 

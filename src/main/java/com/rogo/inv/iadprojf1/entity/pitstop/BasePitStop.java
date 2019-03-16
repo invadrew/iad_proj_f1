@@ -20,7 +20,6 @@ public abstract class BasePitStop {
     @JoinColumn(name = "race_id")
     Race race;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id")
     PitStopPlace place;
@@ -37,7 +36,7 @@ public abstract class BasePitStop {
     /* ================================
      constructors
     ================================ */
-    public BasePitStop(@NotNull Race race, @NotNull PitStopPlace place, @NotNull Car car, @NotNull AcceptStatus status) {
+    public BasePitStop(@NotNull Race race, PitStopPlace place, @NotNull Car car, @NotNull AcceptStatus status) {
         this.race = race;
         this.place = place;
         this.car = car;

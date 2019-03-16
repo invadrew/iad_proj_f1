@@ -4,6 +4,7 @@ package com.rogo.inv.iadprojf1.controller;
 import com.rogo.inv.iadprojf1.entity.*;
 import com.rogo.inv.iadprojf1.entity.pitstop.PilotChange;
 import com.rogo.inv.iadprojf1.entity.pitstop.PitStopPlace;
+import com.rogo.inv.iadprojf1.entity.pitstop.PitStopRepair;
 import com.rogo.inv.iadprojf1.entity.pitstop.PitStopTransfer;
 import com.rogo.inv.iadprojf1.entity.race.Race;
 import com.rogo.inv.iadprojf1.entity.race.RaceRegistration;
@@ -56,6 +57,9 @@ public class RaceTimeRacerController {
 
     @Autowired
     private PilotChangeService pilotChangeService;
+
+    @Autowired
+    private PitStopRepairService pitStopRepairService;
 
     @RequestMapping(value = "/raceTime-racer", method = RequestMethod.GET)
     public String toRace(ModelMap map, Authentication authentication, @Param("id") Integer id) {
@@ -256,6 +260,7 @@ public class RaceTimeRacerController {
             }
 
             List<PitStopTransfer> transfers = pitStopTransferService.findAllByTeamIdAndRaceOrderByTimeDesc(team, race);
+            List<PitStopRepair> repairs = pitStopRepairService.findAllByRaceAndTeamId(race,team);
             List<PilotChange> pilotChangesA = pilotChangeService.findAllByRaceAndStatusAndTeamId(race, AcceptStatus.ACCEPTED, team);
             List<PilotChange> pilotChangesR = pilotChangeService.findAllByRaceAndStatusAndTeamId(race, AcceptStatus.REFUSED, team);
         List<PilotChange> pilotChangesRev = pilotChangeService.findAllByRaceAndStatusAndTeamId(race, AcceptStatus.ON_REVIEW, team);
@@ -285,7 +290,58 @@ public class RaceTimeRacerController {
                 return ho + ":" + min + ":" + sec;
             }
         }
+
+        for(PitStopRepair rep: repairs) {
+            if (rep.getTime().isBefore(curr) && (rep.getTime().isAfter(maxTime))) {
+                return ho + ":" + min + ":" + sec;
+            }
+        }
+
             return "nothing";
         }
+
+
+        @RequestMapping(value = "/raceTime-racer/askRepair", method = RequestMethod.POST)
+        @ResponseBody
+        public void askRepair(Authentication authentication, HttpServletRequest request) {
+
+        String comment = request.getParameter("comment");
+
+            User pilot = userService.findByLogin(authentication.getName());
+            TeamMember pilotTm = teamMemberService.findByUserId(pilot.getId());
+            Team team = teamMemberService.findByUserId(pilot.getId()).getTeam();
+            List<Object[]> currRace = raceService.getCurrentEvent();
+            Race race = raceService.findById((Integer) currRace.get(0)[6]);
+
+            Car car;
+
+            RaceRegistration registration = raceRegistrationService.findById(team,race);
+            if (registration.getFirstPilot().getUserId() == pilot.getId()) {
+                car = carService.findById(registration.getFirstCar().getId());
+            } else {
+                car = carService.findById(registration.getSecondCar().getId());
+            }
+
+            Date start = race.getDateTime();
+            Date now = new Date();
+            long current = start.getTime() - now.getTime();
+            long diffSeconds = (-1)*current / 1000 % 60;
+            long diffMinutes = (-1)*current / (60 * 1000) % 60;
+            long diffHours = (-1) * current / (60 * 60 * 1000);
+            String sec = "" + diffSeconds;
+            if (diffSeconds < 10) { sec = "0" + diffSeconds; }
+            String min = "" + diffMinutes;
+            if (diffMinutes < 10) { min = "0" + diffMinutes; }
+            String ho = "" + diffHours;
+            if (diffHours < 10) { ho = "0" + diffHours; }
+
+            PitStopRepair repair = new PitStopRepair(race,null,car,AcceptStatus.ON_REVIEW,comment,"RACER",team,
+                    LocalTime.parse(ho + ":" + min + ":" + sec));
+
+            pitStopRepairService.save(repair);
+
+        }
+
+
     }
 
