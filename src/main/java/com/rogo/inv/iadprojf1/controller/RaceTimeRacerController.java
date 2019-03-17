@@ -330,6 +330,44 @@ public class RaceTimeRacerController {
                 ho = "0" + diffHours;
             }
 
+            /* Let's simulate something*/
+
+                RaceRegistration registration = raceRegistrationService.findById(team,race);
+                Car firstCar = registration.getFirstCar();
+                Car secondCar = registration.getSecondCar();
+
+                if (diffSeconds % 25 == 0) {
+                    firstCar.setFuel(firstCar.getFuel() - 2);
+                    secondCar.setFuel(secondCar.getFuel() - 2);
+                    firstCar.setTires(raceDowngrade(firstCar.getTires()));
+                    secondCar.setTires(raceDowngrade(secondCar.getTires()));
+                    carService.save(firstCar);
+                    carService.save(secondCar);
+
+                    return "udp";
+                }
+
+                if (diffSeconds == 15 && diffMinutes > 1) {
+
+                    firstCar.getCurrentCarcase().setCondition(raceDowngrade(firstCar.getCurrentCarcase().getCondition()));
+                    firstCar.getCurrentChassis().setCondition(raceDowngrade(firstCar.getCurrentChassis().getCondition()));
+                    firstCar.getCurrentEngine().setCondition(raceDowngrade(firstCar.getCurrentEngine().getCondition()));
+                    firstCar.getCurrentElectronics().setCondition(raceDowngrade(firstCar.getCurrentElectronics().getCondition()));
+
+                    secondCar.getCurrentCarcase().setCondition(raceDowngrade(secondCar.getCurrentCarcase().getCondition()));
+                    secondCar.getCurrentChassis().setCondition(raceDowngrade(secondCar.getCurrentChassis().getCondition()));
+                    secondCar.getCurrentEngine().setCondition(raceDowngrade(secondCar.getCurrentEngine().getCondition()));
+                    secondCar.getCurrentElectronics().setCondition(raceDowngrade(secondCar.getCurrentElectronics().getCondition()));
+
+                    carService.save(firstCar);
+                    carService.save(secondCar);
+
+                    return "udp";
+
+                }
+
+           /* Enough*/
+
             List<PitStopTransfer> transfers = pitStopTransferService.findAllByTeamIdAndRaceOrderByTimeDesc(team, race);
             List<PitStopRepair> repairs = pitStopRepairService.findAllByRaceAndTeamId(race,team);
             List<PitStopRepair> acc_repairs = pitStopRepairService.findAllByRaceAndStatusAndTeamId(race, AcceptStatus.ACCEPTED, team);
@@ -385,6 +423,23 @@ public class RaceTimeRacerController {
         }
 
             return "nothing";
+        }
+
+
+        private ComponentCondition raceDowngrade(ComponentCondition currCond) {
+
+           switch (currCond) {
+               case PERFECT:
+                   return ComponentCondition.GOOD;
+               case GOOD:
+                   return ComponentCondition.NORMAL;
+               case NORMAL:
+                   return ComponentCondition.BAD;
+               case BAD:
+                   return ComponentCondition.AWFUL;
+               default:
+                   return ComponentCondition.AWFUL;
+           }
         }
 
 

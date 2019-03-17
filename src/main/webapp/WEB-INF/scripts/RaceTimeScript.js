@@ -40,8 +40,9 @@ function getNews() {
                     if (data.startsWith("/garage")) {
                         window.location = data;
                     } else {
+                        if (data === "udp") {location.reload();} else {
                         lastTime = data;
-                        location.reload();
+                        location.reload(); }
                     }
                 }
             }
