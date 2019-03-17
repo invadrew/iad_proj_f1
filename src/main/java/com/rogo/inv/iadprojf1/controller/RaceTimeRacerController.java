@@ -2,10 +2,7 @@ package com.rogo.inv.iadprojf1.controller;
 
 
 import com.rogo.inv.iadprojf1.entity.*;
-import com.rogo.inv.iadprojf1.entity.pitstop.PilotChange;
-import com.rogo.inv.iadprojf1.entity.pitstop.PitStopPlace;
-import com.rogo.inv.iadprojf1.entity.pitstop.PitStopRepair;
-import com.rogo.inv.iadprojf1.entity.pitstop.PitStopTransfer;
+import com.rogo.inv.iadprojf1.entity.pitstop.*;
 import com.rogo.inv.iadprojf1.entity.race.Race;
 import com.rogo.inv.iadprojf1.entity.race.RaceRegistration;
 import com.rogo.inv.iadprojf1.service.*;
@@ -61,6 +58,9 @@ public class RaceTimeRacerController {
 
     @Autowired
     private PitStopRepairService pitStopRepairService;
+
+    @Autowired
+    private PitStopServiceService pitStopServiceService;
 
     @RequestMapping(value = "/raceTime-racer", method = RequestMethod.GET)
     public String toRace(ModelMap map, Authentication authentication, @Param("id") Integer id) {
@@ -185,6 +185,33 @@ public class RaceTimeRacerController {
             map.addAttribute("repair_refuse_cars", carsR);
 
             map.addAttribute("repair_review", repairsFromRacers);
+
+            List<PitStopService> service_acc = pitStopServiceService.findAllByTeamIdAndRaceAndStatus(team,race,AcceptStatus.ACCEPTED);
+            List<PitStopService> service_ref = pitStopServiceService.findAllByTeamIdAndRaceAndStatus(team,race,AcceptStatus.REFUSED);
+
+            List<Car> service_acc_cars = new ArrayList<>();
+            List<PitStopPlace> service_acc_places = new ArrayList<>();
+
+            for( PitStopService service: service_acc ) {
+                service_acc_cars.add(service.getCar());
+                service_acc_places.add(service.getPlace());
+            }
+
+            map.addAttribute("service_accept", service_acc);
+            map.addAttribute("service_accept_cars", service_acc_cars);
+            map.addAttribute("service_accept_places", service_acc_places);
+
+            List<Car> service_ref_cars = new ArrayList<>();
+            List<PitStopPlace> service_ref_places = new ArrayList<>();
+
+            for( PitStopService service: service_ref ) {
+                service_ref_cars.add(service.getCar());
+                service_ref_places.add(service.getPlace());
+            }
+
+            map.addAttribute("service_refuse", service_ref);
+            map.addAttribute("service_refuse_cars", service_ref_cars);
+            map.addAttribute("service_refuse_places", service_ref_places);
 
 
         }
@@ -418,6 +445,57 @@ public class RaceTimeRacerController {
                 pitStopRepair.setStatus(AcceptStatus.REFUSED);
                 pitStopRepairService.save(pitStopRepair);
             }
+
+        }
+
+        @RequestMapping(value = "/raceTime-racer/askService", method = RequestMethod.POST)
+        @ResponseBody
+        public String askService(HttpServletRequest request, Authentication authentication) {
+
+            String comment = request.getParameter("comment");
+            PitStopPlace place = pitStopPlaceService.findById(Integer.parseInt(request.getParameter("place")));
+            Float fuel = Float.parseFloat(request.getParameter("fuel"));
+            String tires = request.getParameter("tires");
+
+            User pilot = userService.findByLogin(authentication.getName());
+            TeamMember pilotTm = teamMemberService.findByUserId(pilot.getId());
+            Team team = teamMemberService.findByUserId(pilot.getId()).getTeam();
+            List<Object[]> currRace = raceService.getCurrentEvent();
+            Race race = raceService.findById((Integer) currRace.get(0)[6]);
+
+            Car car;
+
+            RaceRegistration registration = raceRegistrationService.findById(team,race);
+            if (registration.getFirstPilot().getUserId() == pilot.getId()) {
+                car = carService.findById(registration.getFirstCar().getId());
+            } else {
+                car = carService.findById(registration.getSecondCar().getId());
+            }
+
+            Date start = race.getDateTime();
+            Date now = new Date();
+            long current = start.getTime() - now.getTime();
+            long diffSeconds = (-1)*current / 1000 % 60;
+            long diffMinutes = (-1)*current / (60 * 1000) % 60;
+            long diffHours = (-1) * current / (60 * 60 * 1000);
+            String sec = "" + diffSeconds;
+            if (diffSeconds < 10) { sec = "0" + diffSeconds; }
+            String min = "" + diffMinutes;
+            if (diffMinutes < 10) { min = "0" + diffMinutes; }
+            String ho = "" + diffHours;
+            if (diffHours < 10) { ho = "0" + diffHours; }
+
+            PitStopService.TireTypes tireTypes = null;
+
+            if(tires.equals("SOFT")) tireTypes = PitStopService.TireTypes.SOFT;
+            if(tires.equals("TOUGH")) tireTypes = PitStopService.TireTypes.TOUGH;
+
+            PitStopService pitStopService = new PitStopService(race,place,car,null,fuel,tireTypes,AcceptStatus.ON_REVIEW,comment, LocalTime.parse(ho + ":" + min + ":" + sec),
+                    team,"RACER");
+
+            pitStopServiceService.save(pitStopService);
+
+            return "ok";
 
         }
 

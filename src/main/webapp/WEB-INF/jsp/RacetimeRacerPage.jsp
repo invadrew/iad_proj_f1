@@ -92,14 +92,19 @@
                          <br>
                         <label for="tire-change">Сменить резину:</label>
                         <select class="res-selector" id="tire-change">
-                            <option>Не надо</option>
-                            <option>Мягкие</option>
-                            <option>Жесткие</option>
+                            <option value="NONE">Не надо</option>
+                            <option value="SOFT">Мягкие</option>
+                            <option value="TOUGH">Жесткие</option>
                         </select> <br>
-                        Дозаправка <input type="number" min="0" class="res-selector" style="width: 20%"> литров
+                        <label for="fuel-serv"> Дозаправка </label>
+                        <input type="number" min="0" id="fuel-serv" value="0" class="res-selector" style="width: 20%"> литров
                         <br> <br>
-                        Через <input type="number" min="0" class="res-selector" style="width: 5%"> кругов
-                        <input type="submit" class="res-selector" value="Запросить">
+                        <input type="text" placeholder="Комментарий" class="res-selector" id="askServiceComment">
+                        <br>
+                        <input type="button" class="res-selector" value="Запросить" onclick="askService()">
+                        <label hidden id="service-not-enough">На пункте нет столько</label>
+                        <label hidden id="service-ready">Отправлено</label>
+                        <label hidden id="service-error">Выберите пит-стоп</label>
                     </form>
                 </div>
             </div>
@@ -155,6 +160,7 @@
                                     Комментарий: ${change.comment}</td>
                             </tr>
                         </c:forEach>
+                    </table>
                         <table class="infotable" border="1" style="max-height: 30%">
                             <tr><td colspan="2">Ремонт деталей</td></tr>
                             <c:forEach items="${repair_accept}" var="repair">
@@ -174,7 +180,43 @@
                                 </tr>
                             </c:forEach>
                         </table>
-                    </table>
+                        <table class="infotable" border="1" style="max-height: 30%">
+                            <tr><td colspan="2">Обслуживание болидов</td></tr>
+                            <c:forEach items="${service_accept}" var="service">
+                                <tr>
+                                    <td>${service.time}</td>
+                                    <td>Одобрен пит-стоп. Болид: ${service_accept_cars.get(service_accept.indexOf(service)).label} ${service_accept_cars.get(service_accept.indexOf(service)).model}.
+                                         Пункт: ${service_accept_places.get(service_accept.indexOf(service)).name}.
+                                        <c:if test="${service.tires.toString().equals('SOFT')}">
+                                            Замена шин на мягкие
+                                        </c:if>
+                                        <c:if test="${service.tires.toString().equals('TOUGH')}">
+                                            Замена шин на жесткие
+                                        </c:if>
+                                        <c:if test="${service.fuel > 0}">
+                                            Дозаправка: ${service.fuel}
+                                        </c:if>
+                                     </td>
+                                </tr>
+                            </c:forEach>
+                            <c:forEach items="${service_refuse}" var="service">
+                                <tr>
+                                    <td>${service.time}</td>
+                                    <td>Отклонен пит-стоп. Болид: ${service_refuse_cars.get(service_refuse.indexOf(service)).label} ${service_refuse_cars.get(service_refuse.indexOf(service)).model}.
+                                        Пункт: ${service_refuse_places.get(service_refuse.indexOf(service)).name}.
+                                        <c:if test="${service.tires.toString().equals('SOFT')}">
+                                            Замена шин на мягкие
+                                        </c:if>
+                                        <c:if test="${service.tires.toString().equals('TOUGH')}">
+                                            Замена шин на жесткие
+                                        </c:if>
+                                        <c:if test="${service.fuel > 0}">
+                                            Дозаправка: ${service.fuel}
+                                        </c:if>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </table>
                 </div>
             </div>
         </div>

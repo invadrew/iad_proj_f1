@@ -1,10 +1,7 @@
 package com.rogo.inv.iadprojf1.controller;
 
 import com.rogo.inv.iadprojf1.entity.*;
-import com.rogo.inv.iadprojf1.entity.pitstop.PilotChange;
-import com.rogo.inv.iadprojf1.entity.pitstop.PitStopPlace;
-import com.rogo.inv.iadprojf1.entity.pitstop.PitStopRepair;
-import com.rogo.inv.iadprojf1.entity.pitstop.PitStopTransfer;
+import com.rogo.inv.iadprojf1.entity.pitstop.*;
 import com.rogo.inv.iadprojf1.entity.race.Race;
 import com.rogo.inv.iadprojf1.entity.race.RaceRegistration;
 import com.rogo.inv.iadprojf1.service.*;
@@ -62,6 +59,9 @@ public class RaceTimeMechanicController {
 
     @Autowired
     private CarService carService;
+
+    @Autowired
+    private PitStopServiceService pitStopServiceService;
 
     @RequestMapping(value = "/raceTime-mechanic", method = RequestMethod.GET)
     public String toRace(ModelMap map, Authentication authentication, @Param("id") Integer id) {
@@ -205,6 +205,48 @@ public class RaceTimeMechanicController {
             map.addAttribute("repair_review_cars", carsOnR);
 
         }
+
+
+        List<PitStopService> service_acc = pitStopServiceService.findAllByTeamIdAndRaceAndStatus(team,race,AcceptStatus.ACCEPTED);
+        List<PitStopService> service_ref = pitStopServiceService.findAllByTeamIdAndRaceAndStatus(team,race,AcceptStatus.REFUSED);
+
+        List<Car> service_acc_cars = new ArrayList<>();
+        List<PitStopPlace> service_acc_places = new ArrayList<>();
+
+        for( PitStopService service: service_acc ) {
+            service_acc_cars.add(service.getCar());
+            service_acc_places.add(service.getPlace());
+        }
+
+        map.addAttribute("service_accept", service_acc);
+        map.addAttribute("service_accept_cars", service_acc_cars);
+        map.addAttribute("service_accept_places", service_acc_places);
+
+        List<Car> service_ref_cars = new ArrayList<>();
+        List<PitStopPlace> service_ref_places = new ArrayList<>();
+
+        for( PitStopService service: service_ref ) {
+            service_ref_cars.add(service.getCar());
+            service_ref_places.add(service.getPlace());
+        }
+
+        map.addAttribute("service_refuse", service_ref);
+        map.addAttribute("service_refuse_cars", service_ref_cars);
+        map.addAttribute("service_refuse_places", service_ref_places);
+
+        List<PitStopService> service_rev = pitStopServiceService.findAllByTeamIdAndStatusAndSenderAndRace(team,AcceptStatus.ON_REVIEW,"RACER", race);
+        List<Car> service_rev_cars = new ArrayList<>();
+        List<PitStopPlace> service_rev_places = new ArrayList<>();
+
+        for( PitStopService service: service_rev ) {
+            service_rev_cars.add(service.getCar());
+            service_rev_places.add(service.getPlace());
+        }
+
+        map.addAttribute("service_review", service_rev);
+        map.addAttribute("service_review_cars", service_rev_cars);
+        map.addAttribute("service_review_places", service_rev_places);
+
 
         return "RacetimeMechanicPage";
 

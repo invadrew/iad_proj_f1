@@ -72,3 +72,45 @@ function confirmRepair(id, status) {
     });
 
 }
+
+
+function askService() {
+
+    document.getElementById("service-ready").hidden = true;
+    document.getElementById("service-error").hidden = true;
+    document.getElementById("service-not-enough").hidden = true;
+
+    let comment = $('#askServiceComment').val();
+    let fuel = $('#fuel-serv').val();
+    let tires = $('#tire-change').val();
+    let pitStop = "";
+    let places = document.getElementsByName('place-select');
+
+    for (let i = 0, length = places.length; i < length; i++) {
+        if (places[i].checked) {
+            pitStop = places[i].value;
+            break;
+        }
+    }
+
+    if (pitStop === "") {  document.getElementById("service-error").hidden = false; } else {
+
+        $.ajax({
+            type: "POST",
+            url: "/raceTime-racer/askService",
+            data: {
+                "comment": comment,
+                "place": pitStop,
+                "fuel" : fuel,
+                "tires" : tires
+            },
+            success: function (data) {
+                if (data === "ok") {
+                    document.getElementById("service-ready").hidden = false; } else {
+                    document.getElementById("service-not-enough").hidden = false;
+                }
+            }
+        });
+    }
+
+}

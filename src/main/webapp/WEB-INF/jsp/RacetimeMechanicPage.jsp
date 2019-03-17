@@ -149,6 +149,43 @@
                                 </tr>
                             </c:forEach>
                         </table>
+                        <table class="infotable" border="1" style="max-height: 30%">
+                            <tr><td colspan="2">Обслуживание болидов</td></tr>
+                            <c:forEach items="${service_accept}" var="service">
+                                <tr>
+                                    <td>${service.time}</td>
+                                    <td>Одобрен пит-стоп. Болид: ${service_accept_cars.get(service_accept.indexOf(service)).label} ${service_accept_cars.get(service_accept.indexOf(service)).model}.
+                                        Пункт: ${service_accept_places.get(service_accept.indexOf(service)).name}.
+                                        <c:if test="${service.tires.toString().equals('SOFT')}">
+                                            Замена шин на мягкие
+                                        </c:if>
+                                        <c:if test="${service.tires.toString().equals('TOUGH')}">
+                                            Замена шин на жесткие
+                                        </c:if>
+                                        <c:if test="${service.fuel > 0}">
+                                            Дозаправка: ${service.fuel}
+                                        </c:if>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            <c:forEach items="${service_refuse}" var="service">
+                                <tr>
+                                    <td>${service.time}</td>
+                                    <td>Отклонен пит-стоп. Болид: ${service_refuse_cars.get(service_refuse.indexOf(service)).label} ${service_refuse_cars.get(service_refuse.indexOf(service)).model}.
+                                        Пункт: ${service_refuse_places.get(service_refuse.indexOf(service)).name}.
+                                        <c:if test="${service.tires.toString().equals('SOFT')}">
+                                            Замена шин на мягкие
+                                        </c:if>
+                                        <c:if test="${service.tires.toString().equals('TOUGH')}">
+                                            Замена шин на жесткие
+                                        </c:if>
+                                        <c:if test="${service.fuel > 0}">
+                                            Дозаправка: ${service.fuel}
+                                        </c:if>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -331,24 +368,6 @@
                                     <td>Цель: смена резины на мягкие</td>
                                 </tr>
                             </table>
-                        Через 1 круг(ов) <br> <br>
-                        <form>
-                        <table >
-                            <tr>
-                                <td>Принять:</td>
-                                <td>
-                                    <label for="accept-to">Ехать к пункту</label>
-                                    <input type="text" id="accept-to" class="res-selector" style="width: 15%">
-                                </td>
-                                <td><input type="submit" class="res-selector" value="Готово"></td>
-                            </tr>
-                            <tr>
-                                <td>Отказать:</td>
-                                <td><input type="text" class="res-selector" placeholder="Комментарий"></td>
-                                <td><input type="submit" class="res-selector" value="Готово"></td>
-                            </tr>
-                        </table>
-                        </form>
                     </div>
                 </div>
             </div>
