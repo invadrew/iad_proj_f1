@@ -114,3 +114,22 @@ function askService() {
     }
 
 }
+
+function confirmService(id, status) {
+
+    let comment = document.getElementById("servAnsw" + id).value;
+
+    $.ajax({
+        type: "POST",
+        url: "/raceTime-mechanic/service",
+        data: {
+            "comment" : comment,
+            "id" : id,
+            "status" : status
+        },
+        success: function (data) {
+
+        }
+    });
+
+}

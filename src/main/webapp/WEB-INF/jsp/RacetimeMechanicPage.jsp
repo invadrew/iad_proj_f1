@@ -242,6 +242,28 @@
                                     <option value="service" selected>Обслуживание</option>
                                     <option value="repair">Ремонт</option>
                                 </select>  <br> <br>
+                                <div id="service-menu${firstCar.id}">
+                                    <label>Пункт пит-стопа:</label> <br>
+                                    <c:forEach items="${pitStopPlaces}" var="place">
+                                        <label><input type="radio" name="place-select${firstCar.id}" value="${place.id}"> ${place.name} </label>
+                                    </c:forEach>
+                                    <br>
+                                    <label for="tire-change${firstCar.id}">Сменить резину:</label>
+                                    <select class="res-selector" id="tire-change${firstCar.id}">
+                                        <option value="NONE">Не надо</option>
+                                        <option value="SOFT">Мягкие</option>
+                                        <option value="TOUGH">Жесткие</option>
+                                    </select> <br>
+                                    <label for="fuel-serv${firstCar.id}"> Дозаправка </label>
+                                    <input type="number" min="0" id="fuel-serv${firstCar.id}" value="0" class="res-selector" style="width: 20%"> литров
+                                    <br> <br>
+                                    <input type="text" placeholder="Комментарий" class="res-selector" id="askServiceComment${firstCar.id}">
+                                    <br>
+                                    <input type="button" class="res-selector" value="Предложить" onclick="offerService(${firstCar.id})">
+                                    <label hidden id="service-not-enough${firstCar.id}">На пункте нет столько</label>
+                                    <label hidden id="service-ready${firstCar.id}">Отправлено</label>
+                                    <label hidden id="service-error${firstCar.id}">Выберите пит-стоп</label>
+                                </div>
                                 <div id="repair-menu${firstCar.id}" hidden>
                                     <input type="text" class="res-selector" placeholder="Комментарий" id="repair-offer-comm${firstCar.id}" >
                                     <input type="button" class="res-selector" value="Предложить пит-стоп" onclick="offerRepair(${firstCar.id})">
@@ -301,6 +323,28 @@
                                     <option value="service" selected>Обслуживание</option>
                                     <option value="repair">Ремонт</option>
                                 </select>  <br> <br>
+                                <div id="service-menu${secondCar.id}">
+                                    <label>Пункт пит-стопа:</label> <br>
+                                    <c:forEach items="${pitStopPlaces}" var="place">
+                                        <label><input type="radio" name="place-select${secondCar.id}" value="${place.id}"> ${place.name} </label>
+                                    </c:forEach>
+                                    <br>
+                                    <label for="tire-change${secondCar.id}">Сменить резину:</label>
+                                    <select class="res-selector" id="tire-change${secondCar.id}">
+                                        <option value="NONE">Не надо</option>
+                                        <option value="SOFT">Мягкие</option>
+                                        <option value="TOUGH">Жесткие</option>
+                                    </select> <br>
+                                    <label for="fuel-serv${secondCar.id}"> Дозаправка </label>
+                                    <input type="number" min="0" id="fuel-serv${secondCar.id}" value="0" class="res-selector" style="width: 20%"> литров
+                                    <br> <br>
+                                    <input type="text" placeholder="Комментарий" class="res-selector" id="askServiceComment${secondCar.id}">
+                                    <br>
+                                    <input type="button" class="res-selector" value="Предложить" onclick="offerService(${secondCar.id})">
+                                    <label hidden id="service-not-enough${secondCar.id}">На пункте нет столько</label>
+                                    <label hidden id="service-ready${secondCar.id}">Отправлено</label>
+                                    <label hidden id="service-error${secondCar.id}">Выберите пит-стоп</label>
+                                </div>
                                 <div id="repair-menu${secondCar.id}" hidden>
                                     <input type="text" class="res-selector" placeholder="Комментарий" id="repair-offer-comm${secondCar.id}" >
                                     <input type="button" class="res-selector" value="Предложить пит-стоп" onclick="offerRepair(${secondCar.id})">

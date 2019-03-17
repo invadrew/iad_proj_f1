@@ -213,6 +213,18 @@ public class RaceTimeRacerController {
             map.addAttribute("service_refuse_cars", service_ref_cars);
             map.addAttribute("service_refuse_places", service_ref_places);
 
+            List<PitStopService> service_rev = pitStopServiceService.findAllByCarAndStatusAndSenderAndRace(activeCar, AcceptStatus.ON_REVIEW, "MECHANIC", race);
+            List<Car> service_rev_cars = new ArrayList<>();
+            List<PitStopPlace> service_rev_places = new ArrayList<>();
+
+            for( PitStopService service: service_rev ) {
+                service_rev_cars.add(service.getCar());
+                service_rev_places.add(service.getPlace());
+            }
+
+            map.addAttribute("service_review", service_rev);
+            map.addAttribute("service_review_cars", service_rev_cars);
+            map.addAttribute("service_review_places", service_rev_places);
 
         }
 

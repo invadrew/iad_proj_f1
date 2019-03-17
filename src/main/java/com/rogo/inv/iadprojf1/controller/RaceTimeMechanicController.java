@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -515,6 +516,52 @@ public class RaceTimeMechanicController {
         }
 
         pitStopServiceService.save(pitStopService);
+
+    }
+
+    @RequestMapping(value = "/raceTime-mechanic/offerService", method = RequestMethod.POST)
+    @ResponseBody
+    public String offerService(Authentication authentication, HttpServletRequest request) {
+
+        String comment = request.getParameter("comment");
+        PitStopPlace place = pitStopPlaceService.findById(Integer.parseInt(request.getParameter("place")));
+        Float fuel = Float.parseFloat(request.getParameter("fuel"));
+        String tires = request.getParameter("tires");
+
+        User pilot = userService.findByLogin(authentication.getName());
+        Team team = teamMemberService.findByUserId(pilot.getId()).getTeam();
+        List<Object[]> currRace = raceService.getCurrentEvent();
+        Race race = raceService.findById((Integer) currRace.get(0)[6]);
+
+        Car car = carService.findById(Integer.parseInt(request.getParameter("id")));
+
+        Date start = race.getDateTime();
+        Date now = new Date();
+        long current = start.getTime() - now.getTime();
+        long diffSeconds = (-1)*current / 1000 % 60;
+        long diffMinutes = (-1)*current / (60 * 1000) % 60;
+        long diffHours = (-1) * current / (60 * 60 * 1000);
+        String sec = "" + diffSeconds;
+        if (diffSeconds < 10) { sec = "0" + diffSeconds; }
+        String min = "" + diffMinutes;
+        if (diffMinutes < 10) { min = "0" + diffMinutes; }
+        String ho = "" + diffHours;
+        if (diffHours < 10) { ho = "0" + diffHours; }
+
+        PitStopService.TireTypes tireTypes = null;
+
+        if(tires.equals("SOFT")) tireTypes = PitStopService.TireTypes.SOFT;
+        if(tires.equals("TOUGH")) tireTypes = PitStopService.TireTypes.TOUGH;
+
+        if ( (fuel > place.getFuel()) || ( tireTypes != null && tireTypes.equals(PitStopService.TireTypes.SOFT) && place.getSoft() < 1 )
+                || ( tireTypes != null && tireTypes.equals(PitStopService.TireTypes.TOUGH) && place.getTough() < 1 )) { return "bad"; }
+
+        PitStopService pitStopService = new PitStopService(race,place,car,null,fuel,tireTypes,AcceptStatus.ON_REVIEW,comment, LocalTime.parse(ho + ":" + min + ":" + sec),
+                team,"MECHANIC");
+
+        pitStopServiceService.save(pitStopService);
+
+        return "ok";
 
     }
 

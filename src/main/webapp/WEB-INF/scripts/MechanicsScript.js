@@ -104,7 +104,12 @@ function handleRepair(id, status) {
 
 function chooseRepair(id) {
     let val = document.getElementById("offer-reason" + id).value;
-    if (val === 'repair') { document.getElementById("repair-menu" + id).hidden = false; }
+    if (val === 'repair') { document.getElementById("repair-menu" + id).hidden = false;
+    document.getElementById("service-menu" + id).hidden = true; } else {
+        document.getElementById("repair-menu" + id).hidden = true;
+        document.getElementById("service-menu" + id).hidden = false;
+    }
+
 }
 
 function offerRepair(id) {
@@ -143,5 +148,47 @@ function handleService(id, status) {
 
         }
     });
+
+}
+
+function offerService(id) {
+
+    document.getElementById("service-ready" + id).hidden = true;
+    document.getElementById("service-error" + id).hidden = true;
+    document.getElementById("service-not-enough" + id).hidden = true;
+
+    let comment = document.getElementById("askServiceComment" + id).value;
+    let fuel = document.getElementById("fuel-serv" + id).value;
+    let tires = document.getElementById("tire-change" + id).value;
+    let pitStop = "";
+    let places = document.getElementsByName('place-select' + id);
+
+    for (let i = 0, length = places.length; i < length; i++) {
+        if (places[i].checked) {
+            pitStop = places[i].value;
+            break;
+        }
+    }
+
+    if (pitStop === "") {  document.getElementById("service-error" + id).hidden = false; } else {
+
+        $.ajax({
+            type: "POST",
+            url: "/raceTime-mechanic/offerService",
+            data: {
+                "comment": comment,
+                "place": pitStop,
+                "fuel" : fuel,
+                "tires" : tires,
+                "id" : id
+            },
+            success: function (data) {
+                if (data === "ok") {
+                    document.getElementById("service-ready" + id).hidden = false; } else {
+                    document.getElementById("service-not-enough" + id).hidden = false;
+                }
+            }
+        });
+    }
 
 }
