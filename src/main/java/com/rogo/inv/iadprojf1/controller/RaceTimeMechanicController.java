@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -350,7 +352,7 @@ public class RaceTimeMechanicController {
 
     @RequestMapping(value = "/raceTime-mechanic/repair", method = RequestMethod.POST)
     @ResponseBody
-    public void repair(Authentication authentication, HttpServletRequest request) {
+    public void repair(Authentication authentication, HttpServletRequest request, HttpServletResponse response) {
 
         String comment = request.getParameter("comment");
         PitStopRepair pitStopRepair = pitStopRepairService.findById(Integer.parseInt(request.getParameter("id")));
@@ -377,16 +379,17 @@ public class RaceTimeMechanicController {
         pitStopRepair.setComment(comment);
         pitStopRepair.setTime(LocalTime.parse(ho + ":" + min + ":" + sec));
 
-        if (status) {
+        if (!status) {
 
-            pitStopRepair.setStatus(AcceptStatus.ACCEPTED);
+            pitStopRepair.setStatus(AcceptStatus.REFUSED);
+            pitStopRepairService.save(pitStopRepair);
+         //   try { response.sendRedirect("/garage?id=" + pitStopRepair.getCar().getId()); } catch (IOException x) { }
 
         } else {
 
-            pitStopRepair.setStatus(AcceptStatus.REFUSED);
+            pitStopRepair.setStatus(AcceptStatus.ACCEPTED);
+            pitStopRepairService.save(pitStopRepair);
         }
-
-        pitStopRepairService.save(pitStopRepair);
 
     }
 

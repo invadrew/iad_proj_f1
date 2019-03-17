@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -249,18 +250,18 @@ public class RaceTimeRacerController {
 
     @RequestMapping(value = "/raceTime-racer/news", method = RequestMethod.GET)
     @ResponseBody
-    public Object getNews(@RequestParam(name = "lastTime", required = false) String lTime, Authentication authentication) {
+    public Object getNews(@RequestParam(name = "lastTime", required = false) String lTime, Authentication authentication, HttpServletResponse response) {
 
             String[] lTimeParts = lTime.trim().split(":");
-            if (Integer.parseInt(lTimeParts[0]) < 10 && (!lTimeParts[0].startsWith("0"))) {
+            if (Integer.parseInt(lTimeParts[0]) < 10 && ((!lTimeParts[0].startsWith("0") || lTimeParts[0].length() == 1))) {
                 lTimeParts[0] = "0" + lTimeParts[0];
                 if (lTimeParts[0].equals("0")) lTimeParts[0] = "00";
             }
-            if (Integer.parseInt(lTimeParts[1]) < 10 && (!lTimeParts[1].startsWith("0"))) {
+            if (Integer.parseInt(lTimeParts[1]) < 10 && ((!lTimeParts[1].startsWith("0") || lTimeParts[1].length() == 1))) {
                 lTimeParts[1] = "0" + lTimeParts[1];
                 if (lTimeParts[1].equals("0")) lTimeParts[1] = "00";
             }
-            if (Integer.parseInt(lTimeParts[2]) < 10 && (!lTimeParts[2].startsWith("0"))) {
+            if (Integer.parseInt(lTimeParts[2]) < 10 && ((!lTimeParts[2].startsWith("0") || lTimeParts[2].length() == 1))) {
                 lTimeParts[2] = "0" + lTimeParts[2];
                 if (lTimeParts[2].equals("0")) lTimeParts[2] = "00";
             }
@@ -292,6 +293,7 @@ public class RaceTimeRacerController {
 
             List<PitStopTransfer> transfers = pitStopTransferService.findAllByTeamIdAndRaceOrderByTimeDesc(team, race);
             List<PitStopRepair> repairs = pitStopRepairService.findAllByRaceAndTeamId(race,team);
+            List<PitStopRepair> acc_repairs = pitStopRepairService.findAllByRaceAndStatusAndTeamId(race, AcceptStatus.ACCEPTED, team);
             List<PilotChange> pilotChangesA = pilotChangeService.findAllByRaceAndStatusAndTeamId(race, AcceptStatus.ACCEPTED, team);
             List<PilotChange> pilotChangesR = pilotChangeService.findAllByRaceAndStatusAndTeamId(race, AcceptStatus.REFUSED, team);
         List<PilotChange> pilotChangesRev = pilotChangeService.findAllByRaceAndStatusAndTeamId(race, AcceptStatus.ON_REVIEW, team);
@@ -322,8 +324,15 @@ public class RaceTimeRacerController {
             }
         }
 
+        for (PitStopRepair rep: acc_repairs) {
+            if (rep.getTime().isBefore(curr) && (rep.getTime().isAfter(maxTime))) {
+                return "/garage?id=" + rep.getCar().getId();
+            }
+        }
+
         for(PitStopRepair rep: repairs) {
             if (rep.getTime().isBefore(curr) && (rep.getTime().isAfter(maxTime))) {
+
                 return ho + ":" + min + ":" + sec;
             }
         }

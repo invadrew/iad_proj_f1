@@ -30,14 +30,22 @@ window.onload = function()
 
 
 function getNews() {
-    $.ajax({
-        type : "GET",
-        data : {"lastTime" : lastTime},
-        url: "/raceTime-racer/news",
-        success: function (data) {
-                if (data !== "nothing") { lastTime = data; location.reload(); }
-        }
-    });
+
+        $.ajax({
+            type: "GET",
+            data: {"lastTime": lastTime},
+            url: "/raceTime-racer/news",
+            success: function (data) {
+                if (data !== "nothing") {
+                    if (data.startsWith("/garage")) {
+                        window.location = data;
+                    } else {
+                        lastTime = data;
+                        location.reload();
+                    }
+                }
+            }
+        });
 }
 
 setInterval(getNews,2000);

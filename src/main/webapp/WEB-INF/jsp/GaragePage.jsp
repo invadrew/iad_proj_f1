@@ -9,6 +9,16 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <c:if test="${pitStop}">
+        <sec:authorize access="hasAuthority('MECHANIC')">
+            <meta http-equiv="refresh"
+                  content="8; url=/raceTime-mechanic?id=${currRaceId}"/>
+        </sec:authorize>
+        <sec:authorize access="hasAuthority('RACER')">
+            <meta http-equiv="refresh"
+                  content="8; url=/raceTime-racer?id=${currRaceId}"/>
+        </sec:authorize>
+    </c:if>
     <link rel="stylesheet" href="../styles/GarageStyle.css">
     <link rel="stylesheet" href="../styles/HeaderStyle.css">
     <title>Гараж</title>
@@ -16,6 +26,11 @@
 <body>
 <div class="grid-container">
     <jsp:include page="Header.jsp"/>
+    <c:if test="${ifRace && !pitStop}">
+        <br><br><br>
+        <label style="color:white;"> Гараж недоступен во время гонки </label>
+    </c:if>
+    <c:if test="${!ifRace || pitStop}">
     <div class="TeamNameArea">
         <br>
         <center><label style="padding-top: 3px" ><b>${team.name}</b></label></center>
@@ -305,6 +320,7 @@
                             <h3 style="text-align: center;">Нет болидов</h3>
                         </c:if>
                         <c:forEach items="${cars}" var="car">
+                            <c:if test="${(magicCar == null) || ((magicCar != null) && (magicCar == car.id))}">
                             <div class="infotab">
                         <div class="PhotoArea">
                             <div class="inside_block_wrapper" style="background: #2f2727">
@@ -330,7 +346,7 @@
                             </c:if>
                             <sec:authorize access="hasAuthority('MECHANIC')">
 
-                                <c:if test="${canBuy}">
+                                <c:if test="${canBuy && !pitStop}">
                                 <form>
                                     <input type="hidden" value="${car.id}">
                                     <input type="button" value="Разобрать болид" id="car-destroyer${car.id}" class="res-selector" style="width: 30% !important;" onclick="confirmDisass(${car.id})">
@@ -495,6 +511,7 @@
                         </div>
                         </sec:authorize>
                             </div>
+                        </c:if>
                         </c:forEach>
                     </div>
 
@@ -717,6 +734,7 @@
 
         </div>
     </div>
+    </c:if>
 </div>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 <script type="text/javascript" src="../scripts/GarageScript.js"> </script>

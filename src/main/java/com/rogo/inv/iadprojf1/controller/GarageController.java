@@ -1,12 +1,14 @@
 package com.rogo.inv.iadprojf1.controller;
 
 import com.rogo.inv.iadprojf1.entity.*;
+import com.rogo.inv.iadprojf1.entity.race.Race;
 import com.rogo.inv.iadprojf1.entity.storage.CarcaseStorage;
 import com.rogo.inv.iadprojf1.entity.storage.ChassisStorage;
 import com.rogo.inv.iadprojf1.entity.storage.ElectronicsStorage;
 import com.rogo.inv.iadprojf1.entity.storage.EngineStorage;
 import com.rogo.inv.iadprojf1.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -55,8 +57,30 @@ public class GarageController {
     @Autowired
     private TeamService teamService;
 
+    @Autowired
+    private RaceService raceService;
+
     @RequestMapping(value = "/garage", method = RequestMethod.GET)
-    public String toGarage(ModelMap map, Authentication authentication) {
+    public String toGarage(ModelMap map, Authentication authentication, @Param("id") Integer id) {
+
+        if (id != null) {
+            map.addAttribute("magicCar", id);
+        }
+
+        List<Object[]> currRace = raceService.getCurrentEvent();
+        Race race = raceService.findById((Integer) currRace.get(0)[6]);
+
+        map.addAttribute("currRaceId", race.getId());
+
+        Date now = new Date();
+        if (race.getDateTime().before(now) && !race.getIfFinished()) {
+            map.addAttribute("ifRace", true);
+        } else {
+            map.addAttribute("ifRace", false);}
+
+            if (race.getDateTime().before(now) && !race.getIfFinished() && (id != null)) {
+                map.addAttribute("pitStop", true);
+            }
 
         map.addAttribute("myPhoto", userService.findByLogin(authentication.getName()).getPhoto().getPath());
 
