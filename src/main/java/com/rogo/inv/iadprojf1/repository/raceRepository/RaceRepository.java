@@ -11,7 +11,7 @@ import java.util.List;
 public interface RaceRepository extends JpaRepository<Race, Integer> {
     Race findById(int id);
 
-    @Query (value = "SELECT c2.season_id, c2.name, c2.stage_num, race.date_time, race.track, race.max_participants, race.id FROM races AS race\n"+
+    @Query (value = "SELECT c2.season_id, c2.name, c2.stage_num, race.date_time, race.track, race.max_participants, race.id, race.if_finished FROM races AS race\n"+
             " INNER JOIN championships AS c2 on race.champ_id = c2.id \n" +
             "ORDER BY race.date_time DESC LIMIT 1;", nativeQuery = true)
     List<Object[]> getCurrentEvent();

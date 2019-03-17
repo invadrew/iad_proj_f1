@@ -18,6 +18,7 @@
         <div class="InfoArea">
             <div class="inside_block_wrapper">
                 <div class="infotab">
+                    <c:if test="${!currRace[0][7]}">
                     <center><h3>Ближайшая гонка</h3></center>
                     ${currRace[0][1]} ${currRace[0][0]}
                     <br>
@@ -39,7 +40,12 @@
                                 <input type="button" value="Перейти к гонке" class="res-selector" onclick="location.href='/raceTime-mechanic?id=${currRace[0][6]}'">
                             </sec:authorize>
                         </c:if>
+                    </c:if>
+                    <c:if test="${currRace[0][7]}">
+                        Данных пока нет
+                    </c:if>
                 </div>
+                <c:if test="${!currRace[0][7]}">
                 <div class="infotab">
                     <center><h3>Принять участие</h3></center>
                     <sec:authorize access="hasAuthority('MANAGER')">
@@ -104,6 +110,7 @@
                         Только менеджеры регестритруют команды
                     </sec:authorize>
                 </div>
+                </c:if>
                 <div class="infotab" style="text-align: center" id="toArch">
                     Узнать результаты прошлых гонок:
                     <input type="button" value="В архив" class="res-selector" onclick="location.href='/race-res'">
@@ -121,6 +128,7 @@
                             <th>Команда</th>
                             <th>Болид</th>
                         </tr>
+                        <c:if test="${!currRace[0][7]}">
                         <% int i = 0;%>
                         <c:forEach items="${regTable}" var="row">
                         <tr>
@@ -145,6 +153,7 @@
                             <td> ${row[3]} ${row[4]} </td>
                         </tr>
                         </c:forEach>
+                        </c:if>
                     </table>
                 </div>
             </div>

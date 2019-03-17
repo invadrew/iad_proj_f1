@@ -41,8 +41,9 @@ function getNews() {
                         window.location = data;
                     } else {
                         if (data === "udp") {location.reload();} else {
+                            if (data === "end") {window.location = "/race-end"} else {
                         lastTime = data;
-                        location.reload(); }
+                        location.reload(); }}
                     }
                 }
             }

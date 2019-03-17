@@ -5,6 +5,7 @@ import com.rogo.inv.iadprojf1.entity.*;
 import com.rogo.inv.iadprojf1.entity.pitstop.*;
 import com.rogo.inv.iadprojf1.entity.race.Race;
 import com.rogo.inv.iadprojf1.entity.race.RaceRegistration;
+import com.rogo.inv.iadprojf1.entity.race.RaceResult;
 import com.rogo.inv.iadprojf1.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -42,7 +43,7 @@ public class RaceTimeRacerController {
     private UserService userService;
 
     @Autowired
-    private PhotoService photoService;
+    private RaceResultService raceResultService;
 
     @Autowired
     private PitStopPlaceService pitStopPlaceService;
@@ -61,6 +62,9 @@ public class RaceTimeRacerController {
 
     @Autowired
     private PitStopServiceService pitStopServiceService;
+
+    @Autowired
+    private PilotingService pilotingService;
 
     @RequestMapping(value = "/raceTime-racer", method = RequestMethod.GET)
     public String toRace(ModelMap map, Authentication authentication, @Param("id") Integer id) {
@@ -336,7 +340,7 @@ public class RaceTimeRacerController {
                 Car firstCar = registration.getFirstCar();
                 Car secondCar = registration.getSecondCar();
 
-                if (diffSeconds % 25 == 0) {
+                if (diffSeconds % 55 == 0) {
                     firstCar.setFuel(firstCar.getFuel() - 2);
                     secondCar.setFuel(secondCar.getFuel() - 2);
                     firstCar.setTires(raceDowngrade(firstCar.getTires()));
@@ -347,7 +351,7 @@ public class RaceTimeRacerController {
                     return "udp";
                 }
 
-                if (diffSeconds == 15 && diffMinutes > 1) {
+                if (diffSeconds == 45 && diffMinutes > 1) {
 
                     firstCar.getCurrentCarcase().setCondition(raceDowngrade(firstCar.getCurrentCarcase().getCondition()));
                     firstCar.getCurrentChassis().setCondition(raceDowngrade(firstCar.getCurrentChassis().getCondition()));
@@ -366,7 +370,74 @@ public class RaceTimeRacerController {
 
                 }
 
-           /* Enough*/
+        /* Enough*/
+
+        /* Race ending */
+                if (firstCar.getFuel() <= 0) {
+
+                    registration.setFirstPilot(registration.getSecondPilot());
+                    registration.setFirstCar(registration.getSecondCar());
+                    registration.setSecondPilot(null);
+                    registration.setSecondCar(null);
+                    raceRegistrationService.save(registration);
+
+                    return "udp";
+
+                }
+
+                if (secondCar.getFuel() <= 0) {
+
+                    registration.setSecondPilot(null);
+                    registration.setSecondCar(null);
+                    raceRegistrationService.save(registration);
+
+                    return "udp";
+
+                }
+
+                if ( LocalTime.parse(ho + ":" + min + ":" + sec).isAfter(LocalTime.parse("00:05:00"))) {
+
+                    List<PitStopPlace> pitStopPlaces = pitStopPlaceService.findAllByTeam(team);
+                    for(PitStopPlace pl: pitStopPlaces) {
+                        pl.setTough(15);
+                        pl.setSoft(15);
+                        pl.setFuel(50);
+                        pitStopPlaceService.save(pl);
+                    }
+
+                    firstCar.setTires(ComponentCondition.PERFECT);
+                    firstCar.setFuel(20);
+                    secondCar.setFuel(20);
+                    secondCar.setTires(ComponentCondition.PERFECT);
+
+                    carService.save(firstCar);
+                    carService.save(secondCar);
+
+                    race.setIfFinished(true);
+                    raceService.save(race);
+
+                    /*List<RaceRegistration> registrations = raceRegistrationService.findAllByRace(race);
+
+                    int place = 1;
+
+                    for (RaceRegistration reg: registrations ) {
+                        RaceResult result = new RaceResult(reg.getFirstCar(),race,
+                                pilotingService.findByCarIdAndRacerId(reg.getFirstCar().getId(), reg.getFirstPilot().getUserId()),
+                                place,race.getLaps(),25 - place, LocalTime.parse(ho + ":" + min + ":" + sec));
+                        raceResultService.save(result);
+                        place++;
+                        if (reg.getSecondPilot() != null && reg.getSecondCar() != null) {
+                            RaceResult result2 = new RaceResult(reg.getSecondCar(),race,
+                                    pilotingService.findByCarIdAndRacerId(reg.getSecondCar().getId(), reg.getSecondPilot().getUserId()),
+                                    place,race.getLaps(),25 - place, LocalTime.parse(ho + ":" + min + ":" + sec));
+                            raceResultService.save(result2);
+                            place++;
+                        }
+                    } */
+
+                    return "end";
+                }
+
 
             List<PitStopTransfer> transfers = pitStopTransferService.findAllByTeamIdAndRaceOrderByTimeDesc(team, race);
             List<PitStopRepair> repairs = pitStopRepairService.findAllByRaceAndTeamId(race,team);
