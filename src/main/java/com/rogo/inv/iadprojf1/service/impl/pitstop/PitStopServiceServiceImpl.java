@@ -50,4 +50,9 @@ public class PitStopServiceServiceImpl implements PitStopServiceService {
     public List<PitStopService> findAllByTeamIdAndStatusAndSenderAndRace(Team team, AcceptStatus acceptStatus, String sender, Race race) {
         return repository.findAllByTeamIdAndStatusAndSenderAndRace(team, acceptStatus, sender, race);
     }
+
+    @Override
+    public List<PitStopService> findAllByTeamIdAndRace(Team team, Race race) {
+        return repository.findAllByTeamIdAndRace(team, race);
+    }
 }

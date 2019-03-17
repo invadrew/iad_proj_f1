@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "pit_stop_service")
+@Table(name = "pit_stop_service") @Data
 @ToString(callSuper = true) @EqualsAndHashCode(callSuper = true) @NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class PitStopService extends BasePitStop {

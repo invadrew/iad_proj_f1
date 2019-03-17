@@ -165,6 +165,7 @@
                                         <c:if test="${service.fuel > 0}">
                                             Дозаправка: ${service.fuel}
                                         </c:if>
+                                        Комментарий: ${service.comment}
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -182,6 +183,7 @@
                                         <c:if test="${service.fuel > 0}">
                                             Дозаправка: ${service.fuel}
                                         </c:if>
+                                         Комментарий: ${service.comment}
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -356,18 +358,34 @@
                                 </tr>
                             </table>
                         </c:forEach>
+                        <c:forEach items="${service_review}" var="service">
                             <table class="infotable" style="text-align: left;" border="1" >
                                 <tr>
-                                    <td>Болид: А</td>
-                                    <td>Гонщик: Никита Рогаленко</td>
-                                    <td>Пит-стоп: В</td>
+                                    <td>Болид: ${service_review_cars.get(service_review.indexOf(service)).label} ${service_review_cars.get(service_review.indexOf(service)).model} </td>
+                                    <td>Пит-стоп: ${service_review_places.get(service_review.indexOf(service)).name}</td>
+                                    <td>
+                                        <c:if test="${service.tires.toString().equals('SOFT')}">
+                                            Замена шин на мягкие.
+                                        </c:if>
+                                        <c:if test="${service.tires.toString().equals('TOUGH')}">
+                                            Замена шин на жесткие.
+                                        </c:if>
+                                        <c:if test="${service.fuel > 0}">
+                                            Дозаправка: ${service.fuel}
+                                        </c:if>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td>Время: 00:19:48</td>
-                                    <td>Тип: обслуживание</td>
-                                    <td>Цель: смена резины на мягкие</td>
+                                    <td>
+                                        Комментарий: ${service.comment}
+                                    </td>
+                                    <td><input type="text" placeholder="Ваш ответ" class="res-selector" id="servAnsw${service.id}"></td>
                                 </tr>
                             </table>
+                            <br>
+                            <input type="button" class="res-selector" value="Принять" onclick="handleService(${service.id}, true)"/>
+                            <input type="button" class="res-selector" value="Отказать" onclick="handleService(${service.id}, false)"/>
+                        </c:forEach>
                     </div>
                 </div>
             </div>

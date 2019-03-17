@@ -20,4 +20,6 @@ public interface PitStopServiceRepository extends JpaRepository<PitStopService, 
 
     List<PitStopService> findAllByTeamIdAndStatusAndSenderAndRace(Team team, AcceptStatus acceptStatus, String sender, Race race);
 
+    List<PitStopService> findAllByTeamIdAndRace(Team team, Race race);
+
 }

@@ -22,4 +22,6 @@ public interface PitStopServiceService {
     List<PitStopService> findAllByTeamIdAndRaceAndStatus(Team team, Race race, AcceptStatus acceptStatus);
 
     List<PitStopService> findAllByTeamIdAndStatusAndSenderAndRace(Team team, AcceptStatus acceptStatus, String sender, Race race);
+
+    List<PitStopService> findAllByTeamIdAndRace(Team team, Race race);
 }

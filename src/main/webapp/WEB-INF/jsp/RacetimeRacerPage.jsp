@@ -46,8 +46,14 @@
                 <div class="infotab">
                     <label style="text-decoration: underline">Болид: ${car.label} ${car.model}</label>
                     <h3 style="text-align: center">Состояние болида</h3>
-                    <label>Топливо: 32 литра</label> <br>
-                    <label>Шины: Нормально</label> <br>
+                    <label>Топливо: ${car.fuel} литра</label> <br>
+                    <label>Шины:
+                        <c:if test="${car.tires.toString().equals('PERFECT')}">Идеально</c:if>
+                        <c:if test="${car.tires.toString().equals('GOOD')}">Хорошо</c:if>
+                        <c:if test="${car.tires.toString().equals('NORMAL')}">Нормально</c:if>
+                        <c:if test="${car.tires.toString().equals('BAD')}">Плохо</c:if>
+                        <c:if test="${car.tires.toString().equals('AWFUL')}">Ужасно</c:if>
+                    </label> <br>
                     <label>Каркас:
                         <c:if test="${carcase.condition.toString().equals('PERFECT')}">Идеально</c:if>
                         <c:if test="${carcase.condition.toString().equals('GOOD')}">Хорошо</c:if>
@@ -196,6 +202,7 @@
                                         <c:if test="${service.fuel > 0}">
                                             Дозаправка: ${service.fuel}
                                         </c:if>
+                                        Комментарий: ${service.comment}
                                      </td>
                                 </tr>
                             </c:forEach>
@@ -213,6 +220,7 @@
                                         <c:if test="${service.fuel > 0}">
                                             Дозаправка: ${service.fuel}
                                         </c:if>
+                                        Комментарий: ${service.comment}
                                     </td>
                                 </tr>
                             </c:forEach>

@@ -323,7 +323,8 @@ public class RaceTimeRacerController {
             List<PitStopRepair> acc_repairs = pitStopRepairService.findAllByRaceAndStatusAndTeamId(race, AcceptStatus.ACCEPTED, team);
             List<PilotChange> pilotChangesA = pilotChangeService.findAllByRaceAndStatusAndTeamId(race, AcceptStatus.ACCEPTED, team);
             List<PilotChange> pilotChangesR = pilotChangeService.findAllByRaceAndStatusAndTeamId(race, AcceptStatus.REFUSED, team);
-        List<PilotChange> pilotChangesRev = pilotChangeService.findAllByRaceAndStatusAndTeamId(race, AcceptStatus.ON_REVIEW, team);
+            List<PilotChange> pilotChangesRev = pilotChangeService.findAllByRaceAndStatusAndTeamId(race, AcceptStatus.ON_REVIEW, team);
+            List<PitStopService> stopServices = pitStopServiceService.findAllByTeamIdAndRace(team,race);
             LocalTime curr = LocalTime.parse(ho + ":" + min + ":" + sec);
 
             for (PitStopTransfer transfer : transfers) {
@@ -350,6 +351,13 @@ public class RaceTimeRacerController {
                 return ho + ":" + min + ":" + sec;
             }
         }
+
+        for (PitStopService service: stopServices) {
+            if (service.getTime().isBefore(curr) && (service.getTime().isAfter(maxTime))) {
+                return ho + ":" + min + ":" + sec;
+            }
+        }
+
 
         for (PitStopRepair rep: acc_repairs) {
             if (rep.getTime().isBefore(curr) && (rep.getTime().isAfter(maxTime))) {
@@ -489,6 +497,9 @@ public class RaceTimeRacerController {
 
             if(tires.equals("SOFT")) tireTypes = PitStopService.TireTypes.SOFT;
             if(tires.equals("TOUGH")) tireTypes = PitStopService.TireTypes.TOUGH;
+
+            if ( (fuel > place.getFuel()) || ( tireTypes != null && tireTypes.equals(PitStopService.TireTypes.SOFT) && place.getSoft() < 1 )
+              || ( tireTypes != null && tireTypes.equals(PitStopService.TireTypes.TOUGH) && place.getTough() < 1 )) { return "bad"; }
 
             PitStopService pitStopService = new PitStopService(race,place,car,null,fuel,tireTypes,AcceptStatus.ON_REVIEW,comment, LocalTime.parse(ho + ":" + min + ":" + sec),
                     team,"RACER");

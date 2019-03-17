@@ -464,6 +464,57 @@ public class RaceTimeMechanicController {
 
         pitStopRepairService.save(repair);
 
+    }
+
+    @RequestMapping(value = "/raceTime-mechanic/service", method = RequestMethod.POST)
+    @ResponseBody
+    public void pitService(HttpServletRequest request, Authentication authentication) {
+
+        String comment = request.getParameter("comment");
+        PitStopService pitStopService = pitStopServiceService.findById(Integer.parseInt(request.getParameter("id")));
+        Boolean status = Boolean.parseBoolean(request.getParameter("status"));
+
+        Team team = teamMemberService.findByUserId(userService.findByLogin(authentication.getName()).getId()).getTeam();
+        List<Object[]> currRace = raceService.getCurrentEvent();
+        Race race = raceService.findById((Integer) currRace.get(0)[6]);
+
+        Date start = race.getDateTime();
+        Date now = new Date();
+        long current = start.getTime() - now.getTime();
+        long diffSeconds = (-1)*current / 1000 % 60;
+        long diffMinutes = (-1)*current / (60 * 1000) % 60;
+        long diffHours = (-1) * current / (60 * 60 * 1000);
+        String sec = "" + diffSeconds;
+        if (diffSeconds < 10) { sec = "0" + diffSeconds; }
+        String min = "" + diffMinutes;
+        if (diffMinutes < 10) { min = "0" + diffMinutes; }
+        String ho = "" + diffHours;
+        if (diffHours < 10) { ho = "0" + diffHours; }
+
+        pitStopService.setComment(comment);
+        pitStopService.setTime(LocalTime.parse(ho + ":" + min + ":" + sec));
+
+        if (!status) {
+
+            pitStopService.setStatus(AcceptStatus.REFUSED);
+
+        } else {
+
+            pitStopService.setStatus(AcceptStatus.ACCEPTED);
+            PitStopPlace place = pitStopService.getPlace();
+            place.setFuel(place.getFuel() - pitStopService.getFuel());
+            if (pitStopService.getTires() != null) {
+            if (pitStopService.getTires().equals(PitStopService.TireTypes.SOFT)) place.setSoft(place.getSoft() - 1);
+            if (pitStopService.getTires().equals(PitStopService.TireTypes.TOUGH)) place.setTough(place.getTough() - 1); }
+            pitStopPlaceService.save(place);
+
+            Car car = pitStopService.getCar();
+            if (pitStopService.getTires() != null) { car.setTires(ComponentCondition.PERFECT); }
+            car.setFuel(car.getFuel() + pitStopService.getFuel());
+
+        }
+
+        pitStopServiceService.save(pitStopService);
 
     }
 
